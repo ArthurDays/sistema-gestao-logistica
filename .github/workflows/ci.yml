@@ -11,6 +11,9 @@ permissions:
 jobs:
   backend:
     runs-on: ubuntu-latest
+    env:
+      # O projeto ainda não é empacotado como wheel; expõe backend/app aos testes no runner.
+      PYTHONPATH: .
     defaults:
       run:
         working-directory: backend
