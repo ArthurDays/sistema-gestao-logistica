@@ -1,0 +1,88 @@
+services:
+  # Fonte de verdade do domínio. A porta publicada existe para administração local via DBeaver.
+  postgres:
+    image: postgres:18-alpine
+    container_name: logistica-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-logistica}
+      POSTGRES_USER: ${POSTGRES_USER:-logistica}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-logistica}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres18_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [internal]
+
+  api:
+    build:
+      context: ./backend
+      target: runtime
+    container_name: logistica-api
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-logistica}:${POSTGRES_PASSWORD:-logistica}@postgres:5432/${POSTGRES_DB:-logistica}
+      CORS_ORIGINS: http://localhost:${FRONTEND_PORT:-3000}
+      BASE_FUEL_PRICE_PER_LITER: ${BASE_FUEL_PRICE_PER_LITER:-6.00}
+      VEHICLE_CATALOG_CSV_URL: ${VEHICLE_CATALOG_CSV_URL:-https://docs.google.com/spreadsheets/d/1J8YAtNSqD0se5pJVzgBDnggN7lKF37HPnQlbqL9vSOw/gviz/tq?tqx=out:csv&gid=521676479}
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [internal, public]
+
+  api-tests:
+    build:
+      context: ./backend
+      target: test
+    profiles: [test]
+    environment:
+      DATABASE_URL: "sqlite+pysqlite:///:memory:"
+      PYTHONPATH: /app
+
+  # Espelha a referência técnica externa sem alterar o estado dos veículos operacionais.
+  catalog-sync:
+    build:
+      context: ./backend
+      target: runtime
+    container_name: logistica-catalog-sync
+    command: ["python", "-m", "app.catalog_worker"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-logistica}:${POSTGRES_PASSWORD:-logistica}@postgres:5432/${POSTGRES_DB:-logistica}
+      VEHICLE_CATALOG_CSV_URL: ${VEHICLE_CATALOG_CSV_URL:-https://docs.google.com/spreadsheets/d/1J8YAtNSqD0se5pJVzgBDnggN7lKF37HPnQlbqL9vSOw/gviz/tq?tqx=out:csv&gid=521676479}
+      CATALOG_SYNC_INTERVAL_SECONDS: ${CATALOG_SYNC_INTERVAL_SECONDS:-3600}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks: [internal, public]
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:${API_PORT:-8000}
+    container_name: logistica-frontend
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks: [public]
+
+volumes:
+  postgres18_data:
+
+networks:
+  public:
+  internal:
+    internal: true
