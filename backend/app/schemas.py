@@ -22,6 +22,31 @@ ExpenseCategory = Literal[
 ]
 
 
+class TokenCreate(BaseModel):
+    email: str = Field(min_length=3, max_length=320)
+    password: str = Field(min_length=8, max_length=128)
+
+
+class TokenRead(BaseModel):
+    access_token: str
+    token_type: Literal["bearer"] = "bearer"
+
+
+class UserCreate(BaseModel):
+    email: str = Field(min_length=3, max_length=320)
+    password: str = Field(min_length=12, max_length=128)
+    role: Literal["operator", "manager", "admin"]
+
+
+class UserRead(BaseModel):
+    id: uuid.UUID
+    email: str
+    role: str
+    active: bool
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class VehicleCreate(BaseModel):
     name: str = Field(min_length=2, max_length=120)
     category: VehicleCategory

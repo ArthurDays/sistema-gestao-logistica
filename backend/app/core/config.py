@@ -14,6 +14,14 @@ class Settings(BaseSettings):
         "gviz/tq?tqx=out:csv&gid=521676479"
     )
     catalog_sync_interval_seconds: int = 3600
+    jwt_secret_key: str
+    access_token_expire_minutes: int = 60
+    bootstrap_admin_email: str | None = None
+    bootstrap_admin_password: str | None = None
+    n8n_webhook_url: str | None = None
+    n8n_webhook_secret: str | None = None
+    outbox_max_attempts: int = 5
+    outbox_poll_interval_seconds: int = 15
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

@@ -8,8 +8,10 @@ from fastapi import APIRouter, Depends, Header, HTTPException, status
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session
 
+from app.auth import authenticate, current_organization_id, get_current_user, require_roles
 from app.catalog import sync_catalog
 from app.core.config import settings
+from app.core.security import create_access_token, hash_password
 from app.db import get_db
 from app.maintenance import evaluate_maintenance, maintenance_reserve_per_km
 from app.models import (
@@ -18,6 +20,7 @@ from app.models import (
     MaintenanceExecution,
     MaintenanceRule,
     OperationalRecord,
+    User,
     Vehicle,
     VehicleCatalogSpec,
 )
@@ -36,14 +39,18 @@ from app.schemas import (
     OperationCreate,
     OperationRead,
     ProfitabilityRead,
+    TokenCreate,
+    TokenRead,
+    UserCreate,
+    UserRead,
     VehicleCatalogRead,
     VehicleCreate,
     VehicleFromCatalogCreate,
     VehicleRead,
 )
 
-router = APIRouter(prefix="/api/v1")
-DEFAULT_ORGANIZATION_ID = uuid.UUID("00000000-0000-0000-0000-000000000001")
+auth_router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
+router = APIRouter(prefix="/api/v1", dependencies=[Depends(get_current_user)])
 DbSession = Annotated[Session, Depends(get_db)]
 IdempotencyKey = Annotated[
     str,
@@ -51,20 +58,53 @@ IdempotencyKey = Annotated[
 ]
 
 
+@auth_router.post("/token", response_model=TokenRead)
+def create_token(payload: TokenCreate, db: DbSession) -> TokenRead:
+    user = authenticate(payload.email, payload.password, db)
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciais inválidas")
+    return TokenRead(access_token=create_access_token(str(user.id), str(user.organization_id), user.role))
+
+
+@auth_router.post("/users", response_model=UserRead, status_code=status.HTTP_201_CREATED)
+def create_user(
+    payload: UserCreate,
+    db: DbSession,
+    _admin: Annotated[object, Depends(require_roles("admin"))],
+) -> User:
+    user = User(
+        organization_id=current_organization_id(),
+        email=payload.email.casefold(),
+        password_hash=hash_password(payload.password),
+        role=payload.role,
+    )
+    db.add(user)
+    try:
+        db.commit()
+    except Exception as error:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="E-mail já cadastrado") from error
+    db.refresh(user)
+    return user
+
+
 @router.get("/vehicles", response_model=list[VehicleRead])
 def list_vehicles(db: DbSession) -> list[Vehicle]:
     return list(
         db.scalars(
             select(Vehicle)
-            .where(Vehicle.organization_id == DEFAULT_ORGANIZATION_ID)
+            .where(Vehicle.organization_id == current_organization_id())
             .order_by(Vehicle.name)
         )
     )
 
 
-@router.post("/vehicles", response_model=VehicleRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/vehicles", response_model=VehicleRead, status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_roles("admin"))],
+)
 def create_vehicle(payload: VehicleCreate, db: DbSession) -> Vehicle:
-    vehicle = Vehicle(organization_id=DEFAULT_ORGANIZATION_ID, **payload.model_dump())
+    vehicle = Vehicle(organization_id=current_organization_id(), **payload.model_dump())
     db.add(vehicle)
     db.commit()
     db.refresh(vehicle)
@@ -100,7 +140,11 @@ def list_vehicle_catalog(
     )
 
 
-@router.post("/vehicle-catalog/sync", response_model=CatalogSyncRead)
+@router.post(
+    "/vehicle-catalog/sync",
+    response_model=CatalogSyncRead,
+    dependencies=[Depends(require_roles("admin"))],
+)
 def synchronize_vehicle_catalog(db: DbSession) -> CatalogSyncRead:
     try:
         imported, updated, total = sync_catalog(db)
@@ -114,6 +158,7 @@ def synchronize_vehicle_catalog(db: DbSession) -> CatalogSyncRead:
     "/vehicle-catalog/{spec_id}/register",
     response_model=VehicleRead,
     status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_roles("admin"))],
 )
 def register_vehicle_from_catalog(
     spec_id: uuid.UUID,
@@ -138,7 +183,7 @@ def register_vehicle_from_catalog(
         energy_type = "gasoline"
 
     vehicle = Vehicle(
-        organization_id=DEFAULT_ORGANIZATION_ID,
+        organization_id=current_organization_id(),
         catalog_spec_id=spec.id,
         name=payload.name or f"{spec.brand} {spec.model}",
         plate=payload.plate.upper().strip() if payload.plate else None,
@@ -153,7 +198,7 @@ def register_vehicle_from_catalog(
     if spec.oil_change_km:
         db.add(
             MaintenanceRule(
-                organization_id=DEFAULT_ORGANIZATION_ID,
+                organization_id=current_organization_id(),
                 vehicle_id=vehicle.id,
                 name="Troca de óleo",
                 interval_km=Decimal(spec.oil_change_km),
@@ -165,7 +210,7 @@ def register_vehicle_from_catalog(
     if spec.tire_change_km:
         db.add(
             MaintenanceRule(
-                organization_id=DEFAULT_ORGANIZATION_ID,
+                organization_id=current_organization_id(),
                 vehicle_id=vehicle.id,
                 name="Troca de pneus",
                 interval_km=Decimal(spec.tire_change_km),
@@ -183,6 +228,7 @@ def register_vehicle_from_catalog(
     "/vehicles/{vehicle_id}/operations",
     response_model=OperationRead,
     status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_roles("operator", "manager", "admin"))],
 )
 def create_operation(
     vehicle_id: uuid.UUID,
@@ -192,7 +238,7 @@ def create_operation(
 ) -> OperationalRecord:
     existing = db.scalar(
         select(OperationalRecord).where(
-            OperationalRecord.organization_id == DEFAULT_ORGANIZATION_ID,
+            OperationalRecord.organization_id == current_organization_id(),
             OperationalRecord.idempotency_key == idempotency_key,
         )
     )
@@ -203,7 +249,7 @@ def create_operation(
         select(Vehicle)
         .where(
             Vehicle.id == vehicle_id,
-            Vehicle.organization_id == DEFAULT_ORGANIZATION_ID,
+            Vehicle.organization_id == current_organization_id(),
         )
         .with_for_update()
     )
@@ -246,7 +292,7 @@ def create_operation(
     ).quantize(Decimal("0.01"))
     net_profit = payload.gross_revenue - fuel_cost - maintenance_cost
     record = OperationalRecord(
-        organization_id=DEFAULT_ORGANIZATION_ID,
+        organization_id=current_organization_id(),
         vehicle_id=vehicle.id,
         operation_date=payload.operation_date,
         odometer_start_km=vehicle.odometer_km,
@@ -270,19 +316,22 @@ def create_operation(
     return record
 
 
-@router.post("/expenses", response_model=ExpenseRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/expenses", response_model=ExpenseRead, status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_roles("manager", "admin"))],
+)
 def create_expense(payload: ExpenseCreate, db: DbSession) -> Expense:
     if payload.vehicle_id is not None:
         vehicle_exists = db.scalar(
             select(Vehicle.id).where(
                 Vehicle.id == payload.vehicle_id,
-                Vehicle.organization_id == DEFAULT_ORGANIZATION_ID,
+                Vehicle.organization_id == current_organization_id(),
             )
         )
         if vehicle_exists is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Veículo não encontrado")
 
-    expense = Expense(organization_id=DEFAULT_ORGANIZATION_ID, **payload.model_dump())
+    expense = Expense(organization_id=current_organization_id(), **payload.model_dump())
     db.add(expense)
     db.commit()
     db.refresh(expense)
@@ -302,7 +351,7 @@ def get_profitability(
     vehicle_exists = db.scalar(
         select(Vehicle.id).where(
             Vehicle.id == vehicle_id,
-            Vehicle.organization_id == DEFAULT_ORGANIZATION_ID,
+            Vehicle.organization_id == current_organization_id(),
         )
     )
     if vehicle_exists is None:
@@ -315,14 +364,14 @@ def get_profitability(
             func.coalesce(func.sum(OperationalRecord.fuel_cost), 0),
             func.coalesce(func.sum(OperationalRecord.maintenance_cost), 0),
         ).where(
-            OperationalRecord.organization_id == DEFAULT_ORGANIZATION_ID,
+            OperationalRecord.organization_id == current_organization_id(),
             OperationalRecord.vehicle_id == vehicle_id,
             OperationalRecord.operation_date.between(date_from, date_to),
         )
     ).one()
     other_expenses = db.scalar(
         select(func.coalesce(func.sum(Expense.amount), 0)).where(
-            Expense.organization_id == DEFAULT_ORGANIZATION_ID,
+            Expense.organization_id == current_organization_id(),
             Expense.vehicle_id == vehicle_id,
             Expense.expense_date.between(date_from, date_to),
         )
@@ -367,7 +416,7 @@ def get_monthly_dashboard(db: DbSession, reference_date: date | None = None) -> 
             func.coalesce(func.sum(OperationalRecord.maintenance_cost), 0),
             func.coalesce(func.sum(OperationalRecord.net_profit), 0),
         ).where(
-            OperationalRecord.organization_id == DEFAULT_ORGANIZATION_ID,
+            OperationalRecord.organization_id == current_organization_id(),
             OperationalRecord.operation_date.between(date_from, date_to),
         )
     ).one()
@@ -392,13 +441,13 @@ def _expense_period(
             func.coalesce(func.sum(OperationalRecord.fuel_cost), 0),
             func.coalesce(func.sum(OperationalRecord.maintenance_cost), 0),
         ).where(
-            OperationalRecord.organization_id == DEFAULT_ORGANIZATION_ID,
+            OperationalRecord.organization_id == current_organization_id(),
             OperationalRecord.operation_date.between(date_from, date_to),
         )
     ).one()
     other_expenses = db.scalar(
         select(func.coalesce(func.sum(Expense.amount), 0)).where(
-            Expense.organization_id == DEFAULT_ORGANIZATION_ID,
+            Expense.organization_id == current_organization_id(),
             Expense.expense_date.between(date_from, date_to),
         )
     )
@@ -443,7 +492,7 @@ def get_expense_sampling(db: DbSession, reference_date: date | None = None) -> E
 @router.get("/maintenance-rules", response_model=list[MaintenanceRuleRead])
 def list_maintenance_rules(db: DbSession, vehicle_id: uuid.UUID | None = None) -> list[MaintenanceRule]:
     query = select(MaintenanceRule).where(
-        MaintenanceRule.organization_id == DEFAULT_ORGANIZATION_ID,
+        MaintenanceRule.organization_id == current_organization_id(),
         MaintenanceRule.active.is_(True),
     )
     if vehicle_id is not None:
@@ -455,6 +504,7 @@ def list_maintenance_rules(db: DbSession, vehicle_id: uuid.UUID | None = None) -
     "/maintenance-rules",
     response_model=MaintenanceRuleRead,
     status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_roles("manager", "admin"))],
 )
 def create_maintenance_rule(payload: MaintenanceRuleCreate, db: DbSession) -> MaintenanceRule:
     if payload.interval_km is None and payload.interval_days is None:
@@ -462,14 +512,14 @@ def create_maintenance_rule(payload: MaintenanceRuleCreate, db: DbSession) -> Ma
     vehicle = db.scalar(
         select(Vehicle).where(
             Vehicle.id == payload.vehicle_id,
-            Vehicle.organization_id == DEFAULT_ORGANIZATION_ID,
+            Vehicle.organization_id == current_organization_id(),
         )
     )
     if vehicle is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Veículo não encontrado")
 
     rule = MaintenanceRule(
-        organization_id=DEFAULT_ORGANIZATION_ID,
+        organization_id=current_organization_id(),
         baseline_odometer_km=vehicle.odometer_km,
         baseline_date=date.today(),
         **payload.model_dump(),
@@ -486,6 +536,7 @@ def create_maintenance_rule(payload: MaintenanceRuleCreate, db: DbSession) -> Ma
     "/maintenance-rules/{rule_id}/executions",
     response_model=MaintenanceExecutionRead,
     status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_roles("manager", "admin"))],
 )
 def create_maintenance_execution(
     rule_id: uuid.UUID,
@@ -495,7 +546,7 @@ def create_maintenance_execution(
     rule = db.scalar(
         select(MaintenanceRule).where(
             MaintenanceRule.id == rule_id,
-            MaintenanceRule.organization_id == DEFAULT_ORGANIZATION_ID,
+            MaintenanceRule.organization_id == current_organization_id(),
         )
     )
     if rule is None:
@@ -507,7 +558,7 @@ def create_maintenance_execution(
         raise HTTPException(status_code=422, detail="KM da manutenção supera o hodômetro atual")
 
     execution = MaintenanceExecution(
-        organization_id=DEFAULT_ORGANIZATION_ID,
+        organization_id=current_organization_id(),
         vehicle_id=vehicle.id,
         rule_id=rule.id,
         **payload.model_dump(),
@@ -524,7 +575,7 @@ def create_maintenance_execution(
 def list_maintenance_alerts(db: DbSession, status_filter: str = "open") -> list[MaintenanceAlert]:
     vehicles = db.scalars(
         select(Vehicle).where(
-            Vehicle.organization_id == DEFAULT_ORGANIZATION_ID,
+            Vehicle.organization_id == current_organization_id(),
             Vehicle.status == "active",
         )
     )
@@ -535,7 +586,7 @@ def list_maintenance_alerts(db: DbSession, status_filter: str = "open") -> list[
         db.scalars(
             select(MaintenanceAlert)
             .where(
-                MaintenanceAlert.organization_id == DEFAULT_ORGANIZATION_ID,
+                MaintenanceAlert.organization_id == current_organization_id(),
                 MaintenanceAlert.status == status_filter,
             )
             .order_by(MaintenanceAlert.created_at.desc())

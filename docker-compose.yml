@@ -27,6 +27,9 @@ services:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-logistica}:${POSTGRES_PASSWORD:-logistica}@postgres:5432/${POSTGRES_DB:-logistica}
       CORS_ORIGINS: http://localhost:${FRONTEND_PORT:-3000}
       BASE_FUEL_PRICE_PER_LITER: ${BASE_FUEL_PRICE_PER_LITER:-6.00}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY obrigatória}
+      BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:-}
       VEHICLE_CATALOG_CSV_URL: ${VEHICLE_CATALOG_CSV_URL:-https://docs.google.com/spreadsheets/d/1J8YAtNSqD0se5pJVzgBDnggN7lKF37HPnQlbqL9vSOw/gviz/tq?tqx=out:csv&gid=521676479}
     ports:
       - "${API_PORT:-8000}:8000"
@@ -66,6 +69,53 @@ services:
     restart: unless-stopped
     networks: [internal, public]
 
+  outbox-worker:
+    build:
+      context: ./backend
+      target: runtime
+    container_name: logistica-outbox-worker
+    command: ["python", "-m", "app.outbox_worker"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-logistica}:${POSTGRES_PASSWORD:-logistica}@postgres:5432/${POSTGRES_DB:-logistica}
+      N8N_WEBHOOK_URL: ${N8N_WEBHOOK_URL:-}
+      N8N_WEBHOOK_SECRET: ${N8N_WEBHOOK_SECRET:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks: [internal]
+
+  n8n:
+    image: n8nio/n8n:1.116.2
+    container_name: logistica-n8n
+    environment:
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:?N8N_ENCRYPTION_KEY obrigatória}
+      N8N_HOST: ${N8N_HOST:-localhost}
+      N8N_PROTOCOL: ${N8N_PROTOCOL:-http}
+      WEBHOOK_URL: ${N8N_WEBHOOK_URL:-http://localhost:5678/}
+    ports:
+      - "${N8N_PORT:-5678}:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks: [internal, public]
+
+  metabase:
+    image: metabase/metabase:v0.58.7
+    container_name: logistica-metabase
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: ${POSTGRES_DB:-logistica}
+      MB_DB_PORT: 5432
+      MB_DB_USER: ${METABASE_APP_USER:-metabase_app}
+      MB_DB_PASS: ${METABASE_APP_PASSWORD:?METABASE_APP_PASSWORD obrigatória}
+      MB_DB_HOST: postgres
+    ports:
+      - "${METABASE_PORT:-3001}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [internal, public]
+
   frontend:
     build:
       context: ./frontend
@@ -81,6 +131,7 @@ services:
 
 volumes:
   postgres18_data:
+  n8n_data:
 
 networks:
   public:

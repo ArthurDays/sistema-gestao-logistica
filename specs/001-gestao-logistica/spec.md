@@ -116,6 +116,7 @@ Como gestor, quero filtros por veículo, categoria e período para analisar KM, 
 ## Premissas a validar antes da implementação
 
 1. Critério padrão de rateio para custos fixos: por km, por dia ou configurável por despesa.
-2. Fonte autorizada para preços de combustíveis e granularidade de localização.
-3. Canal inicial de notificação do n8n: e-mail, WhatsApp ou Telegram.
-4. Modelo de autenticação do MVP: e-mail/senha com JWT ou provedor de identidade externo.
+2. **Decidido em 2026-08-20**: a fonte autorizada de preços de combustíveis é a ANP, com localidade inicial Brasília/DF.
+3. **Decidido em 2026-08-20**: o n8n encaminhará alertas pelos canais e-mail e WhatsApp.
+4. **Decidido em 2026-08-18**: e-mail/senha com JWT assinado por chave de ambiente; os papéis iniciais são operador, gestor e administrador.
+5. Pendências de implantação a definir ao final: domínio/provedor de DNS e TLS, destino dos backups criptografados e DSN do Sentry.

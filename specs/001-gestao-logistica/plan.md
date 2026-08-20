@@ -31,6 +31,7 @@ O produto será um monólito modular: um frontend web em Next.js/React comunica-
 3. **Outbox transacional**: toda alteração que deve gerar notificação cria um `outbox_event` na mesma transação; um worker entrega os webhooks com retentativa.
 4. **Cálculo determinístico**: valores financeiros usam `NUMERIC` no banco e `Decimal` na aplicação. Cálculos são serviços de domínio testados.
 5. **Particionamento somente por necessidade comprovada**: tabelas de operação e eventos poderão ser particionadas por mês quando volume e consultas justificarem.
+6. **Autenticação do MVP (2026-08-18)**: credenciais locais usam hash PBKDF2-SHA256; JWT HMAC-SHA256 leva `sub`, `organization_id` e `role`. A API deriva o tenant do token, nunca de parâmetros do cliente. Um administrador inicial só é criado por variáveis de ambiente no boot.
 
 ## Estrutura de repositório
 
@@ -132,6 +133,8 @@ metabase      BI administrativo
 - **2026-08-17 — Incremento 2 concluído**: despesas categorizadas, migration financeira, endpoint de rentabilidade por período e resumo financeiro na interface.
 - **Validações do incremento 2**: três testes aprovados, Ruff e mypy aprovados, build Next.js aprovado e smoke test com resultado líquido de R$ 230,00 sobre a operação demonstrativa.
 - **2026-08-17 — Interface e documentação reorganizadas**: dashboard executivo e páginas independentes de catálogo, financeiro e frota; documentação arquitetural, modelo de dados, fluxos Mermaid, guia de contribuição e CI adicionados para publicação inicial.
+- **2026-08-20 — Integração de alertas concluída**: worker da outbox envia eventos ao webhook do n8n com HMAC SHA-256, `Idempotency-Key` estável, retentativas limitadas e teste automatizado.
+- **2026-08-20 — Multi-tenancy concluído**: usuários e papéis locais autenticam por JWT; a organização é derivada do token em todas as consultas e escritas operacionais, com cobertura de isolamento entre organizações.
 
 ## Critérios de aceite de implantação
 

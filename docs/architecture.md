@@ -56,3 +56,24 @@ flowchart LR
 - Metabase com usuário e views somente leitura.
 - Redis/fila somente quando métricas justificarem.
 - Proxy TLS, backups e observabilidade para produção.
+
+<!-- specsfy:documentator:start -->
+## Componentes
+
+| Tipo | Quantidade |
+| --- | --- |
+| Código | 85 |
+| Testes | 0 |
+
+## Diagramas
+
+```mermaid
+flowchart TD
+  Application[Aplicação]
+```
+
+```mermaid
+classDiagram
+  class Application
+```
+<!-- specsfy:documentator:end -->

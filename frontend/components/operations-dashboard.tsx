@@ -108,6 +108,16 @@ const categoryNames: Record<string, string> = {
   other: "Outro",
 };
 
+async function apiFetch(path: string, init: RequestInit = {}) {
+  const token = window.localStorage.getItem("access_token");
+  const headers = new Headers(init.headers);
+  if (token) headers.set("Authorization", `Bearer ${token}`);
+  return fetch(`${API_URL}${path}`, {
+    ...init,
+    headers,
+  });
+}
+
 function KpiIcon({ kind }: { kind: "revenue" | "fuel" | "maintenance" | "profit" }) {
   const paths = {
     revenue: <><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></>,
@@ -119,6 +129,7 @@ function KpiIcon({ kind }: { kind: "revenue" | "fuel" | "maintenance" | "profit"
 }
 
 export function OperationsDashboard({ view = "overview" }: { view?: DashboardView }) {
+  const [authenticated, setAuthenticated] = useState(() => typeof window !== "undefined" && Boolean(window.localStorage.getItem("access_token")));
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [alerts, setAlerts] = useState<MaintenanceAlert[]>([]);
   const [rules, setRules] = useState<MaintenanceRule[]>([]);
@@ -145,12 +156,12 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
     setError(null);
     try {
       const [vehiclesResponse, alertsResponse, rulesResponse, summaryResponse, samplingResponse, catalogResponse] = await Promise.all([
-        fetch(`${API_URL}/api/v1/vehicles`, { cache: "no-store" }),
-        fetch(`${API_URL}/api/v1/maintenance-alerts`, { cache: "no-store" }),
-        fetch(`${API_URL}/api/v1/maintenance-rules`, { cache: "no-store" }),
-        fetch(`${API_URL}/api/v1/dashboard/monthly-summary`, { cache: "no-store" }),
-        fetch(`${API_URL}/api/v1/dashboard/expense-sampling`, { cache: "no-store" }),
-        fetch(`${API_URL}/api/v1/vehicle-catalog`, { cache: "no-store" }),
+        apiFetch("/api/v1/vehicles", { cache: "no-store" }),
+        apiFetch("/api/v1/maintenance-alerts", { cache: "no-store" }),
+        apiFetch("/api/v1/maintenance-rules", { cache: "no-store" }),
+        apiFetch("/api/v1/dashboard/monthly-summary", { cache: "no-store" }),
+        apiFetch("/api/v1/dashboard/expense-sampling", { cache: "no-store" }),
+        apiFetch("/api/v1/vehicle-catalog", { cache: "no-store" }),
       ]);
       if (!vehiclesResponse.ok || !alertsResponse.ok || !rulesResponse.ok || !summaryResponse.ok || !samplingResponse.ok || !catalogResponse.ok) throw new Error("Não foi possível carregar o painel.");
 
@@ -165,7 +176,7 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
       const dateTo = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().slice(0, 10);
       const financials = await Promise.all(
         fleet.map(async (vehicle) => {
-          const response = await fetch(`${API_URL}/api/v1/vehicles/${vehicle.id}/profitability?date_from=${dateFrom}&date_to=${dateTo}`, { cache: "no-store" });
+          const response = await apiFetch(`/api/v1/vehicles/${vehicle.id}/profitability?date_from=${dateFrom}&date_to=${dateTo}`, { cache: "no-store" });
           if (!response.ok) throw new Error("Resumo financeiro indisponível.");
           return response.json() as Promise<Profitability>;
         }),
@@ -190,15 +201,15 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [authenticated]);
 
-  useEffect(() => { void loadDashboard(); }, [loadDashboard]);
+  useEffect(() => { if (authenticated) void loadDashboard(); }, [authenticated, loadDashboard]);
 
   async function synchronizeCatalog() {
     setSyncingCatalog(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/v1/vehicle-catalog/sync`, { method: "POST" });
+      const response = await apiFetch("/api/v1/vehicle-catalog/sync", { method: "POST" });
       const result = await response.json();
       if (!response.ok) throw new Error(result.detail ?? "Falha ao sincronizar a planilha.");
       setNotice(`Catálogo sincronizado: ${result.total} modelos (${result.imported} novos).`);
@@ -234,7 +245,7 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
   async function submitVehicleRegistration(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const response = await fetch(`${API_URL}/api/v1/vehicle-catalog/${selectedCatalogId}/register`, {
+    const response = await apiFetch(`/api/v1/vehicle-catalog/${selectedCatalogId}/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -257,7 +268,7 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
   async function submitClosing(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const response = await fetch(`${API_URL}/api/v1/vehicles/${selectedVehicleId}/operations`, {
+    const response = await apiFetch(`/api/v1/vehicles/${selectedVehicleId}/operations`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "Idempotency-Key": crypto.randomUUID() },
       body: JSON.stringify({
@@ -284,7 +295,7 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
   async function submitMaintenance(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const response = await fetch(`${API_URL}/api/v1/maintenance-rules/${selectedRuleId}/executions`, {
+    const response = await apiFetch(`/api/v1/maintenance-rules/${selectedRuleId}/executions`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -350,6 +361,8 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
     finances: { eyebrow: "ANÁLISE FINANCEIRA", title: "Receitas e custos", description: "Acompanhe lucro real, combustível, manutenção e composição dos gastos." },
     fleet: { eyebrow: "OPERAÇÃO", title: "Frota e manutenção", description: "Controle veículos, hodômetros, fechamentos e alertas preventivos." },
   }[view];
+
+  if (!authenticated) return <LoginForm onAuthenticated={() => setAuthenticated(true)} />;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -583,6 +596,20 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
       </main>
     </div>
   );
+}
+
+function LoginForm({ onAuthenticated }: { onAuthenticated: () => void }) {
+  const [error, setError] = useState<string | null>(null);
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const response = await fetch(`${API_URL}/api/v1/auth/token`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: form.get("email"), password: form.get("password") }) });
+    const result = await response.json();
+    if (!response.ok) { setError(result.detail ?? "Não foi possível entrar."); return; }
+    window.localStorage.setItem("access_token", result.access_token);
+    onAuthenticated();
+  }
+  return <main className="grid min-h-screen place-items-center bg-slate-50 p-6"><form className="w-full max-w-sm space-y-4 rounded-xl bg-white p-6 shadow-sm" onSubmit={submit}><h1 className="text-xl font-bold">Entrar</h1><input className={inputClass} name="email" placeholder="E-mail" required type="email" /><input className={inputClass} name="password" placeholder="Senha" required type="password" />{error && <p className="text-sm text-red-600">{error}</p>}<button className="w-full rounded-lg bg-emerald-600 px-4 py-3 font-semibold text-white" type="submit">Entrar</button></form></main>;
 }
 
 type NavIconName = "dashboard" | "catalog" | "finance" | "fleet";

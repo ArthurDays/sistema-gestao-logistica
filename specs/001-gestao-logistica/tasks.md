@@ -25,13 +25,13 @@
 - [x] T015 Modelar regras, execuções, reserva por KM e alertas de manutenção.
 - [x] T016 Calcular vencimento por KM, data ou o primeiro dos dois.
 - [x] T017 Implementar outbox transacional.
-- [ ] T018 Publicar webhooks assinados e idempotentes para n8n.
+- [x] T018 Publicar webhooks assinados e idempotentes para n8n.
 - [x] T019 Criar telas e testes de manutenção.
 
 ## Fase 4 — Identidade, automação e BI
 
-- [ ] T020 Implementar usuários, autenticação e papéis.
-- [ ] T021 Isolar todas as consultas por organização autenticada.
+- [x] T020 Implementar usuários, autenticação e papéis.
+- [x] T021 Isolar todas as consultas por organização autenticada.
 - [ ] T022 Adicionar n8n e Metabase ao Compose.
 - [ ] T023 Criar endpoints de integração para dados técnicos e preços.
 - [ ] T024 Criar views read-only e usuário de BI.
