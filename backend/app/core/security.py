@@ -68,3 +68,29 @@ def decode_access_token(token: str) -> dict[str, object]:
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token inválido ou expirado",
         ) from None
+
+
+def create_oauth_state() -> str:
+    now = datetime.now(UTC)
+    claims = {
+        "nonce": secrets.token_urlsafe(24),
+        "exp": int((now + timedelta(minutes=10)).timestamp()),
+    }
+    payload = _b64(json.dumps(claims, separators=(",", ":")).encode())
+    signature = _b64(hmac.new(settings.jwt_secret_key.encode(), payload.encode(), hashlib.sha256).digest())
+    return f"{payload}.{signature}"
+
+
+def verify_oauth_state(value: str) -> None:
+    try:
+        payload, signature = value.split(".")
+        expected = _b64(hmac.new(settings.jwt_secret_key.encode(), payload.encode(), hashlib.sha256).digest())
+        claims = json.loads(_unb64(payload))
+        expired = int(claims["exp"]) <= int(datetime.now(UTC).timestamp())
+        if not hmac.compare_digest(signature, expected) or expired:
+            raise ValueError("invalid state")
+    except (ValueError, KeyError, TypeError, json.JSONDecodeError):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Estado OAuth inválido",
+        ) from None

@@ -3,6 +3,7 @@
 **Feature**: `001-gestao-logistica`  
 **Status**: Aprovável para planejamento  
 **Criada em**: 2026-08-17
+**Nome do produto**: `LogiSync`
 
 ## Objetivo
 
@@ -67,6 +68,23 @@ Como administrador, quero que o n8n envie dados técnicos e preços de combustí
 
 Como gestor, quero filtros por veículo, categoria e período para analisar KM, receitas, custos, lucro e alertas.
 
+**Cenários de aceite**:
+
+1. Dado um dispositivo móvel com largura de 360 px, quando o gestor acessa o painel, então os indicadores, formulários e listas permanecem legíveis, sem rolagem horizontal, e as áreas principais ficam acessíveis pela navegação inferior.
+2. Dado um tablet ou desktop, quando o gestor acessa o mesmo painel, então a navegação e os cartões aproveitam o espaço disponível sem ocultar funcionalidades.
+
+### US-007 — Criar uma organização e acessar a plataforma (P1)
+
+Como responsável por uma nova operação, quero cadastrar minha empresa e meu acesso para começar a usar o LogiSync como administrador.
+
+**Teste independente**: cadastrar uma organização com e-mail ainda não utilizado, receber uma sessão autenticada e consultar os dados do novo tenant.
+
+**Cenários de aceite**:
+
+1. Dado um nome de organização, e-mail válido e senha com pelo menos 12 caracteres, quando o cadastro é concluído, então o sistema cria a organização, cria o primeiro usuário com papel administrador e devolve uma sessão autenticada desse tenant.
+2. Dado um e-mail já cadastrado, quando um novo cadastro é enviado, então o sistema responde conflito e não deixa uma organização órfã no banco.
+3. Dado um cadastro com senha abaixo do mínimo, quando a solicitação é enviada, então o sistema rejeita os dados sem criar organização ou usuário.
+
 ## Requisitos funcionais
 
 - **FR-001**: O sistema deve isolar os dados por organização, mesmo que o MVP opere inicialmente com uma única organização.
@@ -84,6 +102,8 @@ Como gestor, quero filtros por veículo, categoria e período para analisar KM, 
 - **FR-013**: O sistema deve armazenar preços de combustível/energia com localidade, vigência e fonte; períodos históricos não podem mudar por atualizações futuras.
 - **FR-014**: O sistema deve disponibilizar agregados para os painéis React e Metabase.
 - **FR-015**: O sistema deve registrar auditoria para alterações financeiras, de hodômetro e de manutenção.
+- **FR-016**: O frontend LogiSync deve adaptar navegação, ícones, cartões, formulários, tabelas e painéis laterais para celular, tablet e desktop, preservando as mesmas operações e regras de autorização.
+- **FR-017**: O sistema deve permitir o cadastro público de uma nova organização, criar atomicamente seu primeiro usuário administrador e autenticar esse usuário após o sucesso, sem permitir reutilização de e-mail.
 
 ## Entidades-chave
 
@@ -105,6 +125,7 @@ Como gestor, quero filtros por veículo, categoria e período para analisar KM, 
 - A API deve documentar seus contratos via OpenAPI.
 - O dashboard mensal de até 100 veículos deve responder em até 3 segundos no ambiente de referência.
 - Alterações de schema são feitas por migrations versionadas, nunca manualmente pelo DBeaver em produção.
+- A interface web deve ser utilizável a partir de 360 px de largura, sem rolagem horizontal na página, com alvos de toque de pelo menos 44 px e navegação móvel fixa que respeite as áreas seguras do dispositivo.
 
 ## Métricas de sucesso
 
@@ -120,3 +141,5 @@ Como gestor, quero filtros por veículo, categoria e período para analisar KM, 
 3. **Decidido em 2026-08-20**: o n8n encaminhará alertas pelos canais e-mail e WhatsApp.
 4. **Decidido em 2026-08-18**: e-mail/senha com JWT assinado por chave de ambiente; os papéis iniciais são operador, gestor e administrador.
 5. Pendências de implantação a definir ao final: domínio/provedor de DNS e TLS, destino dos backups criptografados e DSN do Sentry.
+6. **Decidido em 2026-08-20**: o nome do produto é LogiSync; a identidade usa azul-marinho, azul elétrico, cartões claros, ícones lineares e navegação inferior no web app móvel, mantendo sidebar no desktop.
+7. **Decidido em 2026-08-20**: o cadastro inicial cria um tenant novo e seu primeiro administrador em uma única transação. Login Google será uma fatia posterior e somente será ativado após definição das credenciais OAuth, URLs de callback e política de vinculação de contas.

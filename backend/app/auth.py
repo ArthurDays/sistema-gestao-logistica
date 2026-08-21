@@ -1,4 +1,5 @@
 import uuid
+from collections.abc import Callable
 from contextvars import ContextVar
 from dataclasses import dataclass
 from typing import Annotated
@@ -56,7 +57,7 @@ def current_organization_id() -> uuid.UUID:
         ) from None
 
 
-def require_roles(*roles: str):
+def require_roles(*roles: str) -> Callable[[CurrentUser], CurrentUser]:
     def dependency(user: Annotated[CurrentUser, Depends(get_current_user)]) -> CurrentUser:
         if user.role not in roles:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente")

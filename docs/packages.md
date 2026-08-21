@@ -18,7 +18,41 @@
 | Terceiro | desenvolvimento | eslint | ^9.0.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | desenvolvimento | eslint-config-next | 16.3.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @alloc/quick-lru | 5.2.0 | Simple “Least Recently Used” (LRU) cache | sindresorhus/quick-lru | — |
+| Terceiro | transitiva | @babel/code-frame | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/compat-data | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/core | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | semver | 6.3.1 | The semantic version parser used by npm. | https://github.com/npm/node-semver | https://github.com/npm/node-semver |
+| Terceiro | transitiva | @babel/generator | 7.29.8 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/helper-compilation-targets | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/helper-globals | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/helper-module-imports | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/helper-module-transforms | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/helper-string-parser | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/helper-validator-identifier | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/helper-validator-option | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/helpers | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/parser | 7.29.8 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/template | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/traverse | 7.29.8 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @babel/types | 7.29.8 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @emnapi/core | 1.10.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @emnapi/runtime | 1.11.3 | emnapi runtime | https://github.com/toyobayashi/emnapi | https://github.com/toyobayashi/emnapi |
+| Terceiro | transitiva | @emnapi/wasi-threads | 1.2.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @eslint-community/eslint-utils | 4.10.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint-visitor-keys | 3.4.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @eslint-community/regexpp | 4.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @eslint/config-array | 0.21.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @eslint/config-helpers | 0.4.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @eslint/core | 0.17.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @eslint/eslintrc | 3.3.6 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @eslint/js | 9.39.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @eslint/object-schema | 2.1.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @eslint/plugin-kit | 0.4.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @humanfs/core | 0.19.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @humanfs/node | 0.16.8 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @humanfs/types | 0.15.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @humanwhocodes/module-importer | 1.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @humanwhocodes/retry | 0.4.3 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @img/colour | 1.1.0 | The ESM-only 'color' package made compatible for use with CommonJS runtimes | https://github.com/lovell/colour | https://github.com/lovell/colour |
 | Terceiro | transitiva | @img/sharp-darwin-arm64 | 0.35.3 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @img/sharp-darwin-x64 | 0.35.3 | Finalidade não descrita nos metadados locais. |  | — |
@@ -51,7 +85,10 @@
 | Terceiro | transitiva | @jridgewell/resolve-uri | 3.1.2 | Resolve a URI relative to an optional base URI | https://github.com/jridgewell/resolve-uri | https://github.com/jridgewell/resolve-uri |
 | Terceiro | transitiva | @jridgewell/sourcemap-codec | 1.5.5 | Encode/decode sourcemap mappings | https://github.com/jridgewell/sourcemaps | https://github.com/jridgewell/sourcemaps |
 | Terceiro | transitiva | @jridgewell/trace-mapping | 0.3.31 | Trace the original position through a source map | https://github.com/jridgewell/sourcemaps | https://github.com/jridgewell/sourcemaps |
+| Terceiro | transitiva | @napi-rs/wasm-runtime | 1.2.3 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @next/env | 16.3.1 | Next.js dotenv file loading | https://github.com/vercel/next.js | https://github.com/vercel/next.js |
+| Terceiro | transitiva | @next/eslint-plugin-next | 16.3.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @eslint-community/eslint-utils | 4.9.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @next/swc-darwin-arm64 | 16.3.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @next/swc-darwin-x64 | 16.3.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @next/swc-linux-arm64-gnu | 16.3.1 | Finalidade não descrita nos metadados locais. |  | — |
@@ -60,6 +97,11 @@
 | Terceiro | transitiva | @next/swc-linux-x64-musl | 16.3.1 | Finalidade não descrita nos metadados locais. | https://github.com/vercel/next.js | https://github.com/vercel/next.js |
 | Terceiro | transitiva | @next/swc-win32-arm64-msvc | 16.3.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @next/swc-win32-x64-msvc | 16.3.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @nodelib/fs.scandir | 2.1.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @nodelib/fs.stat | 2.0.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @nodelib/fs.walk | 1.2.8 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @nolyfill/is-core-module | 1.0.39 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @rtsao/scc | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @swc/helpers | 0.5.23 | External helpers for the swc project. | https://github.com/swc-project/swc | https://github.com/swc-project/swc |
 | Terceiro | transitiva | @tailwindcss/node | 4.3.3 | A utility-first CSS framework for rapidly building custom user interfaces. | https://github.com/tailwindlabs/tailwindcss | https://github.com/tailwindlabs/tailwindcss |
 | Terceiro | transitiva | @tailwindcss/oxide | 4.3.3 | Finalidade não descrita nos metadados locais. | https://github.com/tailwindlabs/tailwindcss | https://github.com/tailwindlabs/tailwindcss |
@@ -73,20 +115,222 @@
 | Terceiro | transitiva | @tailwindcss/oxide-linux-x64-gnu | 4.3.3 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @tailwindcss/oxide-linux-x64-musl | 4.3.3 | Finalidade não descrita nos metadados locais. | https://github.com/tailwindlabs/tailwindcss | https://github.com/tailwindlabs/tailwindcss |
 | Terceiro | transitiva | @tailwindcss/oxide-wasm32-wasi | 4.3.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @emnapi/core | 1.11.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @emnapi/runtime | 1.11.1 | emnapi runtime | https://github.com/toyobayashi/emnapi | https://github.com/toyobayashi/emnapi |
+| Terceiro | transitiva | @emnapi/wasi-threads | 1.2.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @napi-rs/wasm-runtime | 1.1.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @tybys/wasm-util | 0.10.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | tslib | 2.8.1 | Runtime library for TypeScript helper functions | https://github.com/Microsoft/tslib | https://github.com/Microsoft/tslib |
 | Terceiro | transitiva | @tailwindcss/oxide-win32-arm64-msvc | 4.3.3 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @tailwindcss/oxide-win32-x64-msvc | 4.3.3 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @tailwindcss/postcss | 4.3.3 | PostCSS plugin for Tailwind CSS, a utility-first CSS framework for rapidly building custom user interfaces | https://github.com/tailwindlabs/tailwindcss | https://github.com/tailwindlabs/tailwindcss |
+| Terceiro | transitiva | @tybys/wasm-util | 0.10.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @types/estree | 1.0.9 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @types/json-schema | 7.0.15 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @types/json5 | 0.0.29 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @types/node | 22.17.2 | TypeScript definitions for node | https://github.com/DefinitelyTyped/DefinitelyTyped | https://github.com/DefinitelyTyped/DefinitelyTyped |
 | Terceiro | transitiva | @types/react | 19.2.2 | TypeScript definitions for react | https://github.com/DefinitelyTyped/DefinitelyTyped | https://github.com/DefinitelyTyped/DefinitelyTyped |
 | Terceiro | transitiva | @types/react-dom | 19.2.2 | TypeScript definitions for react-dom | https://github.com/DefinitelyTyped/DefinitelyTyped | https://github.com/DefinitelyTyped/DefinitelyTyped |
+| Terceiro | transitiva | @typescript-eslint/eslint-plugin | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | ignore | 7.0.6 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @typescript-eslint/parser | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @typescript-eslint/project-service | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @typescript-eslint/scope-manager | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @typescript-eslint/tsconfig-utils | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @typescript-eslint/type-utils | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @typescript-eslint/types | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @typescript-eslint/typescript-estree | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | balanced-match | 4.0.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | brace-expansion | 5.0.9 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | minimatch | 10.2.6 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @typescript-eslint/utils | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @typescript-eslint/visitor-keys | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint-visitor-keys | 5.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-android-arm-eabi | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-android-arm64 | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-darwin-arm64 | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-darwin-x64 | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-freebsd-x64 | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-linux-arm-gnueabihf | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-linux-arm-musleabihf | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-linux-arm64-gnu | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-linux-arm64-musl | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-linux-loong64-gnu | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-linux-loong64-musl | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-linux-ppc64-gnu | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-linux-riscv64-gnu | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-linux-riscv64-musl | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-linux-s390x-gnu | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-linux-x64-gnu | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-linux-x64-musl | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-openharmony-arm64 | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-wasm32-wasi | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @emnapi/runtime | 1.10.0 | emnapi runtime | https://github.com/toyobayashi/emnapi | https://github.com/toyobayashi/emnapi |
+| Terceiro | transitiva | @unrs/resolver-binding-win32-arm64-msvc | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-win32-ia32-msvc | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @unrs/resolver-binding-win32-x64-msvc | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | acorn | 8.18.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | acorn-jsx | 5.3.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | ajv | 6.15.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | ansi-styles | 4.3.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | argparse | 2.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | aria-query | 5.3.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | array-buffer-byte-length | 1.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | array-includes | 3.1.9 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | array.prototype.findlast | 1.2.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | array.prototype.findlastindex | 1.2.6 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | array.prototype.flat | 1.3.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | array.prototype.flatmap | 1.3.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | array.prototype.tosorted | 1.1.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | arraybuffer.prototype.slice | 1.0.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | ast-types-flow | 0.0.8 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | async-function | 1.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | available-typed-arrays | 1.0.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | axe-core | 4.13.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | axobject-query | 4.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | balanced-match | 1.0.2 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | baseline-browser-mapping | 2.11.15 | A library for obtaining browser versions with their maximum supported Baseline feature set and Widely Available status. | https://github.com/web-platform-dx/baseline-browser-mapping | https://github.com/web-platform-dx/baseline-browser-mapping |
+| Terceiro | transitiva | brace-expansion | 1.1.18 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | braces | 3.0.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | browserslist | 4.28.8 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | call-bind | 1.0.9 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | call-bind-apply-helpers | 1.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | call-bound | 1.0.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | callsites | 3.1.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | caniuse-lite | 1.0.30001809 | A smaller version of caniuse-db, with only the essentials! | browserslist/caniuse-lite | — |
+| Terceiro | transitiva | chalk | 4.1.2 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | client-only | 0.0.1 | This is a marker package to indicate that a module can only be used in Client Components. |  | — |
+| Terceiro | transitiva | color-convert | 2.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | color-name | 1.1.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | concat-map | 0.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | convert-source-map | 2.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | cross-spawn | 7.0.6 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | csstype | 3.2.3 | Strict TypeScript and Flow types for style based on MDN data | https://github.com/frenic/csstype | https://github.com/frenic/csstype |
+| Terceiro | transitiva | damerau-levenshtein | 1.0.8 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | data-view-buffer | 1.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | data-view-byte-length | 1.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | data-view-byte-offset | 1.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | debug | 4.4.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | deep-is | 0.1.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | define-data-property | 1.1.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | define-properties | 1.2.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | detect-libc | 2.1.2 | Node.js module to detect the C standard library (libc) implementation family and version | git://github.com/lovell/detect-libc | git://github.com/lovell/detect-libc |
+| Terceiro | transitiva | doctrine | 2.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | dunder-proto | 1.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | electron-to-chromium | 1.5.411 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | emoji-regex | 9.2.2 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | enhanced-resolve | 5.24.5 | Offers a async require.resolve function. It's highly configurable. | https://github.com/webpack/enhanced-resolve | https://github.com/webpack/enhanced-resolve |
+| Terceiro | transitiva | es-abstract | 1.24.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | es-abstract-get | 1.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | es-define-property | 1.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | es-errors | 1.3.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | es-iterator-helpers | 1.4.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | es-object-atoms | 1.1.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | es-set-tostringtag | 2.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | es-shim-unscopables | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | es-to-primitive | 1.3.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | escalade | 3.2.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | escape-string-regexp | 4.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint | 9.39.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint-config-next | 16.3.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | globals | 16.4.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint-import-resolver-node | 0.3.10 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | debug | 3.2.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint-import-resolver-typescript | 3.10.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint-module-utils | 2.14.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint-plugin-import | 2.32.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint-plugin-jsx-a11y | 6.10.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint-plugin-react | 7.37.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint-plugin-react-hooks | 7.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint-scope | 8.4.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint-visitor-keys | 4.2.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | espree | 10.4.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | esquery | 1.7.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | esrecurse | 4.3.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | estraverse | 5.3.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | esutils | 2.0.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | fast-deep-equal | 3.1.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | fast-glob | 3.3.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | glob-parent | 5.1.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | fast-json-stable-stringify | 2.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | fast-levenshtein | 2.0.6 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | fastq | 1.20.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | file-entry-cache | 8.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | fill-range | 7.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | find-up | 5.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | flat-cache | 4.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | flatted | 3.4.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | for-each | 0.3.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | function-bind | 1.1.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | function.prototype.name | 1.2.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | functions-have-names | 1.2.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | generator-function | 2.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | gensync | 1.0.0-beta.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | get-intrinsic | 1.3.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | get-proto | 1.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | get-symbol-description | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | get-tsconfig | 4.14.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | glob-parent | 6.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | globals | 14.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | globalthis | 1.0.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | gopd | 1.2.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | graceful-fs | 4.2.11 | A drop-in replacement for fs, making various improvements. | https://github.com/isaacs/node-graceful-fs | https://github.com/isaacs/node-graceful-fs |
+| Terceiro | transitiva | has-bigints | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | has-flag | 4.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | has-property-descriptors | 1.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | has-proto | 1.2.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | has-symbols | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | has-tostringtag | 1.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | hasown | 2.0.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | hermes-estree | 0.25.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | hermes-parser | 0.25.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | ignore | 5.3.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | import-fresh | 3.3.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | imurmurhash | 0.1.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | internal-slot | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-array-buffer | 3.0.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-async-function | 2.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-bigint | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-boolean-object | 1.2.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-bun-module | 2.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-callable | 1.2.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-core-module | 2.16.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-data-view | 1.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-date-object | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-document.all | 1.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-extglob | 2.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-finalizationregistry | 1.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-generator-function | 1.1.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-glob | 4.0.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-map | 2.0.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-negative-zero | 2.0.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-number | 7.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-number-object | 1.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-regex | 1.2.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-set | 2.0.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-shared-array-buffer | 1.0.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-string | 1.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-symbol | 1.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-typed-array | 1.1.15 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-weakmap | 2.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-weakref | 1.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | is-weakset | 2.0.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | isarray | 2.0.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | isexe | 2.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | iterator.prototype | 1.1.5 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | jiti | 2.7.0 | Runtime typescript and ESM support for Node.js | unjs/jiti | — |
+| Terceiro | transitiva | js-tokens | 4.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | js-yaml | 4.3.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | jsesc | 3.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | json-buffer | 3.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | json-schema-traverse | 0.4.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | json-stable-stringify-without-jsonify | 1.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | json5 | 2.2.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | jsx-ast-utils | 3.3.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | keyv | 4.5.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | language-subtag-registry | 0.3.23 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | language-tags | 1.0.9 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | levn | 0.4.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | lightningcss | 1.32.0 | A CSS parser, transformer, and minifier written in Rust | https://github.com/parcel-bundler/lightningcss | https://github.com/parcel-bundler/lightningcss |
 | Terceiro | transitiva | lightningcss-android-arm64 | 1.32.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | lightningcss-darwin-arm64 | 1.32.0 | Finalidade não descrita nos metadados locais. |  | — |
@@ -99,22 +343,116 @@
 | Terceiro | transitiva | lightningcss-linux-x64-musl | 1.32.0 | A CSS parser, transformer, and minifier written in Rust | https://github.com/parcel-bundler/lightningcss | https://github.com/parcel-bundler/lightningcss |
 | Terceiro | transitiva | lightningcss-win32-arm64-msvc | 1.32.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | lightningcss-win32-x64-msvc | 1.32.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | locate-path | 6.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | lodash.merge | 4.6.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | loose-envify | 1.4.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | lru-cache | 5.1.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | magic-string | 0.30.21 | Modify strings, generate sourcemaps | https://github.com/Rich-Harris/magic-string | https://github.com/Rich-Harris/magic-string |
+| Terceiro | transitiva | math-intrinsics | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | merge2 | 1.4.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | micromatch | 4.0.8 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | minimatch | 3.1.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | minimist | 1.2.8 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | ms | 2.1.3 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | nanoid | 3.3.18 | A tiny (116 bytes), secure URL-friendly unique string ID generator | ai/nanoid | — |
+| Terceiro | transitiva | napi-postinstall | 0.3.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | natural-compare | 1.4.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | next | 16.3.1 | The React Framework | vercel/next.js | — |
 | Terceiro | transitiva | postcss | 8.5.23 | Tool for transforming styles with JS plugins | postcss/postcss | — |
+| Terceiro | transitiva | node-exports-info | 1.6.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | node-releases | 2.0.53 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | object-assign | 4.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | object-inspect | 1.13.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | object-keys | 1.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | object.assign | 4.1.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | object.entries | 1.1.9 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | object.fromentries | 2.0.8 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | object.groupby | 1.0.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | object.values | 1.2.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | optionator | 0.9.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | own-keys | 1.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | p-limit | 3.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | p-locate | 5.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | parent-module | 1.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | path-exists | 4.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | path-key | 3.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | path-parse | 1.0.7 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | picocolors | 1.1.1 | The tiniest and the fastest library for terminal output formatting with ANSI colors | alexeyraspopov/picocolors | — |
+| Terceiro | transitiva | picomatch | 2.3.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | possible-typed-array-names | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | postcss | 8.5.26 | Tool for transforming styles with JS plugins | postcss/postcss | — |
+| Terceiro | transitiva | prelude-ls | 1.2.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | prop-types | 15.8.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | punycode | 2.3.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | queue-microtask | 1.2.3 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | react | 19.2.4 | React is a JavaScript library for building user interfaces. | https://github.com/facebook/react | https://github.com/facebook/react |
 | Terceiro | transitiva | react-dom | 19.2.4 | React package for working with the DOM. | https://github.com/facebook/react | https://github.com/facebook/react |
+| Terceiro | transitiva | react-is | 16.13.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | reflect.getprototypeof | 1.0.10 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | regexp.prototype.flags | 1.5.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | resolve | 2.0.0-next.7 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | resolve-from | 4.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | resolve-pkg-maps | 1.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | reusify | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | run-parallel | 1.2.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | safe-array-concat | 1.1.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | safe-push-apply | 1.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | safe-regex-test | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | scheduler | 0.27.0 | Cooperative scheduler for the browser environment. | https://github.com/facebook/react | https://github.com/facebook/react |
 | Terceiro | transitiva | semver | 7.8.5 | The semantic version parser used by npm. | https://github.com/npm/node-semver | https://github.com/npm/node-semver |
+| Terceiro | transitiva | set-function-length | 1.2.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | set-function-name | 2.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | set-proto | 1.0.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | sharp | 0.35.3 | High performance Node.js image processing, the fastest module to resize JPEG, PNG, WebP, GIF, AVIF and TIFF images | https://github.com/lovell/sharp | https://github.com/lovell/sharp |
+| Terceiro | transitiva | shebang-command | 2.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | shebang-regex | 3.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | side-channel | 1.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | side-channel-list | 1.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | side-channel-map | 1.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | side-channel-weakmap | 1.0.2 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | source-map-js | 1.2.1 | Generates and consumes source maps | 7rulnik/source-map-js | — |
+| Terceiro | transitiva | stable-hash | 0.0.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | stop-iteration-iterator | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | string.prototype.includes | 2.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | string.prototype.matchall | 4.0.12 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | string.prototype.repeat | 1.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | string.prototype.trim | 1.2.11 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | string.prototype.trimend | 1.0.10 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | string.prototype.trimstart | 1.0.8 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | strip-bom | 3.0.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | strip-json-comments | 3.1.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | styled-jsx | 5.1.6 | Full CSS support for JSX without compromises | vercel/styled-jsx | — |
+| Terceiro | transitiva | supports-color | 7.2.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | supports-preserve-symlinks-flag | 1.0.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | tailwindcss | 4.3.3 | A utility-first CSS framework for rapidly building custom user interfaces. | https://github.com/tailwindlabs/tailwindcss | https://github.com/tailwindlabs/tailwindcss |
 | Terceiro | transitiva | tapable | 2.3.3 | Just a little module for plugins. | http://github.com/webpack/tapable | http://github.com/webpack/tapable |
-| Terceiro | transitiva | tslib | 2.8.1 | Runtime library for TypeScript helper functions | https://github.com/Microsoft/tslib | https://github.com/Microsoft/tslib |
+| Terceiro | transitiva | tinyglobby | 0.2.17 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | fdir | 6.5.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | picomatch | 4.0.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | to-regex-range | 5.0.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | ts-api-utils | 2.5.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | tsconfig-paths | 3.15.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | json5 | 1.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | type-check | 0.4.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | typed-array-buffer | 1.0.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | typed-array-byte-length | 1.0.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | typed-array-byte-offset | 1.0.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | typed-array-length | 1.0.8 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | typescript | 5.9.2 | TypeScript is a language for application scale JavaScript development | https://github.com/microsoft/TypeScript | https://github.com/microsoft/TypeScript |
+| Terceiro | transitiva | typescript-eslint | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | unbox-primitive | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | undici-types | 6.21.0 | A stand-alone types package for Undici | https://github.com/nodejs/undici | https://github.com/nodejs/undici |
+| Terceiro | transitiva | unrs-resolver | 1.12.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | update-browserslist-db | 1.3.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | uri-js | 4.4.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | which | 2.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | which-boxed-primitive | 1.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | which-builtin-type | 1.2.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | which-collection | 1.0.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | which-typed-array | 1.1.22 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | word-wrap | 1.2.5 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | yallist | 3.1.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | yocto-queue | 0.1.0 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | zod | 4.4.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | zod-validation-error | 4.0.2 | Finalidade não descrita nos metadados locais. |  | — |
 <!-- specsfy:documentator:end -->

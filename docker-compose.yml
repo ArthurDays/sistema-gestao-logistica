@@ -7,10 +7,15 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-logistica}
       POSTGRES_USER: ${POSTGRES_USER:-logistica}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-logistica}
+      METABASE_APP_USER: ${METABASE_APP_USER:-metabase_app}
+      METABASE_APP_PASSWORD: ${METABASE_APP_PASSWORD:?METABASE_APP_PASSWORD obrigatória}
+      METABASE_BI_USER: ${METABASE_BI_USER:-metabase_bi}
+      METABASE_BI_PASSWORD: ${METABASE_BI_PASSWORD:?METABASE_BI_PASSWORD obrigatória}
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres18_data:/var/lib/postgresql
+      - ./infra/postgres/init-bi.sh:/docker-entrypoint-initdb.d/20-init-bi.sh:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
@@ -28,6 +33,7 @@ services:
       CORS_ORIGINS: http://localhost:${FRONTEND_PORT:-3000}
       BASE_FUEL_PRICE_PER_LITER: ${BASE_FUEL_PRICE_PER_LITER:-6.00}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY obrigatória}
+      FRONTEND_URL: http://localhost:${FRONTEND_PORT:-3000}
       BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-}
       BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:-}
       VEHICLE_CATALOG_CSV_URL: ${VEHICLE_CATALOG_CSV_URL:-https://docs.google.com/spreadsheets/d/1J8YAtNSqD0se5pJVzgBDnggN7lKF37HPnQlbqL9vSOw/gviz/tq?tqx=out:csv&gid=521676479}
@@ -104,7 +110,7 @@ services:
     container_name: logistica-metabase
     environment:
       MB_DB_TYPE: postgres
-      MB_DB_DBNAME: ${POSTGRES_DB:-logistica}
+      MB_DB_DBNAME: ${METABASE_APP_DB:-metabase}
       MB_DB_PORT: 5432
       MB_DB_USER: ${METABASE_APP_USER:-metabase_app}
       MB_DB_PASS: ${METABASE_APP_PASSWORD:?METABASE_APP_PASSWORD obrigatória}

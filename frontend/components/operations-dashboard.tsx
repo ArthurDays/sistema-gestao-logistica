@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 // Cada rota reutiliza o mesmo shell e os mesmos painéis operacionais, exibindo apenas seu domínio.
@@ -95,6 +96,14 @@ type FleetTotals = {
   net: number;
 };
 
+type UserSession = {
+  user_id: string;
+  organization_id: string;
+  organization_name: string;
+  email: string;
+  role: "operator" | "manager" | "admin";
+};
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 const money = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 const number = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 });
@@ -112,10 +121,15 @@ async function apiFetch(path: string, init: RequestInit = {}) {
   const token = window.localStorage.getItem("access_token");
   const headers = new Headers(init.headers);
   if (token) headers.set("Authorization", `Bearer ${token}`);
-  return fetch(`${API_URL}${path}`, {
+  const response = await fetch(`${API_URL}${path}`, {
     ...init,
     headers,
   });
+  if (response.status === 401) {
+    window.localStorage.removeItem("access_token");
+    window.dispatchEvent(new Event("auth:expired"));
+  }
+  return response;
 }
 
 function KpiIcon({ kind }: { kind: "revenue" | "fuel" | "maintenance" | "profit" }) {
@@ -150,12 +164,32 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedCatalogId, setSelectedCatalogId] = useState("");
+  const [session, setSession] = useState<UserSession | null>(null);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const token = url.searchParams.get("access_token");
+    if (!token) return;
+    window.localStorage.setItem("access_token", token);
+    url.searchParams.delete("access_token");
+    window.location.replace(url.toString());
+  }, []);
+
+  const signOut = useCallback(() => {
+    window.localStorage.removeItem("access_token");
+    setAuthenticated(false);
+    setSession(null);
+    setVehicles([]);
+    setAlerts([]);
+    setRules([]);
+  }, []);
 
   const loadDashboard = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const [vehiclesResponse, alertsResponse, rulesResponse, summaryResponse, samplingResponse, catalogResponse] = await Promise.all([
+      const [sessionResponse, vehiclesResponse, alertsResponse, rulesResponse, summaryResponse, samplingResponse, catalogResponse] = await Promise.all([
+        apiFetch("/api/v1/auth/me", { cache: "no-store" }),
         apiFetch("/api/v1/vehicles", { cache: "no-store" }),
         apiFetch("/api/v1/maintenance-alerts", { cache: "no-store" }),
         apiFetch("/api/v1/maintenance-rules", { cache: "no-store" }),
@@ -163,8 +197,9 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
         apiFetch("/api/v1/dashboard/expense-sampling", { cache: "no-store" }),
         apiFetch("/api/v1/vehicle-catalog", { cache: "no-store" }),
       ]);
-      if (!vehiclesResponse.ok || !alertsResponse.ok || !rulesResponse.ok || !summaryResponse.ok || !samplingResponse.ok || !catalogResponse.ok) throw new Error("Não foi possível carregar o painel.");
+      if (!sessionResponse.ok || !vehiclesResponse.ok || !alertsResponse.ok || !rulesResponse.ok || !summaryResponse.ok || !samplingResponse.ok || !catalogResponse.ok) throw new Error("Não foi possível carregar o painel.");
 
+      const currentSession: UserSession = await sessionResponse.json();
       const fleet: Vehicle[] = await vehiclesResponse.json();
       const fleetAlerts: MaintenanceAlert[] = await alertsResponse.json();
       const maintenanceRules: MaintenanceRule[] = await rulesResponse.json();
@@ -182,6 +217,7 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
         }),
       );
 
+      setSession(currentSession);
       setVehicles(fleet);
       setAlerts(fleetAlerts);
       setRules(maintenanceRules);
@@ -201,9 +237,17 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
     } finally {
       setLoading(false);
     }
-  }, [authenticated]);
+  }, []);
 
-  useEffect(() => { if (authenticated) void loadDashboard(); }, [authenticated, loadDashboard]);
+  useEffect(() => {
+    if (!authenticated) return;
+    const loadTimer = window.setTimeout(() => void loadDashboard(), 0);
+    return () => window.clearTimeout(loadTimer);
+  }, [authenticated, loadDashboard]);
+  useEffect(() => {
+    window.addEventListener("auth:expired", signOut);
+    return () => window.removeEventListener("auth:expired", signOut);
+  }, [signOut]);
 
   async function synchronizeCatalog() {
     setSyncingCatalog(true);
@@ -326,9 +370,9 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
     URL.revokeObjectURL(link.href);
   }
 
-  const activeFleet = useMemo(() => vehicles.filter((vehicle) => vehicle.status === "active"), [vehicles]);
-  const filteredFleet = useMemo(() => categoryFilter === "all" ? activeFleet : activeFleet.filter((vehicle) => vehicle.category === categoryFilter), [activeFleet, categoryFilter]);
-  const fleetCategories = useMemo(() => Object.entries(categoryNames).map(([id, label]) => ({ id, label, count: activeFleet.filter((vehicle) => vehicle.category === id).length })).filter((item) => item.count > 0), [activeFleet]);
+  const activeFleet = vehicles.filter((vehicle) => vehicle.status === "active");
+  const filteredFleet = categoryFilter === "all" ? activeFleet : activeFleet.filter((vehicle) => vehicle.category === categoryFilter);
+  const fleetCategories = Object.entries(categoryNames).map(([id, label]) => ({ id, label, count: activeFleet.filter((vehicle) => vehicle.category === id).length })).filter((item) => item.count > 0);
   const filteredCatalog = useMemo(() => {
     const term = catalogSearch.trim().toLocaleLowerCase("pt-BR");
     return catalogSpecs.filter((spec) => {
@@ -365,17 +409,17 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
   if (!authenticated) return <LoginForm onAuthenticated={() => setAuthenticated(true)} />;
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <DashboardSidebar activeSection={view} alerts={alerts.length} collapsed={sidebarCollapsed} mobileOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onToggle={() => setSidebarCollapsed((current) => !current)} syncing={syncingCatalog} />
-      <main className={`min-h-screen bg-slate-50 px-4 py-6 text-slate-900 transition-[padding] duration-300 sm:px-6 lg:px-8 ${sidebarCollapsed ? "lg:pl-28" : "lg:pl-72"}`}>
+    <div className="min-h-screen bg-[#f5f7fb]">
+      <DashboardSidebar activeSection={view} alerts={alerts.length} collapsed={sidebarCollapsed} mobileOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onSignOut={signOut} onToggle={() => setSidebarCollapsed((current) => !current)} session={session} syncing={syncingCatalog} />
+      <main className={`min-h-screen bg-[#f5f7fb] px-4 pb-28 pt-6 text-slate-900 transition-[padding] duration-300 sm:px-6 lg:px-8 lg:pb-8 ${sidebarCollapsed ? "lg:pl-28" : "lg:pl-72"}`}>
       <div className="mx-auto max-w-7xl scroll-mt-6" id="overview">
-        <header className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+        <header className="-mx-4 -mt-6 mb-6 flex flex-col gap-5 rounded-b-[2rem] bg-gradient-to-br from-[#031329] via-[#06254a] to-[#073b68] px-4 pb-8 pt-6 text-white shadow-xl shadow-blue-950/10 sm:-mx-6 sm:px-6 lg:mx-0 lg:mt-0 lg:mb-8 lg:flex-row lg:items-center lg:justify-between lg:rounded-none lg:bg-none lg:p-0 lg:text-slate-900 lg:shadow-none">
           <div className="flex items-start gap-3">
-            <button aria-label="Abrir menu" className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 shadow-sm lg:hidden" onClick={() => setSidebarOpen(true)} type="button"><MenuIcon /></button>
+            <button aria-label="Abrir menu" className="mt-0.5 grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-white/15 bg-white/10 text-white shadow-sm lg:hidden" onClick={() => setSidebarOpen(true)} type="button"><MenuIcon /></button>
             <div>
-            <p className="mb-1 text-sm font-semibold tracking-wide text-emerald-600">{pageCopy.eyebrow}</p>
-            <h1 className="text-3xl font-bold tracking-tight text-slate-950">{pageCopy.title}</h1>
-            <p className="mt-2 text-sm text-slate-500">{pageCopy.description}</p>
+            <p className="mb-1 text-xs font-bold tracking-[0.18em] text-blue-300 lg:text-blue-600">{pageCopy.eyebrow}</p>
+            <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-slate-950">{view === "overview" ? `Olá, ${session?.role === "admin" ? "Administrador" : session?.role === "manager" ? "Gestor" : "Operador"} 👋` : pageCopy.title}</h1>
+            <p className="mt-2 max-w-xl text-sm text-blue-100/75 lg:text-slate-500">{pageCopy.description}</p>
             </div>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -383,7 +427,7 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
               <DownloadIcon /> Exportar frota
             </button>}
             {/* Este botão abre um Slide-over, mantendo o dashboard principal limpo. */}
-            <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2" onClick={() => openClosing()} type="button">
+            <button className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-950/20 transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 sm:flex-none" onClick={() => openClosing()} type="button">
               <span className="text-lg leading-none">+</span> Lançar fechamento
             </button>
           </div>
@@ -418,11 +462,11 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
               </div>
             </div>
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex gap-2"><CategoryButton active={catalogCategory === "all"} count={catalogSpecs.length} label="Todos" onClick={() => setCatalogCategory("all")} />{["Carro", "Moto"].map((category) => <CategoryButton active={catalogCategory === category} count={catalogSpecs.filter((spec) => spec.category === category).length} key={category} label={category} onClick={() => setCatalogCategory(category)} />)}</div>
+              <div className="flex flex-wrap gap-2"><CategoryButton active={catalogCategory === "all"} count={catalogSpecs.length} label="Todos" onClick={() => setCatalogCategory("all")} />{["Carro", "Moto"].map((category) => <CategoryButton active={catalogCategory === category} count={catalogSpecs.filter((spec) => spec.category === category).length} key={category} label={category} onClick={() => setCatalogCategory(category)} />)}</div>
               <div className="relative w-full sm:max-w-xs"><SearchIcon /><input className="w-full rounded-lg border border-slate-200 py-2.5 pl-10 pr-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" onChange={(event) => setCatalogSearch(event.target.value)} placeholder="Buscar marca ou modelo" type="search" value={catalogSearch} /></div>
             </div>
           </div>
-          <div className="max-h-96 overflow-auto">
+          <div className="hidden max-h-96 overflow-auto sm:block">
             <table className="min-w-full divide-y divide-slate-200">
               <thead className="sticky top-0 z-10 bg-slate-50"><tr>{["Veículo", "Combustível / consumo", "Tanque", "Troca de óleo", "Troca de pneu", "Ação"].map((heading) => <th className="whitespace-nowrap px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500" key={heading}>{heading}</th>)}</tr></thead>
               <tbody className="divide-y divide-slate-100">
@@ -431,7 +475,11 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
               </tbody>
             </table>
           </div>
-          {catalogSpecs.length > 0 && <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50 px-6 py-3 text-xs text-slate-500"><span>{filteredCatalog.length} de {catalogSpecs.length} modelos</span><span>Última sincronização: {new Date(catalogSpecs[0].synced_at).toLocaleString("pt-BR")}</span></div>}
+          <div className="space-y-3 p-4 sm:hidden">
+            {filteredCatalog.map((spec) => <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" key={spec.id}><div className="flex items-start justify-between gap-3"><div><strong className="text-sm text-slate-950">{spec.brand} {spec.model}</strong><p className="mt-1 text-xs text-slate-500">{spec.version} · {spec.model_year}</p></div><span className="rounded-lg bg-blue-50 p-2 text-blue-600"><SidebarIcon name="catalog" /></span></div><dl className="mt-4 grid grid-cols-2 gap-3 text-xs"><DetailItem label="Combustível" value={spec.fuel_type || "—"} /><DetailItem label="Consumo" value={spec.gasoline_consumption_km_l ? `${spec.gasoline_consumption_km_l} km/l` : "—"} /><DetailItem label="Tanque" value={spec.tank_capacity_l ? `${spec.tank_capacity_l} L` : "—"} /><DetailItem label="Troca de óleo" value={spec.oil_change_km ? `${number.format(spec.oil_change_km)} km` : "—"} /></dl><button className="mt-4 min-h-11 w-full rounded-xl bg-blue-600 px-3 py-2 text-xs font-bold text-white" onClick={() => openVehicleRegistration(spec.id)} type="button">Adicionar à frota</button></article>)}
+            {!loading && filteredCatalog.length === 0 && <p className="py-8 text-center text-sm text-slate-400">Nenhum modelo encontrado.</p>}
+          </div>
+          {catalogSpecs.length > 0 && <div className="flex flex-col gap-1 border-t border-slate-100 bg-slate-50 px-4 py-3 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6"><span>{filteredCatalog.length} de {catalogSpecs.length} modelos</span><span>Última sincronização: {new Date(catalogSpecs[0].synced_at).toLocaleString("pt-BR")}</span></div>}
         </section>}
 
         {(view === "overview" || view === "finances") && <section aria-label="Indicadores financeiros" className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -482,7 +530,7 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
         {view === "fleet" && <section aria-label="Operação e alertas" className="grid grid-cols-1 gap-6 lg:grid-cols-5">
           <article className="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-100 lg:col-span-3">
             <div className="flex items-center justify-between p-6"><div><h2 className="font-semibold text-slate-900">Frota ativa</h2><p className="mt-1 text-sm text-slate-500">Exibindo {filteredFleet.length} de {activeFleet.length} veículo(s)</p></div><span className="h-2.5 w-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-50" /></div>
-            <div className="overflow-x-auto">
+            <div className="hidden overflow-x-auto sm:block">
               <table className="min-w-full divide-y divide-slate-200">
                 <thead className="bg-slate-50"><tr>{["Veículo", "Placa / modelo", "Classificação", "KM atual", "Ações"].map((heading) => <th className={`px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 ${heading === "KM atual" || heading === "Ações" ? "text-right" : ""}`} key={heading}>{heading}</th>)}</tr></thead>
                 <tbody className="divide-y divide-slate-100 bg-white">
@@ -498,6 +546,10 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
                   {!loading && filteredFleet.length === 0 && <tr><td className="px-6 py-10 text-center text-sm text-slate-400" colSpan={5}>Nenhum veículo nesta classificação.</td></tr>}
                 </tbody>
               </table>
+            </div>
+            <div className="space-y-3 p-4 sm:hidden">
+              {filteredFleet.map((vehicle) => <button className="w-full rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition active:scale-[0.99]" key={vehicle.id} onClick={() => openVehicleDetails(vehicle.id)} type="button"><div className="flex items-start justify-between gap-3"><span className="grid h-11 w-11 place-items-center rounded-xl bg-blue-50 text-blue-600"><SidebarIcon name="fleet" /></span><span className="min-w-0 flex-1"><strong className="block truncate text-sm text-slate-950">{vehicle.name}</strong><small className="mt-1 block truncate text-slate-500">{vehicle.plate ?? "SEM PLACA"} · {vehicle.model ?? categoryNames[vehicle.category] ?? vehicle.category}</small></span><span className="rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-bold text-emerald-700">Ativo</span></div><div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3"><span className="text-xs text-slate-500">KM total</span><strong className="text-sm tabular-nums text-slate-800">{number.format(Number(vehicle.odometer_km))} km</strong></div></button>)}
+              {!loading && filteredFleet.length === 0 && <p className="py-8 text-center text-sm text-slate-400">Nenhum veículo nesta classificação.</p>}
             </div>
           </article>
 
@@ -530,11 +582,11 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
                 <div className="flex-1 space-y-5 p-6">
                   <div><div className="mb-2 flex items-center justify-between"><span className="text-sm font-semibold text-slate-700">Veículo</span><button className="text-xs font-bold text-emerald-700 hover:underline" onClick={() => openVehicleRegistration()} type="button">+ Novo da planilha</button></div><select className={inputClass} disabled={activeFleet.length === 0} required value={selectedVehicleId} onChange={(event) => setSelectedVehicleId(event.target.value)}>{activeFleet.length === 0 && <option value="">Cadastre um veículo da planilha</option>}{activeFleet.map((vehicle) => <option key={vehicle.id} value={vehicle.id}>{vehicle.name} · início {number.format(Number(vehicle.odometer_km))} km</option>)}</select></div>
                   <FieldLabel label="Data do fechamento"><input className={inputClass} defaultValue={new Date().toISOString().slice(0, 10)} name="operation_date" required type="date" /></FieldLabel>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <FieldLabel label="Hodômetro inicial"><input className={`${inputClass} cursor-not-allowed bg-slate-100 text-slate-500`} readOnly value={panelVehicle?.odometer_km ?? "0.00"} /></FieldLabel>
                     <FieldLabel label="Hodômetro final"><input className={inputClass} key={panelVehicle?.id} min={panelVehicle?.odometer_km ?? "0"} name="odometer_end_km" placeholder={panelVehicle?.odometer_km ?? "0"} required step="0.01" type="number" /></FieldLabel>
                   </div>
-                  <div className="grid grid-cols-2 gap-4"><FieldLabel label="Receita bruta"><div className="relative"><span className="absolute left-3 top-3 text-sm text-slate-400">R$</span><input className={`${inputClass} pl-10`} defaultValue="0" min="0" name="gross_revenue" required step="0.01" type="number" /></div></FieldLabel><FieldLabel label="Combustível (0 = automático)"><div className="relative"><span className="absolute left-3 top-3 text-sm text-slate-400">R$</span><input className={`${inputClass} pl-10`} defaultValue="0" min="0" name="fuel_cost" required step="0.01" type="number" /></div></FieldLabel></div>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2"><FieldLabel label="Receita bruta"><div className="relative"><span className="absolute left-3 top-3 text-sm text-slate-400">R$</span><input className={`${inputClass} pl-10`} defaultValue="0" min="0" name="gross_revenue" required step="0.01" type="number" /></div></FieldLabel><FieldLabel label="Combustível (0 = automático)"><div className="relative"><span className="absolute left-3 top-3 text-sm text-slate-400">R$</span><input className={`${inputClass} pl-10`} defaultValue="0" min="0" name="fuel_cost" required step="0.01" type="number" /></div></FieldLabel></div>
                   <FieldLabel label="Observação"><textarea className={inputClass} name="notes" placeholder="Rota, turno ou ocorrência" rows={3} /></FieldLabel>
                 </div>
                 <PanelFooter close={() => setPanelMode(null)} submitLabel="Salvar fechamento" />
@@ -587,7 +639,7 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
 
                   <section><div className="flex items-center justify-between"><h3 className="text-sm font-bold text-slate-900">Alertas do veículo</h3><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${panelAlerts.length ? "bg-red-50 text-red-600" : "bg-emerald-50 text-emerald-700"}`}>{panelAlerts.length}</span></div><div className="mt-3 space-y-2">{panelAlerts.map((alert) => <div className={`rounded-lg border-l-4 p-3 ${alert.severity === "critical" ? "border-red-500 bg-red-50" : "border-amber-500 bg-amber-50"}`} key={alert.id}><p className="text-sm font-semibold text-slate-800">{ruleById.get(alert.rule_id)?.name ?? "Manutenção"}</p><p className="mt-1 text-xs text-slate-600">{alert.message}</p></div>)}{panelAlerts.length === 0 && <p className="rounded-lg bg-emerald-50 p-4 text-center text-xs font-medium text-emerald-700">Veículo sem alertas abertos.</p>}</div></section>
                 </div>
-                <div className="sticky bottom-0 flex gap-3 border-t border-slate-200 bg-white p-6"><button className="flex-1 rounded-lg border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50" onClick={() => setPanelMode(null)} type="button">Fechar</button><button className="flex-1 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-700" disabled={!panelVehicle} onClick={() => panelVehicle && openClosing(panelVehicle.id)} type="button">Lançar fechamento</button></div>
+                <div className="sticky bottom-0 flex flex-col-reverse gap-3 border-t border-slate-200 bg-white p-4 sm:flex-row sm:p-6"><button className="min-h-11 flex-1 rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50" onClick={() => setPanelMode(null)} type="button">Fechar</button><button className="min-h-11 flex-1 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700" disabled={!panelVehicle} onClick={() => panelVehicle && openClosing(panelVehicle.id)} type="button">Lançar fechamento</button></div>
               </div>
             )}
           </aside>
@@ -600,21 +652,82 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
 
 function LoginForm({ onAuthenticated }: { onAuthenticated: () => void }) {
   const [error, setError] = useState<string | null>(null);
+  const [mode, setMode] = useState<"login" | "register">("login");
+  const [submitting, setSubmitting] = useState(false);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setSubmitting(true);
+    setError(null);
     const form = new FormData(event.currentTarget);
-    const response = await fetch(`${API_URL}/api/v1/auth/token`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: form.get("email"), password: form.get("password") }) });
-    const result = await response.json();
-    if (!response.ok) { setError(result.detail ?? "Não foi possível entrar."); return; }
-    window.localStorage.setItem("access_token", result.access_token);
-    onAuthenticated();
+    try {
+      const endpoint = mode === "register" ? "/api/v1/auth/register" : "/api/v1/auth/token";
+      const payload = mode === "register"
+        ? { organization_name: form.get("organization_name"), email: form.get("email"), password: form.get("password") }
+        : { email: form.get("email"), password: form.get("password") };
+      const response = await fetch(`${API_URL}${endpoint}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      const result = await response.json();
+      if (!response.ok) { setError(typeof result.detail === "string" ? result.detail : "Confira os dados informados."); return; }
+      window.localStorage.setItem("access_token", result.access_token);
+      onAuthenticated();
+    } catch {
+      setError("A API está indisponível. Tente novamente em instantes.");
+    } finally {
+      setSubmitting(false);
+    }
   }
-  return <main className="grid min-h-screen place-items-center bg-slate-50 p-6"><form className="w-full max-w-sm space-y-4 rounded-xl bg-white p-6 shadow-sm" onSubmit={submit}><h1 className="text-xl font-bold">Entrar</h1><input className={inputClass} name="email" placeholder="E-mail" required type="email" /><input className={inputClass} name="password" placeholder="Senha" required type="password" />{error && <p className="text-sm text-red-600">{error}</p>}<button className="w-full rounded-lg bg-emerald-600 px-4 py-3 font-semibold text-white" type="submit">Entrar</button></form></main>;
+  const features: { icon: NavIconName; label: string; detail: string }[] = [
+    { icon: "routes", label: "Rotas otimizadas", detail: "Mais eficiência em cada entrega." },
+    { icon: "dashboard", label: "Controle de KM", detail: "Acompanhe a performance em tempo real." },
+    { icon: "security", label: "Dados seguros", detail: "Informações protegidas por organização." },
+  ];
+  return (
+    <main className="min-h-[100dvh] bg-[#031329] lg:grid lg:grid-cols-[1.08fr_0.92fr]">
+      <section className="relative hidden min-h-screen overflow-hidden bg-gradient-to-br from-[#020c1d] via-[#062653] to-[#084779] p-12 text-white lg:flex lg:flex-col lg:justify-between">
+        <div className="absolute -right-24 top-24 h-80 w-80 rounded-full bg-blue-400/20 blur-3xl" />
+        <div className="absolute -bottom-28 left-10 h-96 w-96 rounded-full bg-blue-700/25 blur-3xl" />
+        <div className="absolute left-1/2 top-1/2 h-[36rem] w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-blue-400/10" />
+        <div className="relative flex items-center gap-4">
+          <Image alt="LogiSync" className="h-16 w-16 object-contain" height={64} priority src="/logisync-logo.png" width={64} />
+          <div><BrandName className="text-2xl" /><p className="text-xs uppercase tracking-[0.22em] text-blue-100/60">Gestão logística inteligente</p></div>
+        </div>
+        <div className="relative max-w-xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-300">Operação sincronizada</p>
+          <h1 className="mt-4 text-5xl font-bold leading-tight">Rotas, frota e resultados no mesmo ritmo.</h1>
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-blue-100/75">Acompanhe quilômetros, custos, manutenção e lucro real em uma experiência segura em qualquer tela.</p>
+          <div className="mt-10 space-y-4">
+            {features.map((feature) => <div className="flex items-center gap-4" key={feature.label}><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-blue-500/15 text-blue-300 ring-1 ring-blue-300/15"><SidebarIcon name={feature.icon} /></span><span><strong className="block text-sm text-white">{feature.label}</strong><small className="mt-1 block text-blue-100/60">{feature.detail}</small></span></div>)}
+          </div>
+        </div>
+        <p className="relative text-xs text-blue-200/45">© 2026 LogiSync. Todos os direitos reservados.</p>
+      </section>
+      <section className="relative flex min-h-[100dvh] flex-col justify-center overflow-hidden bg-[#031329] px-5 py-8 sm:px-10 lg:grid lg:place-items-center lg:bg-[#f5f7fb]">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_50%_10%,rgba(23,107,255,0.28),transparent_65%)] lg:hidden" />
+        <div className="relative mx-auto mb-8 text-center lg:hidden">
+          <Image alt="LogiSync" className="mx-auto h-24 w-24 object-contain" height={96} priority src="/logisync-logo.png" width={96} />
+          <BrandName className="mt-3 text-4xl" />
+          <p className="mt-2 text-sm leading-relaxed text-blue-100/70">Gestão inteligente de rotas<br />e desempenho de veículos</p>
+        </div>
+        <form className="relative mx-auto w-full max-w-md space-y-5 rounded-[1.75rem] bg-white p-6 shadow-2xl shadow-black/20 ring-1 ring-white/10 sm:p-9" onSubmit={submit}>
+          <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">{mode === "register" ? "Comece agora" : "Bem-vindo"}</p><h2 className="mt-2 text-2xl font-bold text-slate-950 sm:text-3xl">{mode === "register" ? "Crie sua operação" : "Acesse sua operação"}</h2><p className="mt-2 text-sm text-slate-500">{mode === "register" ? "Você será o administrador da nova organização." : "Entre com o usuário da sua organização."}</p></div>
+          {mode === "register" && <FieldLabel label="Nome da empresa ou operação"><input autoComplete="organization" className={inputClass} maxLength={160} minLength={2} name="organization_name" placeholder="Transportadora Horizonte" required /></FieldLabel>}
+          <FieldLabel label="E-mail"><input autoComplete="email" className={inputClass} name="email" placeholder="voce@empresa.com" required type="email" /></FieldLabel>
+          <FieldLabel label="Senha"><input autoComplete={mode === "register" ? "new-password" : "current-password"} className={inputClass} minLength={mode === "register" ? 12 : 8} name="password" placeholder={mode === "register" ? "Mínimo de 12 caracteres" : "Sua senha"} required type="password" /></FieldLabel>
+          {mode === "register" && <label className="flex items-start gap-3 text-xs leading-relaxed text-slate-500"><input className="mt-0.5 h-4 w-4 rounded border-slate-300 accent-blue-600" required type="checkbox" /><span>Confirmo que posso criar esta organização e aceito os termos de uso da plataforma.</span></label>}
+          {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700" role="alert">{error}</p>}
+          <button className="min-h-12 w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-3 font-semibold text-white shadow-lg shadow-blue-700/20 transition hover:brightness-110 disabled:cursor-wait disabled:opacity-60" disabled={submitting} type="submit">{submitting ? "Processando..." : mode === "register" ? "Criar conta e entrar" : "Entrar"}</button>
+          <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest text-slate-300"><span className="h-px flex-1 bg-slate-200" />ou<span className="h-px flex-1 bg-slate-200" /></div>
+          <a className="block min-h-11 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-center text-sm font-semibold text-slate-700 transition hover:bg-slate-50" href={`${API_URL}/api/v1/auth/google`}><span className="mr-2 font-bold text-blue-500">G</span>Continuar com Google</a>
+          <button className="min-h-11 w-full text-center text-sm font-semibold text-blue-600 hover:text-blue-700" onClick={() => { setMode((current) => current === "login" ? "register" : "login"); setError(null); }} type="button">{mode === "register" ? "Já tenho uma conta" : "Não possui conta? Criar conta"}</button>
+          <p className="text-center text-xs text-slate-400">Acesso protegido e isolado por organização</p>
+        </form>
+      </section>
+    </main>
+  );
 }
 
-type NavIconName = "dashboard" | "catalog" | "finance" | "fleet";
+type NavIconName = "dashboard" | "catalog" | "finance" | "fleet" | "routes" | "security";
 
-function DashboardSidebar({ activeSection, alerts, collapsed, mobileOpen, onClose, onToggle, syncing }: { activeSection: DashboardView; alerts: number; collapsed: boolean; mobileOpen: boolean; onClose: () => void; onToggle: () => void; syncing: boolean }) {
+function DashboardSidebar({ activeSection, alerts, collapsed, mobileOpen, onClose, onSignOut, onToggle, session, syncing }: { activeSection: DashboardView; alerts: number; collapsed: boolean; mobileOpen: boolean; onClose: () => void; onSignOut: () => void; onToggle: () => void; session: UserSession | null; syncing: boolean }) {
   const items: { id: DashboardView; href: string; label: string; icon: NavIconName; badge?: number }[] = [
     { id: "overview", href: "/", label: "Visão geral", icon: "dashboard" },
     { id: "catalog", href: "/catalogo", label: "Catálogo técnico", icon: "catalog" },
@@ -626,21 +739,30 @@ function DashboardSidebar({ activeSection, alerts, collapsed, mobileOpen, onClos
       {mobileOpen && <button aria-label="Fechar menu" className="fixed inset-0 z-40 bg-slate-950/50 backdrop-blur-sm lg:hidden" onClick={onClose} type="button" />}
       <aside className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-slate-950 text-white shadow-2xl transition-all duration-300 ${collapsed ? "w-20" : "w-64"} ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
         <div className={`flex h-20 items-center border-b border-white/10 ${collapsed ? "justify-center px-3" : "justify-between px-5"}`}>
-          <Link className="flex min-w-0 items-center gap-3" href="/" onClick={onClose} title="Ir para visão geral"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-500 text-lg font-black shadow-lg shadow-emerald-950/30">L</span>{!collapsed && <span className="text-left"><strong className="block truncate text-sm">Logística</strong><small className="text-xs text-slate-400">Gestão operacional</small></span>}</Link>
+          <Link className="flex min-w-0 items-center gap-3" href="/" onClick={onClose} title="Ir para visão geral"><Image alt="LogiSync" className="h-11 w-11 shrink-0 object-contain" height={44} src="/logisync-logo.png" width={44} />{!collapsed && <span className="text-left"><BrandName className="text-sm" /><small className="text-xs text-slate-400">Gestão operacional</small></span>}</Link>
           {!collapsed && <button aria-label="Fechar menu" className="grid h-9 w-9 place-items-center rounded-lg text-slate-400 hover:bg-white/10 hover:text-white lg:hidden" onClick={onClose} type="button">×</button>}
         </div>
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-6">
           {!collapsed && <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Navegação</p>}
           {items.map((item) => {
             const active = activeSection === item.id;
-            return <Link className={`group relative flex w-full items-center rounded-xl py-3 text-sm font-semibold transition ${collapsed ? "justify-center px-2" : "gap-3 px-3"} ${active ? "bg-emerald-500 text-white shadow-lg shadow-emerald-950/20" : "text-slate-400 hover:bg-white/10 hover:text-white"}`} href={item.href} key={item.id} onClick={onClose} title={collapsed ? item.label : undefined}><span className="transition-transform group-hover:scale-110"><SidebarIcon name={item.icon} /></span>{!collapsed && <span>{item.label}</span>}{Boolean(item.badge) && <span className={`${collapsed ? "absolute right-1 top-1" : "ml-auto"} rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white`}>{item.badge}</span>}</Link>;
+            return <Link aria-current={active ? "page" : undefined} className={`group relative flex w-full items-center rounded-xl py-3 text-sm font-semibold transition ${collapsed ? "justify-center px-2" : "gap-3 px-3"} ${active ? "bg-blue-600 text-white shadow-lg shadow-blue-950/20" : "text-slate-400 hover:bg-white/10 hover:text-white"}`} href={item.href} key={item.id} onClick={onClose} title={collapsed ? item.label : undefined}><span className="transition-transform group-hover:scale-110"><SidebarIcon name={item.icon} /></span>{!collapsed && <span>{item.label}</span>}{Boolean(item.badge) && <span className={`${collapsed ? "absolute right-1 top-1" : "ml-auto"} rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white`}>{item.badge}</span>}</Link>;
           })}
         </nav>
         <div className="border-t border-white/10 p-3">
+          <div className={`mb-2 rounded-xl bg-white/5 py-3 ${collapsed ? "px-2 text-center" : "px-3"}`} title={session?.email ?? "Usuário autenticado"}><span className="block truncate text-xs font-semibold text-slate-200">{collapsed ? session?.email.slice(0, 1).toUpperCase() : session?.email}</span>{!collapsed && <small className="mt-1 block truncate text-[10px] text-slate-500">{session?.organization_name} · {session?.role}</small>}</div>
           <div className={`mb-2 flex items-center rounded-xl bg-white/5 py-3 ${collapsed ? "justify-center px-2" : "gap-3 px-3"}`} title="Sincronização da planilha"><span className={`h-2.5 w-2.5 shrink-0 rounded-full ${syncing ? "animate-pulse bg-amber-400" : "bg-emerald-400"}`} />{!collapsed && <span className="min-w-0"><strong className="block text-xs text-slate-200">Google Sheets</strong><small className="text-[10px] text-slate-500">{syncing ? "Sincronizando..." : "Sincronização ativa"}</small></span>}</div>
+          <button aria-label="Sair" className={`mb-2 flex w-full items-center rounded-xl py-2.5 text-xs font-semibold text-slate-400 transition hover:bg-white/10 hover:text-white ${collapsed ? "justify-center px-2" : "gap-2 px-3"}`} onClick={onSignOut} title="Sair" type="button"><span aria-hidden="true">↪</span>{!collapsed && "Sair"}</button>
           <button aria-label={collapsed ? "Expandir menu" : "Recolher menu"} className="hidden w-full items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-semibold text-slate-400 transition hover:bg-white/10 hover:text-white lg:flex" onClick={onToggle} title={collapsed ? "Expandir menu" : "Recolher menu"} type="button"><CollapseIcon collapsed={collapsed} />{!collapsed && "Recolher menu"}</button>
         </div>
       </aside>
+      <nav aria-label="Navegação principal móvel" className="safe-area-bottom fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-slate-200/80 bg-white/95 px-2 pt-2 shadow-[0_-12px_32px_rgba(15,23,42,0.08)] backdrop-blur-xl lg:hidden">
+        {items.map((item) => {
+          const active = activeSection === item.id;
+          const mobileLabel = { overview: "Início", catalog: "Catálogo", finances: "Financeiro", fleet: "Frota" }[item.id];
+          return <Link aria-current={active ? "page" : undefined} className={`relative flex min-h-14 flex-col items-center justify-center gap-1 rounded-xl px-1 text-[10px] font-semibold transition ${active ? "bg-blue-50 text-blue-600" : "text-slate-500"}`} href={item.href} key={item.id} onClick={onClose}><span className={active ? "scale-110" : ""}><SidebarIcon name={item.icon} /></span><span>{mobileLabel}</span>{Boolean(item.badge) && <span className="absolute right-2 top-1 rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white">{item.badge}</span>}</Link>;
+        })}
+      </nav>
     </>
   );
 }
@@ -651,8 +773,14 @@ function SidebarIcon({ name }: { name: NavIconName }) {
     catalog: <><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z" /><path d="M4 5.5v16M8 7h8M8 11h6" /></>,
     finance: <><path d="M4 19V9M10 19V5M16 19v-7M22 19H2" /><path d="m3 6 6-3 6 4 6-4" /></>,
     fleet: <><path d="M3 16V8l2-3h11l3 5v6M5 16h14M6 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM17 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM3 10h16" /></>,
+    routes: <><circle cx="6" cy="18" r="2" /><circle cx="18" cy="6" r="2" /><path d="M8 18h2a4 4 0 0 0 4-4v-4a4 4 0 0 1 4-4" /><path d="m15 3 3 3-3 3" /></>,
+    security: <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /><path d="m9 12 2 2 4-4" /></>,
   };
   return <svg aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" viewBox="0 0 24 24">{paths[name]}</svg>;
+}
+
+function BrandName({ className = "" }: { className?: string }) {
+  return <strong className={`block tracking-tight text-white ${className}`}>Logi<span className="text-blue-400">Sync</span></strong>;
 }
 
 function CollapseIcon({ collapsed }: { collapsed: boolean }) {
@@ -663,7 +791,7 @@ function MenuIcon() {
   return <svg aria-hidden="true" className="h-5 w-5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></svg>;
 }
 
-const inputClass = "w-full rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100";
+const inputClass = "min-h-11 w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
 
 function OverviewStatus({ href, label, tone, value }: { href: string; label: string; tone: "emerald" | "red" | "slate"; value: number }) {
   const tones = { emerald: "bg-emerald-50 text-emerald-700", red: "bg-red-50 text-red-700", slate: "bg-slate-100 text-slate-700" };
@@ -684,11 +812,11 @@ function FieldLabel({ label, children }: { label: string; children: React.ReactN
 }
 
 function PanelFooter({ close, submitLabel }: { close: () => void; submitLabel: string }) {
-  return <div className="flex gap-3 border-t border-slate-200 bg-slate-50 p-6"><button className="flex-1 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100" onClick={close} type="button">Cancelar</button><button className="flex-1 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700" type="submit">{submitLabel}</button></div>;
+  return <div className="flex flex-col-reverse gap-3 border-t border-slate-200 bg-slate-50 p-4 sm:flex-row sm:p-6"><button className="min-h-11 flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100" onClick={close} type="button">Cancelar</button><button className="min-h-11 flex-1 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700" type="submit">{submitLabel}</button></div>;
 }
 
 function CategoryButton({ active, count, label, onClick }: { active: boolean; count: number; label: string; onClick: () => void }) {
-  return <button className={`inline-flex items-center gap-2 rounded-lg border px-3.5 py-2 text-sm font-semibold transition ${active ? "border-emerald-600 bg-emerald-600 text-white" : "border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:text-emerald-700"}`} onClick={onClick} type="button">{label}<span className={`rounded-full px-1.5 py-0.5 text-[10px] ${active ? "bg-white/20 text-white" : "bg-slate-100 text-slate-500"}`}>{count}</span></button>;
+  return <button className={`inline-flex min-h-11 items-center gap-2 rounded-xl border px-3.5 py-2 text-sm font-semibold transition ${active ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 bg-white text-slate-600 hover:border-blue-300 hover:text-blue-700"}`} onClick={onClick} type="button">{label}<span className={`rounded-full px-1.5 py-0.5 text-[10px] ${active ? "bg-white/20 text-white" : "bg-slate-100 text-slate-500"}`}>{count}</span></button>;
 }
 
 function DownloadIcon() {

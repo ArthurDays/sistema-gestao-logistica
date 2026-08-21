@@ -32,6 +32,7 @@ O produto será um monólito modular: um frontend web em Next.js/React comunica-
 4. **Cálculo determinístico**: valores financeiros usam `NUMERIC` no banco e `Decimal` na aplicação. Cálculos são serviços de domínio testados.
 5. **Particionamento somente por necessidade comprovada**: tabelas de operação e eventos poderão ser particionadas por mês quando volume e consultas justificarem.
 6. **Autenticação do MVP (2026-08-18)**: credenciais locais usam hash PBKDF2-SHA256; JWT HMAC-SHA256 leva `sub`, `organization_id` e `role`. A API deriva o tenant do token, nunca de parâmetros do cliente. Um administrador inicial só é criado por variáveis de ambiente no boot.
+7. **Web app responsivo LogiSync (2026-08-20)**: o mesmo frontend atende celular, tablet e desktop; usa navegação inferior em telas móveis, sidebar em telas grandes, cartões em substituição às tabelas no celular, manifest instalável e áreas seguras do dispositivo.
 
 ## Estrutura de repositório
 
@@ -65,6 +66,7 @@ docker-compose.yml
 
 ```text
 POST   /api/v1/auth/token
+POST   /api/v1/auth/register
 GET    /api/v1/vehicles
 POST   /api/v1/vehicles
 POST   /api/v1/vehicles/{id}/operations
@@ -135,6 +137,12 @@ metabase      BI administrativo
 - **2026-08-17 — Interface e documentação reorganizadas**: dashboard executivo e páginas independentes de catálogo, financeiro e frota; documentação arquitetural, modelo de dados, fluxos Mermaid, guia de contribuição e CI adicionados para publicação inicial.
 - **2026-08-20 — Integração de alertas concluída**: worker da outbox envia eventos ao webhook do n8n com HMAC SHA-256, `Idempotency-Key` estável, retentativas limitadas e teste automatizado.
 - **2026-08-20 — Multi-tenancy concluído**: usuários e papéis locais autenticam por JWT; a organização é derivada do token em todas as consultas e escritas operacionais, com cobertura de isolamento entre organizações.
+- **2026-08-20 — Login integrado e identidade LogiSync aplicada**: o frontend valida a sessão pela API, encerra tokens expirados, oferece saída autenticada e usa a marca e os ícones operacionais aprovados na tela de acesso e navegação. Uma conta administrativa fictícia foi preparada apenas no banco local de desenvolvimento.
+- **2026-08-20 — Experiência web-mobile estruturada**: cabeçalho móvel, navegação inferior, cartões de frota e catálogo, formulários com alvos de toque, manifest PWA e layouts adaptativos adicionados sem remover as operações disponíveis no desktop.
+- **2026-08-21 — Cadastro público de tenant concluído**: uma nova organização e seu primeiro administrador são criados atomicamente, com normalização de e-mail, senha mínima de 12 caracteres, rejeição de duplicidade e emissão imediata do JWT próprio do LogiSync. O OAuth Google permanece desativado até a configuração externa do provedor.
+- **2026-08-21 — Compose de automação e BI validado**: n8n e Metabase persistem seus dados em volumes e usam as redes `internal` e `public`; a configuração do Compose foi validada com credenciais locais efêmeras. O usuário de leitura do Metabase será criado na T024.
+- **2026-08-21 — Endpoints de integração concluídos**: importações administrativas de dados técnicos e preços de combustível exigem autenticação, `Idempotency-Key`, origem e retenção do payload para auditoria; preços mantêm vigência histórica por localidade e energia.
+- **2026-08-21 — Estratégia de implantação web definida**: o frontend preserva `standalone` para o contêiner Docker e usa exportação estática `out/` exclusivamente no Netlify, evitando a publicação incorreta dos artefatos internos de `.next/`.
 
 ## Critérios de aceite de implantação
 

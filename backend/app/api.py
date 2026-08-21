@@ -4,22 +4,28 @@ from datetime import date, timedelta
 from decimal import Decimal
 from typing import Annotated
 
+import httpx
 from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi.responses import RedirectResponse
 from sqlalchemy import func, or_, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.auth import authenticate, current_organization_id, get_current_user, require_roles
+from app.auth import CurrentUser, authenticate, current_organization_id, get_current_user, require_roles
 from app.catalog import sync_catalog
 from app.core.config import settings
-from app.core.security import create_access_token, hash_password
+from app.core.security import create_access_token, create_oauth_state, hash_password, verify_oauth_state
 from app.db import get_db
 from app.maintenance import evaluate_maintenance, maintenance_reserve_per_km
 from app.models import (
     Expense,
+    FuelPrice,
+    IntegrationReceipt,
     MaintenanceAlert,
     MaintenanceExecution,
     MaintenanceRule,
     OperationalRecord,
+    Organization,
     User,
     Vehicle,
     VehicleCatalogSpec,
@@ -30,6 +36,9 @@ from app.schemas import (
     ExpensePeriodRead,
     ExpenseRead,
     ExpenseSamplingRead,
+    FuelPriceIntegrationCreate,
+    IntegrationReceiptRead,
+    IntegrationVehicleDataCreate,
     MaintenanceAlertRead,
     MaintenanceExecutionCreate,
     MaintenanceExecutionRead,
@@ -38,7 +47,9 @@ from app.schemas import (
     MonthlyDashboardRead,
     OperationCreate,
     OperationRead,
+    OrganizationRegister,
     ProfitabilityRead,
+    SessionRead,
     TokenCreate,
     TokenRead,
     UserCreate,
@@ -64,6 +75,112 @@ def create_token(payload: TokenCreate, db: DbSession) -> TokenRead:
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciais inválidas")
     return TokenRead(access_token=create_access_token(str(user.id), str(user.organization_id), user.role))
+
+
+@auth_router.get("/google")
+def start_google_oauth() -> RedirectResponse:
+    oauth_settings = (
+        settings.google_oauth_client_id,
+        settings.google_oauth_client_secret,
+        settings.google_oauth_redirect_uri,
+    )
+    if not all(oauth_settings):
+        raise HTTPException(status_code=503, detail="Google OAuth não configurado")
+    params = {
+        "client_id": settings.google_oauth_client_id,
+        "redirect_uri": settings.google_oauth_redirect_uri,
+        "response_type": "code",
+        "scope": "openid email profile",
+        "state": create_oauth_state(),
+        "prompt": "select_account",
+    }
+    return RedirectResponse("https://accounts.google.com/o/oauth2/v2/auth?" + str(httpx.QueryParams(params)))
+
+
+@auth_router.get("/google/callback")
+async def finish_google_oauth(code: str, state: str, db: DbSession) -> RedirectResponse:
+    verify_oauth_state(state)
+    oauth_settings = (
+        settings.google_oauth_client_id,
+        settings.google_oauth_client_secret,
+        settings.google_oauth_redirect_uri,
+    )
+    if not all(oauth_settings):
+        raise HTTPException(status_code=503, detail="Google OAuth não configurado")
+    async with httpx.AsyncClient(timeout=10) as client:
+        token = await client.post(
+            "https://oauth2.googleapis.com/token",
+            data={
+                "code": code,
+                "client_id": settings.google_oauth_client_id,
+                "client_secret": settings.google_oauth_client_secret,
+                "redirect_uri": settings.google_oauth_redirect_uri,
+                "grant_type": "authorization_code",
+            },
+        )
+        token.raise_for_status()
+        profile = await client.get(
+            "https://openidconnect.googleapis.com/v1/userinfo",
+            headers={"Authorization": f"Bearer {token.json()['access_token']}"},
+        )
+        profile.raise_for_status()
+    identity = profile.json()
+    valid_identity = (
+        identity.get("email_verified")
+        and isinstance(identity.get("sub"), str)
+        and isinstance(identity.get("email"), str)
+    )
+    if not valid_identity:
+        raise HTTPException(status_code=401, detail="Identidade Google inválida")
+    user = db.scalar(select(User).where(User.email == identity["email"].casefold(), User.active.is_(True)))
+    if user is None or (user.google_subject is not None and user.google_subject != identity["sub"]):
+        raise HTTPException(
+            status_code=403,
+            detail="Conta Google não autorizada; crie sua organização primeiro",
+        )
+    user.google_subject = identity["sub"]
+    db.commit()
+    access_token = create_access_token(str(user.id), str(user.organization_id), user.role)
+    frontend_url = settings.frontend_url.rstrip("/")
+    return RedirectResponse(f"{frontend_url}/?access_token={access_token}")
+
+
+@auth_router.post("/register", response_model=TokenRead, status_code=status.HTTP_201_CREATED)
+def register_organization(payload: OrganizationRegister, db: DbSession) -> TokenRead:
+    organization = Organization(name=payload.organization_name)
+    db.add(organization)
+    db.flush()
+    user = User(
+        organization_id=organization.id,
+        email=payload.email,
+        password_hash=hash_password(payload.password),
+        role="admin",
+    )
+    db.add(user)
+    try:
+        db.commit()
+    except IntegrityError as error:
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="E-mail já cadastrado") from error
+    return TokenRead(access_token=create_access_token(str(user.id), str(organization.id), user.role))
+
+
+@auth_router.get("/me", response_model=SessionRead)
+def read_session(
+    current_user: Annotated[CurrentUser, Depends(get_current_user)],
+    db: DbSession,
+) -> SessionRead:
+    user = db.get(User, current_user.id)
+    organization = db.get(Organization, current_user.organization_id)
+    if user is None or organization is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Sessão inválida")
+    return SessionRead(
+        user_id=user.id,
+        organization_id=organization.id,
+        organization_name=organization.name,
+        email=user.email,
+        role=user.role,
+    )
 
 
 @auth_router.post("/users", response_model=UserRead, status_code=status.HTTP_201_CREATED)
@@ -336,6 +453,125 @@ def create_expense(payload: ExpenseCreate, db: DbSession) -> Expense:
     db.commit()
     db.refresh(expense)
     return expense
+
+
+@router.post(
+    "/integrations/vehicle-data",
+    response_model=IntegrationReceiptRead,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_roles("admin"))],
+)
+def import_vehicle_data(
+    payload: IntegrationVehicleDataCreate,
+    db: DbSession,
+    idempotency_key: IdempotencyKey,
+) -> IntegrationReceipt:
+    organization_id = current_organization_id()
+    existing = db.scalar(
+        select(IntegrationReceipt).where(
+            IntegrationReceipt.organization_id == organization_id,
+            IntegrationReceipt.idempotency_key == idempotency_key,
+        )
+    )
+    if existing is not None:
+        return existing
+
+    vehicle = db.scalar(
+        select(Vehicle).where(Vehicle.id == payload.vehicle_id, Vehicle.organization_id == organization_id)
+    )
+    if vehicle is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Veículo não encontrado")
+    changes = payload.model_dump(exclude={"source", "vehicle_id"}, exclude_none=True)
+    if not changes:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Informe dados técnicos")
+    for field, value in changes.items():
+        setattr(vehicle, field, value)
+    receipt = IntegrationReceipt(
+        organization_id=organization_id,
+        idempotency_key=idempotency_key,
+        source=payload.source,
+        resource_type="vehicle",
+        resource_id=vehicle.id,
+        payload=payload.model_dump(mode="json"),
+    )
+    db.add(receipt)
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        concurrent_receipt = db.scalar(
+            select(IntegrationReceipt).where(
+                IntegrationReceipt.organization_id == organization_id,
+                IntegrationReceipt.idempotency_key == idempotency_key,
+            )
+        )
+        if concurrent_receipt is None:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Não foi possível registrar a integração",
+            ) from None
+        return concurrent_receipt
+    db.refresh(receipt)
+    return receipt
+
+
+@router.post(
+    "/integrations/fuel-prices",
+    response_model=IntegrationReceiptRead,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_roles("admin"))],
+)
+def import_fuel_price(
+    payload: FuelPriceIntegrationCreate,
+    db: DbSession,
+    idempotency_key: IdempotencyKey,
+) -> IntegrationReceipt:
+    organization_id = current_organization_id()
+    existing = db.scalar(
+        select(IntegrationReceipt).where(
+            IntegrationReceipt.organization_id == organization_id,
+            IntegrationReceipt.idempotency_key == idempotency_key,
+        )
+    )
+    if existing is not None:
+        return existing
+    fuel_price = FuelPrice(
+        organization_id=organization_id,
+        locality=payload.locality.strip(),
+        energy_type=payload.energy_type,
+        unit_price=payload.unit_price,
+        effective_date=payload.effective_date,
+        source=payload.source,
+    )
+    db.add(fuel_price)
+    db.flush()
+    receipt = IntegrationReceipt(
+        organization_id=organization_id,
+        idempotency_key=idempotency_key,
+        source=payload.source,
+        resource_type="fuel_price",
+        resource_id=fuel_price.id,
+        payload=payload.model_dump(mode="json"),
+    )
+    db.add(receipt)
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        concurrent_receipt = db.scalar(
+            select(IntegrationReceipt).where(
+                IntegrationReceipt.organization_id == organization_id,
+                IntegrationReceipt.idempotency_key == idempotency_key,
+            )
+        )
+        if concurrent_receipt is None:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Não foi possível registrar a integração",
+            ) from None
+        return concurrent_receipt
+    db.refresh(receipt)
+    return receipt
 
 
 @router.get("/vehicles/{vehicle_id}/profitability", response_model=ProfitabilityRead)

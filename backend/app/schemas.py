@@ -3,7 +3,7 @@ from datetime import date, datetime
 from decimal import Decimal
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 VehicleCategory = Literal["motorcycle", "car", "truck", "bus", "bicycle", "other"]
 EnergyType = Literal["gasoline", "ethanol", "diesel", "cng", "electric", "hybrid", "human", "other"]
@@ -32,6 +32,29 @@ class TokenRead(BaseModel):
     token_type: Literal["bearer"] = "bearer"
 
 
+class OrganizationRegister(BaseModel):
+    organization_name: str = Field(min_length=2, max_length=160)
+    email: str = Field(min_length=5, max_length=320)
+    password: str = Field(min_length=12, max_length=128)
+
+    @field_validator("organization_name")
+    @classmethod
+    def validate_organization_name(cls, value: str) -> str:
+        normalized = value.strip()
+        if len(normalized) < 2:
+            raise ValueError("Informe o nome da organização")
+        return normalized
+
+    @field_validator("email")
+    @classmethod
+    def validate_email(cls, value: str) -> str:
+        normalized = value.strip().casefold()
+        local, separator, domain = normalized.partition("@")
+        if not separator or not local or "." not in domain or domain.startswith(".") or domain.endswith("."):
+            raise ValueError("Informe um e-mail válido")
+        return normalized
+
+
 class UserCreate(BaseModel):
     email: str = Field(min_length=3, max_length=320)
     password: str = Field(min_length=12, max_length=128)
@@ -45,6 +68,14 @@ class UserRead(BaseModel):
     active: bool
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class SessionRead(BaseModel):
+    user_id: uuid.UUID
+    organization_id: uuid.UUID
+    organization_name: str
+    email: str
+    role: str
 
 
 class VehicleCreate(BaseModel):
@@ -139,6 +170,31 @@ class ExpenseRead(ExpenseCreate):
 
     id: uuid.UUID
     created_at: datetime
+
+
+class IntegrationVehicleDataCreate(BaseModel):
+    source: str = Field(min_length=2, max_length=120)
+    vehicle_id: uuid.UUID
+    tank_capacity: Decimal | None = Field(default=None, gt=0, max_digits=10, decimal_places=2)
+    average_consumption: Decimal | None = Field(default=None, gt=0, max_digits=10, decimal_places=3)
+
+
+class FuelPriceIntegrationCreate(BaseModel):
+    source: str = Field(min_length=2, max_length=120)
+    locality: str = Field(min_length=2, max_length=160)
+    energy_type: EnergyType
+    unit_price: Decimal = Field(gt=0, max_digits=10, decimal_places=3)
+    effective_date: date
+
+
+class IntegrationReceiptRead(BaseModel):
+    id: uuid.UUID
+    resource_id: uuid.UUID
+    resource_type: str
+    source: str
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ProfitabilityRead(BaseModel):

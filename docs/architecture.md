@@ -62,7 +62,7 @@ flowchart LR
 
 | Tipo | Quantidade |
 | --- | --- |
-| Código | 85 |
+| Código | 86 |
 | Testes | 0 |
 
 ## Diagramas

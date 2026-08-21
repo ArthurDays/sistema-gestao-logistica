@@ -15,7 +15,7 @@ A especificação normativa está em [`specs/001-gestao-logistica`](../specs/001
 ## Visão geral
 
 - Frameworks detectados: não identificados.
-- Arquivos de código: 85.
+- Arquivos de código: 86.
 - Arquivos de teste: 0.
 
 ## Roteiro

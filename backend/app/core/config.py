@@ -22,6 +22,10 @@ class Settings(BaseSettings):
     n8n_webhook_secret: str | None = None
     outbox_max_attempts: int = 5
     outbox_poll_interval_seconds: int = 15
+    google_oauth_client_id: str | None = None
+    google_oauth_client_secret: str | None = None
+    google_oauth_redirect_uri: str | None = None
+    frontend_url: str = "http://localhost:3000"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

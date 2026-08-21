@@ -41,6 +41,7 @@ class User(Base):
     )
     email: Mapped[str] = mapped_column(String(320))
     password_hash: Mapped[str] = mapped_column(String(255))
+    google_subject: Mapped[str | None] = mapped_column(String(255), unique=True, nullable=True)
     role: Mapped[str] = mapped_column(String(20), default="operator")
     active: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
@@ -148,6 +149,42 @@ class Expense(Base):
     category: Mapped[str] = mapped_column(String(40))
     amount: Mapped[Decimal] = mapped_column(Numeric(14, 2))
     description: Mapped[str | None] = mapped_column(String(240), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class FuelPrice(Base):
+    __tablename__ = "fuel_prices"
+    __table_args__ = (
+        CheckConstraint("unit_price > 0", name="ck_fuel_prices_unit_price_positive"),
+        Index("ix_fuel_prices_lookup", "organization_id", "locality", "energy_type", "effective_date"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    organization_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("organizations.id", ondelete="RESTRICT"), index=True
+    )
+    locality: Mapped[str] = mapped_column(String(160))
+    energy_type: Mapped[str] = mapped_column(String(32))
+    unit_price: Mapped[Decimal] = mapped_column(Numeric(10, 3))
+    effective_date: Mapped[date] = mapped_column(Date)
+    source: Mapped[str] = mapped_column(String(120))
+    collected_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class IntegrationReceipt(Base):
+    __tablename__ = "integration_receipts"
+    __table_args__ = (
+        UniqueConstraint("organization_id", "idempotency_key", name="uq_integration_receipts_org_key"),
+        Index("ix_integration_receipts_org_created", "organization_id", "created_at"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    organization_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("organizations.id", ondelete="RESTRICT"))
+    idempotency_key: Mapped[str] = mapped_column(String(120))
+    source: Mapped[str] = mapped_column(String(120))
+    resource_type: Mapped[str] = mapped_column(String(60))
+    resource_id: Mapped[uuid.UUID]
+    payload: Mapped[dict[str, object]] = mapped_column(JSON)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 

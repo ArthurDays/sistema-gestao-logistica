@@ -18,7 +18,41 @@
 | npm | desenvolvimento | eslint | ^9.0.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | desenvolvimento | eslint-config-next | 16.3.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @alloc/quick-lru | 5.2.0 | Simple “Least Recently Used” (LRU) cache | sindresorhus/quick-lru |
+| npm | transitiva | @babel/code-frame | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/compat-data | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/core | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | semver | 6.3.1 | The semantic version parser used by npm. | https://github.com/npm/node-semver |
+| npm | transitiva | @babel/generator | 7.29.8 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/helper-compilation-targets | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/helper-globals | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/helper-module-imports | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/helper-module-transforms | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/helper-string-parser | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/helper-validator-identifier | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/helper-validator-option | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/helpers | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/parser | 7.29.8 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/template | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/traverse | 7.29.8 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @babel/types | 7.29.8 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @emnapi/core | 1.10.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @emnapi/runtime | 1.11.3 | emnapi runtime | https://github.com/toyobayashi/emnapi |
+| npm | transitiva | @emnapi/wasi-threads | 1.2.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @eslint-community/eslint-utils | 4.10.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint-visitor-keys | 3.4.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @eslint-community/regexpp | 4.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @eslint/config-array | 0.21.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @eslint/config-helpers | 0.4.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @eslint/core | 0.17.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @eslint/eslintrc | 3.3.6 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @eslint/js | 9.39.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @eslint/object-schema | 2.1.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @eslint/plugin-kit | 0.4.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @humanfs/core | 0.19.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @humanfs/node | 0.16.8 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @humanfs/types | 0.15.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @humanwhocodes/module-importer | 1.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @humanwhocodes/retry | 0.4.3 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @img/colour | 1.1.0 | The ESM-only 'color' package made compatible for use with CommonJS runtimes | https://github.com/lovell/colour |
 | npm | transitiva | @img/sharp-darwin-arm64 | 0.35.3 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @img/sharp-darwin-x64 | 0.35.3 | Finalidade não descrita nos metadados locais. |  |
@@ -51,7 +85,10 @@
 | npm | transitiva | @jridgewell/resolve-uri | 3.1.2 | Resolve a URI relative to an optional base URI | https://github.com/jridgewell/resolve-uri |
 | npm | transitiva | @jridgewell/sourcemap-codec | 1.5.5 | Encode/decode sourcemap mappings | https://github.com/jridgewell/sourcemaps |
 | npm | transitiva | @jridgewell/trace-mapping | 0.3.31 | Trace the original position through a source map | https://github.com/jridgewell/sourcemaps |
+| npm | transitiva | @napi-rs/wasm-runtime | 1.2.3 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @next/env | 16.3.1 | Next.js dotenv file loading | https://github.com/vercel/next.js |
+| npm | transitiva | @next/eslint-plugin-next | 16.3.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @eslint-community/eslint-utils | 4.9.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @next/swc-darwin-arm64 | 16.3.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @next/swc-darwin-x64 | 16.3.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @next/swc-linux-arm64-gnu | 16.3.1 | Finalidade não descrita nos metadados locais. |  |
@@ -60,6 +97,11 @@
 | npm | transitiva | @next/swc-linux-x64-musl | 16.3.1 | Finalidade não descrita nos metadados locais. | https://github.com/vercel/next.js |
 | npm | transitiva | @next/swc-win32-arm64-msvc | 16.3.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @next/swc-win32-x64-msvc | 16.3.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @nodelib/fs.scandir | 2.1.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @nodelib/fs.stat | 2.0.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @nodelib/fs.walk | 1.2.8 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @nolyfill/is-core-module | 1.0.39 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @rtsao/scc | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @swc/helpers | 0.5.23 | External helpers for the swc project. | https://github.com/swc-project/swc |
 | npm | transitiva | @tailwindcss/node | 4.3.3 | A utility-first CSS framework for rapidly building custom user interfaces. | https://github.com/tailwindlabs/tailwindcss |
 | npm | transitiva | @tailwindcss/oxide | 4.3.3 | Finalidade não descrita nos metadados locais. | https://github.com/tailwindlabs/tailwindcss |
@@ -73,20 +115,222 @@
 | npm | transitiva | @tailwindcss/oxide-linux-x64-gnu | 4.3.3 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @tailwindcss/oxide-linux-x64-musl | 4.3.3 | Finalidade não descrita nos metadados locais. | https://github.com/tailwindlabs/tailwindcss |
 | npm | transitiva | @tailwindcss/oxide-wasm32-wasi | 4.3.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @emnapi/core | 1.11.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @emnapi/runtime | 1.11.1 | emnapi runtime | https://github.com/toyobayashi/emnapi |
+| npm | transitiva | @emnapi/wasi-threads | 1.2.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @napi-rs/wasm-runtime | 1.1.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @tybys/wasm-util | 0.10.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | tslib | 2.8.1 | Runtime library for TypeScript helper functions | https://github.com/Microsoft/tslib |
 | npm | transitiva | @tailwindcss/oxide-win32-arm64-msvc | 4.3.3 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @tailwindcss/oxide-win32-x64-msvc | 4.3.3 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @tailwindcss/postcss | 4.3.3 | PostCSS plugin for Tailwind CSS, a utility-first CSS framework for rapidly building custom user interfaces | https://github.com/tailwindlabs/tailwindcss |
+| npm | transitiva | @tybys/wasm-util | 0.10.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @types/estree | 1.0.9 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @types/json-schema | 7.0.15 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @types/json5 | 0.0.29 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @types/node | 22.17.2 | TypeScript definitions for node | https://github.com/DefinitelyTyped/DefinitelyTyped |
 | npm | transitiva | @types/react | 19.2.2 | TypeScript definitions for react | https://github.com/DefinitelyTyped/DefinitelyTyped |
 | npm | transitiva | @types/react-dom | 19.2.2 | TypeScript definitions for react-dom | https://github.com/DefinitelyTyped/DefinitelyTyped |
+| npm | transitiva | @typescript-eslint/eslint-plugin | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | ignore | 7.0.6 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @typescript-eslint/parser | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @typescript-eslint/project-service | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @typescript-eslint/scope-manager | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @typescript-eslint/tsconfig-utils | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @typescript-eslint/type-utils | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @typescript-eslint/types | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @typescript-eslint/typescript-estree | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | balanced-match | 4.0.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | brace-expansion | 5.0.9 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | minimatch | 10.2.6 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @typescript-eslint/utils | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @typescript-eslint/visitor-keys | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint-visitor-keys | 5.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-android-arm-eabi | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-android-arm64 | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-darwin-arm64 | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-darwin-x64 | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-freebsd-x64 | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-linux-arm-gnueabihf | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-linux-arm-musleabihf | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-linux-arm64-gnu | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-linux-arm64-musl | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-linux-loong64-gnu | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-linux-loong64-musl | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-linux-ppc64-gnu | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-linux-riscv64-gnu | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-linux-riscv64-musl | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-linux-s390x-gnu | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-linux-x64-gnu | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-linux-x64-musl | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-openharmony-arm64 | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-wasm32-wasi | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @emnapi/runtime | 1.10.0 | emnapi runtime | https://github.com/toyobayashi/emnapi |
+| npm | transitiva | @unrs/resolver-binding-win32-arm64-msvc | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-win32-ia32-msvc | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @unrs/resolver-binding-win32-x64-msvc | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | acorn | 8.18.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | acorn-jsx | 5.3.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | ajv | 6.15.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | ansi-styles | 4.3.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | argparse | 2.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | aria-query | 5.3.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | array-buffer-byte-length | 1.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | array-includes | 3.1.9 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | array.prototype.findlast | 1.2.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | array.prototype.findlastindex | 1.2.6 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | array.prototype.flat | 1.3.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | array.prototype.flatmap | 1.3.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | array.prototype.tosorted | 1.1.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | arraybuffer.prototype.slice | 1.0.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | ast-types-flow | 0.0.8 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | async-function | 1.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | available-typed-arrays | 1.0.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | axe-core | 4.13.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | axobject-query | 4.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | balanced-match | 1.0.2 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | baseline-browser-mapping | 2.11.15 | A library for obtaining browser versions with their maximum supported Baseline feature set and Widely Available status. | https://github.com/web-platform-dx/baseline-browser-mapping |
+| npm | transitiva | brace-expansion | 1.1.18 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | braces | 3.0.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | browserslist | 4.28.8 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | call-bind | 1.0.9 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | call-bind-apply-helpers | 1.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | call-bound | 1.0.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | callsites | 3.1.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | caniuse-lite | 1.0.30001809 | A smaller version of caniuse-db, with only the essentials! | browserslist/caniuse-lite |
+| npm | transitiva | chalk | 4.1.2 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | client-only | 0.0.1 | This is a marker package to indicate that a module can only be used in Client Components. |  |
+| npm | transitiva | color-convert | 2.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | color-name | 1.1.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | concat-map | 0.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | convert-source-map | 2.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | cross-spawn | 7.0.6 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | csstype | 3.2.3 | Strict TypeScript and Flow types for style based on MDN data | https://github.com/frenic/csstype |
+| npm | transitiva | damerau-levenshtein | 1.0.8 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | data-view-buffer | 1.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | data-view-byte-length | 1.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | data-view-byte-offset | 1.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | debug | 4.4.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | deep-is | 0.1.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | define-data-property | 1.1.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | define-properties | 1.2.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | detect-libc | 2.1.2 | Node.js module to detect the C standard library (libc) implementation family and version | git://github.com/lovell/detect-libc |
+| npm | transitiva | doctrine | 2.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | dunder-proto | 1.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | electron-to-chromium | 1.5.411 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | emoji-regex | 9.2.2 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | enhanced-resolve | 5.24.5 | Offers a async require.resolve function. It's highly configurable. | https://github.com/webpack/enhanced-resolve |
+| npm | transitiva | es-abstract | 1.24.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | es-abstract-get | 1.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | es-define-property | 1.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | es-errors | 1.3.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | es-iterator-helpers | 1.4.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | es-object-atoms | 1.1.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | es-set-tostringtag | 2.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | es-shim-unscopables | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | es-to-primitive | 1.3.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | escalade | 3.2.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | escape-string-regexp | 4.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint | 9.39.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint-config-next | 16.3.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | globals | 16.4.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint-import-resolver-node | 0.3.10 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | debug | 3.2.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint-import-resolver-typescript | 3.10.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint-module-utils | 2.14.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint-plugin-import | 2.32.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint-plugin-jsx-a11y | 6.10.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint-plugin-react | 7.37.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint-plugin-react-hooks | 7.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint-scope | 8.4.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint-visitor-keys | 4.2.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | espree | 10.4.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | esquery | 1.7.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | esrecurse | 4.3.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | estraverse | 5.3.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | esutils | 2.0.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | fast-deep-equal | 3.1.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | fast-glob | 3.3.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | glob-parent | 5.1.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | fast-json-stable-stringify | 2.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | fast-levenshtein | 2.0.6 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | fastq | 1.20.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | file-entry-cache | 8.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | fill-range | 7.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | find-up | 5.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | flat-cache | 4.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | flatted | 3.4.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | for-each | 0.3.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | function-bind | 1.1.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | function.prototype.name | 1.2.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | functions-have-names | 1.2.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | generator-function | 2.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | gensync | 1.0.0-beta.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | get-intrinsic | 1.3.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | get-proto | 1.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | get-symbol-description | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | get-tsconfig | 4.14.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | glob-parent | 6.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | globals | 14.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | globalthis | 1.0.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | gopd | 1.2.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | graceful-fs | 4.2.11 | A drop-in replacement for fs, making various improvements. | https://github.com/isaacs/node-graceful-fs |
+| npm | transitiva | has-bigints | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | has-flag | 4.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | has-property-descriptors | 1.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | has-proto | 1.2.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | has-symbols | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | has-tostringtag | 1.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | hasown | 2.0.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | hermes-estree | 0.25.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | hermes-parser | 0.25.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | ignore | 5.3.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | import-fresh | 3.3.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | imurmurhash | 0.1.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | internal-slot | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-array-buffer | 3.0.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-async-function | 2.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-bigint | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-boolean-object | 1.2.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-bun-module | 2.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-callable | 1.2.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-core-module | 2.16.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-data-view | 1.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-date-object | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-document.all | 1.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-extglob | 2.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-finalizationregistry | 1.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-generator-function | 1.1.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-glob | 4.0.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-map | 2.0.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-negative-zero | 2.0.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-number | 7.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-number-object | 1.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-regex | 1.2.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-set | 2.0.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-shared-array-buffer | 1.0.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-string | 1.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-symbol | 1.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-typed-array | 1.1.15 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-weakmap | 2.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-weakref | 1.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | is-weakset | 2.0.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | isarray | 2.0.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | isexe | 2.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | iterator.prototype | 1.1.5 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | jiti | 2.7.0 | Runtime typescript and ESM support for Node.js | unjs/jiti |
+| npm | transitiva | js-tokens | 4.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | js-yaml | 4.3.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | jsesc | 3.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | json-buffer | 3.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | json-schema-traverse | 0.4.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | json-stable-stringify-without-jsonify | 1.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | json5 | 2.2.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | jsx-ast-utils | 3.3.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | keyv | 4.5.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | language-subtag-registry | 0.3.23 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | language-tags | 1.0.9 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | levn | 0.4.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | lightningcss | 1.32.0 | A CSS parser, transformer, and minifier written in Rust | https://github.com/parcel-bundler/lightningcss |
 | npm | transitiva | lightningcss-android-arm64 | 1.32.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | lightningcss-darwin-arm64 | 1.32.0 | Finalidade não descrita nos metadados locais. |  |
@@ -99,22 +343,116 @@
 | npm | transitiva | lightningcss-linux-x64-musl | 1.32.0 | A CSS parser, transformer, and minifier written in Rust | https://github.com/parcel-bundler/lightningcss |
 | npm | transitiva | lightningcss-win32-arm64-msvc | 1.32.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | lightningcss-win32-x64-msvc | 1.32.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | locate-path | 6.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | lodash.merge | 4.6.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | loose-envify | 1.4.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | lru-cache | 5.1.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | magic-string | 0.30.21 | Modify strings, generate sourcemaps | https://github.com/Rich-Harris/magic-string |
+| npm | transitiva | math-intrinsics | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | merge2 | 1.4.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | micromatch | 4.0.8 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | minimatch | 3.1.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | minimist | 1.2.8 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | ms | 2.1.3 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | nanoid | 3.3.18 | A tiny (116 bytes), secure URL-friendly unique string ID generator | ai/nanoid |
+| npm | transitiva | napi-postinstall | 0.3.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | natural-compare | 1.4.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | next | 16.3.1 | The React Framework | vercel/next.js |
 | npm | transitiva | postcss | 8.5.23 | Tool for transforming styles with JS plugins | postcss/postcss |
+| npm | transitiva | node-exports-info | 1.6.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | node-releases | 2.0.53 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | object-assign | 4.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | object-inspect | 1.13.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | object-keys | 1.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | object.assign | 4.1.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | object.entries | 1.1.9 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | object.fromentries | 2.0.8 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | object.groupby | 1.0.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | object.values | 1.2.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | optionator | 0.9.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | own-keys | 1.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | p-limit | 3.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | p-locate | 5.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | parent-module | 1.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | path-exists | 4.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | path-key | 3.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | path-parse | 1.0.7 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | picocolors | 1.1.1 | The tiniest and the fastest library for terminal output formatting with ANSI colors | alexeyraspopov/picocolors |
+| npm | transitiva | picomatch | 2.3.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | possible-typed-array-names | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | postcss | 8.5.26 | Tool for transforming styles with JS plugins | postcss/postcss |
+| npm | transitiva | prelude-ls | 1.2.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | prop-types | 15.8.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | punycode | 2.3.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | queue-microtask | 1.2.3 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | react | 19.2.4 | React is a JavaScript library for building user interfaces. | https://github.com/facebook/react |
 | npm | transitiva | react-dom | 19.2.4 | React package for working with the DOM. | https://github.com/facebook/react |
+| npm | transitiva | react-is | 16.13.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | reflect.getprototypeof | 1.0.10 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | regexp.prototype.flags | 1.5.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | resolve | 2.0.0-next.7 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | resolve-from | 4.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | resolve-pkg-maps | 1.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | reusify | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | run-parallel | 1.2.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | safe-array-concat | 1.1.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | safe-push-apply | 1.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | safe-regex-test | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | scheduler | 0.27.0 | Cooperative scheduler for the browser environment. | https://github.com/facebook/react |
 | npm | transitiva | semver | 7.8.5 | The semantic version parser used by npm. | https://github.com/npm/node-semver |
+| npm | transitiva | set-function-length | 1.2.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | set-function-name | 2.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | set-proto | 1.0.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | sharp | 0.35.3 | High performance Node.js image processing, the fastest module to resize JPEG, PNG, WebP, GIF, AVIF and TIFF images | https://github.com/lovell/sharp |
+| npm | transitiva | shebang-command | 2.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | shebang-regex | 3.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | side-channel | 1.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | side-channel-list | 1.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | side-channel-map | 1.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | side-channel-weakmap | 1.0.2 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | source-map-js | 1.2.1 | Generates and consumes source maps | 7rulnik/source-map-js |
+| npm | transitiva | stable-hash | 0.0.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | stop-iteration-iterator | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | string.prototype.includes | 2.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | string.prototype.matchall | 4.0.12 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | string.prototype.repeat | 1.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | string.prototype.trim | 1.2.11 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | string.prototype.trimend | 1.0.10 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | string.prototype.trimstart | 1.0.8 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | strip-bom | 3.0.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | strip-json-comments | 3.1.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | styled-jsx | 5.1.6 | Full CSS support for JSX without compromises | vercel/styled-jsx |
+| npm | transitiva | supports-color | 7.2.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | supports-preserve-symlinks-flag | 1.0.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | tailwindcss | 4.3.3 | A utility-first CSS framework for rapidly building custom user interfaces. | https://github.com/tailwindlabs/tailwindcss |
 | npm | transitiva | tapable | 2.3.3 | Just a little module for plugins. | http://github.com/webpack/tapable |
-| npm | transitiva | tslib | 2.8.1 | Runtime library for TypeScript helper functions | https://github.com/Microsoft/tslib |
+| npm | transitiva | tinyglobby | 0.2.17 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | fdir | 6.5.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | picomatch | 4.0.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | to-regex-range | 5.0.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | ts-api-utils | 2.5.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | tsconfig-paths | 3.15.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | json5 | 1.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | type-check | 0.4.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | typed-array-buffer | 1.0.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | typed-array-byte-length | 1.0.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | typed-array-byte-offset | 1.0.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | typed-array-length | 1.0.8 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | typescript | 5.9.2 | TypeScript is a language for application scale JavaScript development | https://github.com/microsoft/TypeScript |
+| npm | transitiva | typescript-eslint | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | unbox-primitive | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | undici-types | 6.21.0 | A stand-alone types package for Undici | https://github.com/nodejs/undici |
+| npm | transitiva | unrs-resolver | 1.12.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | update-browserslist-db | 1.3.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | uri-js | 4.4.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | which | 2.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | which-boxed-primitive | 1.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | which-builtin-type | 1.2.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | which-collection | 1.0.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | which-typed-array | 1.1.22 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | word-wrap | 1.2.5 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | yallist | 3.1.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | yocto-queue | 0.1.0 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | zod | 4.4.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | zod-validation-error | 4.0.2 | Finalidade não descrita nos metadados locais. |  |
 <!-- specsfy:documentator:end -->

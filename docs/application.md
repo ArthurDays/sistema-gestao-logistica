@@ -90,6 +90,7 @@ Relação: relaciona cada arquivo observado à sua superfície.
 | Páginas | frontend/app/frota/page.tsx | FleetPage |
 | Páginas | frontend/app/globals.css | — |
 | Páginas | frontend/app/layout.tsx | RootLayout |
+| Páginas | frontend/app/manifest.ts | manifest |
 | Páginas | frontend/app/page.tsx | Home |
 | Componentes | frontend/components/operations-dashboard.tsx | API_URL, apiFetch, KpiIcon, OperationsDashboard, synchronizeCatalog, openClosing, openVehicleDetails, openMaintenance |
 | Outras fontes | frontend/next-env.d.ts | — |

@@ -32,8 +32,8 @@
 
 - [x] T020 Implementar usuários, autenticação e papéis.
 - [x] T021 Isolar todas as consultas por organização autenticada.
-- [ ] T022 Adicionar n8n e Metabase ao Compose.
-- [ ] T023 Criar endpoints de integração para dados técnicos e preços.
+- [x] T022 Adicionar n8n e Metabase ao Compose.
+- [x] T023 Criar endpoints de integração para dados técnicos e preços.
 - [ ] T024 Criar views read-only e usuário de BI.
 
 ## Fase 5 — Operação e produção

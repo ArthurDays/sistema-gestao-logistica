@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
 :root { color-scheme: light; }
-body { margin: 0; font-family: Arial, Helvetica, sans-serif; }
+* { box-sizing: border-box; }
+html { min-width: 320px; background: #f5f7fb; }
+body { margin: 0; overflow-x: hidden; font-family: Arial, Helvetica, sans-serif; background: #f5f7fb; }
+button, a { -webkit-tap-highlight-color: transparent; }
 button { cursor: pointer; }
+input, select, textarea, button { font: inherit; }
+
+.safe-area-bottom { padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); }
+
+@media (max-width: 639px) {
+  input, select, textarea { font-size: 16px !important; }
+}
