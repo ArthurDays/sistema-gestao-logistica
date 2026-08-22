@@ -64,6 +64,16 @@ Como administrador, quero cadastrar e manter as especificações dos veículos p
 
 Como administrador, quero que o n8n envie dados técnicos e preços de combustível pela API para reduzir cadastro manual, mantendo origem e auditoria.
 
+**Teste independente**: sincronizar a planilha técnica autorizada e consultar no catálogo os modelos importados, incluindo carros, motos, caminhões e ônibus.
+
+**Cenários de aceite**:
+
+1. Dada a planilha Google autorizada e acessível como CSV somente leitura, quando um administrador solicita a sincronização, então os registros válidos são inseridos ou atualizados no catálogo sem alterar a planilha de origem.
+2. Dada uma nova execução com a mesma marca, modelo e versão, quando o catálogo é sincronizado novamente, então o registro existente é atualizado e nenhuma duplicidade é criada.
+3. Dada uma linha com 13 colunas imediatamente após uma categoria válida, quando somente a coluna de categoria tiver sido omitida, então a categoria anterior é herdada e os demais campos são alinhados antes da validação.
+4. Dada uma linha com quantidade inesperada de colunas, categoria ausente sem uma categoria anterior validada ou valores incompatíveis, quando a sincronização é executada, então ela falha antes de alterar o catálogo e informa a linha inválida.
+5. Dado um modelo elétrico, híbrido, diesel ou exclusivamente movido a etanol, quando ele é usado para cadastrar um veículo, então a energia do veículo é mapeada corretamente, sem assumir gasolina como padrão para esses tipos reconhecidos; modelos flex usam gasolina como energia operacional inicial até edição pelo administrador.
+
 ### US-006 — Visualizar indicadores gerenciais (P2)
 
 Como gestor, quero filtros por veículo, categoria e período para analisar KM, receitas, custos, lucro e alertas.
@@ -104,6 +114,9 @@ Como responsável por uma nova operação, quero cadastrar minha empresa e meu a
 - **FR-015**: O sistema deve registrar auditoria para alterações financeiras, de hodômetro e de manutenção.
 - **FR-016**: O frontend LogiSync deve adaptar navegação, ícones, cartões, formulários, tabelas e painéis laterais para celular, tablet e desktop, preservando as mesmas operações e regras de autorização.
 - **FR-017**: O sistema deve permitir o cadastro público de uma nova organização, criar atomicamente seu primeiro usuário administrador e autenticar esse usuário após o sucesso, sem permitir reutilização de e-mail.
+- **FR-018**: O catálogo técnico deve ser sincronizado, em modo somente leitura, a partir da planilha Google autorizada `1aLlhNvD3K0ztU9Rq-x7yKnLryoCGCF4lhxswHvsyG5I`, aba `1122938118`, por acionamento administrativo e por rotina periódica configurável.
+- **FR-019**: A sincronização do catálogo deve validar o cabeçalho e a quantidade de colunas, normalizar apenas a omissão determinística de categoria, preservar valores decimais e reconhecer as categorias carro, moto, caminhão e ônibus.
+- **FR-020**: O cadastro de um veículo a partir do catálogo deve mapear categoria e energia para os valores de domínio correspondentes e criar regras de manutenção somente quando os intervalos e custos válidos estiverem presentes.
 
 ## Entidades-chave
 
@@ -116,6 +129,7 @@ Como responsável por uma nova operação, quero cadastrar minha empresa e meu a
 - **MaintenanceAlert**: alerta de vencimento e respectivo estado.
 - **FuelPrice**: preço externo com vigência e fonte.
 - **OutboxEvent**: evento confiável para entrega ao n8n.
+- **VehicleCatalogSpec**: especificação técnica importada da planilha mestre, identificada por marca, modelo e versão, com categoria, energia, consumo e parâmetros de manutenção.
 
 ## Requisitos não funcionais
 
@@ -126,6 +140,8 @@ Como responsável por uma nova operação, quero cadastrar minha empresa e meu a
 - O dashboard mensal de até 100 veículos deve responder em até 3 segundos no ambiente de referência.
 - Alterações de schema são feitas por migrations versionadas, nunca manualmente pelo DBeaver em produção.
 - A interface web deve ser utilizável a partir de 360 px de largura, sem rolagem horizontal na página, com alvos de toque de pelo menos 44 px e navegação móvel fixa que respeite as áreas seguras do dispositivo.
+- A leitura do catálogo aceita somente HTTPS no domínio `docs.google.com`, possui timeout limitado e não envia credenciais ou dados operacionais para a planilha.
+- Uma sincronização inválida não pode desativar nem substituir parcialmente o catálogo válido anterior.
 
 ## Métricas de sucesso
 
@@ -143,3 +159,8 @@ Como responsável por uma nova operação, quero cadastrar minha empresa e meu a
 5. Pendências de implantação a definir ao final: domínio/provedor de DNS e TLS, destino dos backups criptografados e DSN do Sentry.
 6. **Decidido em 2026-08-20**: o nome do produto é LogiSync; a identidade usa azul-marinho, azul elétrico, cartões claros, ícones lineares e navegação inferior no web app móvel, mantendo sidebar no desktop.
 7. **Decidido em 2026-08-20**: o cadastro inicial cria um tenant novo e seu primeiro administrador em uma única transação. Login Google será uma fatia posterior e somente será ativado após definição das credenciais OAuth, URLs de callback e política de vinculação de contas.
+8. **Decidido em 2026-08-22**: a planilha `Base de Dados Logística - Especificações Avançadas 2025 V2` é a fonte mestre somente leitura do catálogo técnico. A sincronização usa a exportação CSV da aba `1122938118`, permite acionamento manual e periódico e nunca escreve diretamente na planilha nem concede ao n8n acesso às tabelas de domínio.
+
+## Histórico de mudanças normativas
+
+- **2026-08-22 — Integração da planilha técnica**: o pedido “eu quero integrar com essa planilha” foi incorporado à US-005. Foram adicionados os cenários de sincronização, idempotência, normalização e rejeição segura; os requisitos FR-018 a FR-020; a entidade `VehicleCatalogSpec`; e as restrições de leitura e atomicidade. A evidência anterior do catálogo permanece válida para o formato de 14 colunas, mas a cobertura de linhas com categoria omitida, caminhões, ônibus e energias alternativas fica pendente até nova validação.

@@ -290,11 +290,19 @@ def register_vehicle_from_catalog(
     )
     if spec is None:
         raise HTTPException(status_code=404, detail="Modelo não encontrado no catálogo")
-    category_map = {"Carro": "car", "Moto": "motorcycle"}
+    category_map = {"Carro": "car", "Moto": "motorcycle", "Caminhão": "truck", "Ônibus": "bus"}
     fuel_description = spec.fuel_type.casefold()
-    if "diesel" in fuel_description:
+    if "elétrico" in fuel_description or "eletrico" in fuel_description:
+        energy_type = "electric"
+    elif "híbrido" in fuel_description or "hibrido" in fuel_description:
+        energy_type = "hybrid"
+    elif "diesel" in fuel_description:
         energy_type = "diesel"
-    elif "álcool" in fuel_description or "etanol" in fuel_description:
+    elif "gnv" in fuel_description:
+        energy_type = "cng"
+    elif (
+        "álcool" in fuel_description or "etanol" in fuel_description
+    ) and "gasolina" not in fuel_description:
         energy_type = "ethanol"
     else:
         energy_type = "gasoline"
@@ -312,7 +320,7 @@ def register_vehicle_from_catalog(
     )
     db.add(vehicle)
     db.flush()
-    if spec.oil_change_km:
+    if spec.oil_change_km and spec.oil_change_cost and spec.oil_change_cost > 0:
         db.add(
             MaintenanceRule(
                 organization_id=current_organization_id(),

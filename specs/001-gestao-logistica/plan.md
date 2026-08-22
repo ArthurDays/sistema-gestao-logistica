@@ -33,6 +33,8 @@ O produto será um monólito modular: um frontend web em Next.js/React comunica-
 5. **Particionamento somente por necessidade comprovada**: tabelas de operação e eventos poderão ser particionadas por mês quando volume e consultas justificarem.
 6. **Autenticação do MVP (2026-08-18)**: credenciais locais usam hash PBKDF2-SHA256; JWT HMAC-SHA256 leva `sub`, `organization_id` e `role`. A API deriva o tenant do token, nunca de parâmetros do cliente. Um administrador inicial só é criado por variáveis de ambiente no boot.
 7. **Web app responsivo LogiSync (2026-08-20)**: o mesmo frontend atende celular, tablet e desktop; usa navegação inferior em telas móveis, sidebar em telas grandes, cartões em substituição às tabelas no celular, manifest instalável e áreas seguras do dispositivo.
+8. **Catálogo técnico pela planilha Google (2026-08-22)**: a aplicação lê somente a exportação CSV HTTPS da planilha autorizada e mantém `vehicle_catalog_specs` como projeção local. O parser valida o cabeçalho, reconhece o ano/modelo como âncora de alinhamento, herda a última categoria explícita somente quando essa coluna foi omitida e recompõe vírgulas decimais que chegaram divididas na motorização. Qualquer outra inconsistência aborta a sincronização antes do banco.
+9. **Identidade e mapeamento do catálogo (2026-08-22)**: marca, modelo e versão continuam sendo a chave natural de atualização. Categorias carro, moto, caminhão e ônibus são mapeadas para o domínio; energia elétrica, híbrida, diesel, GNV e etanol é reconhecida pela descrição, enquanto modelos flex começam com gasolina até edição administrativa.
 
 ## Estrutura de repositório
 
@@ -78,6 +80,9 @@ POST   /api/v1/maintenance-executions
 GET    /api/v1/maintenance-alerts
 POST   /api/v1/integrations/vehicle-data
 POST   /api/v1/integrations/fuel-prices
+GET    /api/v1/vehicle-catalog
+POST   /api/v1/vehicle-catalog/sync
+POST   /api/v1/vehicle-catalog/{spec_id}/register
 ```
 
 As rotas de integração exigem `Idempotency-Key`, registram a origem e retornam o identificador do recurso gravado. Os endpoints de saída do n8n recebem assinatura HMAC.
@@ -107,6 +112,8 @@ metabase      BI administrativo
 - Backup diário lógico do PostgreSQL com `pg_dump`, criptografado e enviado a armazenamento externo.
 - Teste mensal de restauração em ambiente isolado.
 - Variáveis sensíveis fora do Git, providas por `.env` no ambiente ou gerenciador de segredos.
+- A URL pública do catálogo não contém credenciais e aponta para a exportação CSV da aba `1122938118` da planilha autorizada.
+- O serviço `catalog-sync` executa a mesma sincronização em intervalo configurável no Compose; no Render, o acionamento manual permanece disponível até o worker periódico ser provisionado.
 
 ### Ambientes
 

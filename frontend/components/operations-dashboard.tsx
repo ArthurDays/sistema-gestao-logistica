@@ -462,7 +462,7 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
               </div>
             </div>
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex flex-wrap gap-2"><CategoryButton active={catalogCategory === "all"} count={catalogSpecs.length} label="Todos" onClick={() => setCatalogCategory("all")} />{["Carro", "Moto"].map((category) => <CategoryButton active={catalogCategory === category} count={catalogSpecs.filter((spec) => spec.category === category).length} key={category} label={category} onClick={() => setCatalogCategory(category)} />)}</div>
+              <div className="flex flex-wrap gap-2"><CategoryButton active={catalogCategory === "all"} count={catalogSpecs.length} label="Todos" onClick={() => setCatalogCategory("all")} />{["Carro", "Moto", "Caminhão", "Ônibus"].map((category) => <CategoryButton active={catalogCategory === category} count={catalogSpecs.filter((spec) => spec.category === category).length} key={category} label={category} onClick={() => setCatalogCategory(category)} />)}</div>
               <div className="relative w-full sm:max-w-xs"><SearchIcon /><input className="w-full rounded-lg border border-slate-200 py-2.5 pl-10 pr-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" onChange={(event) => setCatalogSearch(event.target.value)} placeholder="Buscar marca ou modelo" type="search" value={catalogSearch} /></div>
             </div>
           </div>
