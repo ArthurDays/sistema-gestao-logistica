@@ -10,8 +10,8 @@ class Settings(BaseSettings):
     base_fuel_price_per_liter: Decimal = Decimal("6.00")
     vehicle_catalog_csv_url: str = (
         "https://docs.google.com/spreadsheets/d/"
-        "1J8YAtNSqD0se5pJVzgBDnggN7lKF37HPnQlbqL9vSOw/"
-        "gviz/tq?tqx=out:csv&gid=521676479"
+        "1aLlhNvD3K0ztU9Rq-x7yKnLryoCGCF4lhxswHvsyG5I/"
+        "export?format=csv&gid=1122938118"
     )
     catalog_sync_interval_seconds: int = 3600
     jwt_secret_key: str

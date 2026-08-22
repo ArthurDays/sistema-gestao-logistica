@@ -457,7 +457,7 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
                 <p className="mt-1 text-sm text-slate-500">Consumo, tanque e ciclos de manutenção espelhados da planilha mestre.</p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <a className="rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50" href="https://docs.google.com/spreadsheets/d/1J8YAtNSqD0se5pJVzgBDnggN7lKF37HPnQlbqL9vSOw/edit?gid=521676479#gid=521676479" rel="noreferrer" target="_blank">Abrir planilha ↗</a>
+                <a className="rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50" href="https://docs.google.com/spreadsheets/d/1aLlhNvD3K0ztU9Rq-x7yKnLryoCGCF4lhxswHvsyG5I/edit?gid=1122938118#gid=1122938118" rel="noreferrer" target="_blank">Abrir planilha ↗</a>
                 <button className="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-wait disabled:opacity-60" disabled={syncingCatalog} onClick={() => void synchronizeCatalog()} type="button">{syncingCatalog ? "Sincronizando..." : "Atualizar da planilha"}</button>
               </div>
             </div>

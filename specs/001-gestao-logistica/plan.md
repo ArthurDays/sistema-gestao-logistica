@@ -150,6 +150,7 @@ metabase      BI administrativo
 - **2026-08-21 — Compose de automação e BI validado**: n8n e Metabase persistem seus dados em volumes e usam as redes `internal` e `public`; a configuração do Compose foi validada com credenciais locais efêmeras. O usuário de leitura do Metabase será criado na T024.
 - **2026-08-21 — Endpoints de integração concluídos**: importações administrativas de dados técnicos e preços de combustível exigem autenticação, `Idempotency-Key`, origem e retenção do payload para auditoria; preços mantêm vigência histórica por localidade e energia.
 - **2026-08-21 — Estratégia de implantação web definida**: o frontend preserva `standalone` para o contêiner Docker e usa exportação estática `out/` exclusivamente no Netlify, evitando a publicação incorreta dos artefatos internos de `.next/`.
+- **2026-08-22 — Catálogo Google Sheets publicado e validado**: a fonte autorizada da aba `1122938118` foi configurada no backend e vinculada na interface; a sincronização em produção gravou 421 modelos ativos (213 carros, 108 motos, 50 caminhões e 50 ônibus), sem chaves naturais duplicadas.
 
 ## Critérios de aceite de implantação
 
