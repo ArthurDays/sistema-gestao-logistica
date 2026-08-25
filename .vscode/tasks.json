@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Specsfy: abrir painel",
+      "type": "shell",
+      "command": "specsfy",
+      "args": ["tui", "--project", "${workspaceFolder}"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "clear": true
+      }
+    }
+  ]
+}

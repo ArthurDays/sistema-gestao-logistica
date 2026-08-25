@@ -127,7 +127,17 @@ lucro líquido real = receita bruta - combustível - manutenção apropriada
 - [API e integrações](docs/api-and-integrations.md)
 - [Graph Engineering e agentes](docs/agent-harness.md)
 - [Como contribuir](CONTRIBUTING.md)
-- [Especificação funcional](specs/001-gestao-logistica/spec.md)
+- [Especificação integrada Specsfy 2.0](specs/completed/0001-gestao-logistica/spec.md)
+
+### Painel Specsfy no VS Code
+
+Com o projeto aberto no VS Code, pressione `Ctrl+Shift+B` ou execute **Terminal → Executar Tarefa → Specsfy: abrir painel**. O task versionado em `.vscode/tasks.json` executa:
+
+```powershell
+specsfy tui --project .
+```
+
+Para sair do painel, pressione `Ctrl+Q` ou `Ctrl+C` no terminal.
 
 ## Estado
 

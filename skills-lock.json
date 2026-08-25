@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "skills": {
+    "specsfy-01-inbox": {
+      "source": "../../../../AppData/Local/Temp/specsfy-install-jbMCxJ/checkout/skills",
+      "sourceType": "local",
+      "computedHash": "726f0533a6692f0228f1ea3bee5f18c556a303e8f03839df5f7935646887b8c4"
+    },
+    "specsfy-02-backlog": {
+      "source": "../../../../AppData/Local/Temp/specsfy-install-jbMCxJ/checkout/skills",
+      "sourceType": "local",
+      "computedHash": "94b7632b86a9196bc670dc57db997ba3680f499877b0dcfac2c3e0d8300fa87b"
+    },
+    "specsfy-03-specify": {
+      "source": "../../../../AppData/Local/Temp/specsfy-install-jbMCxJ/checkout/skills",
+      "sourceType": "local",
+      "computedHash": "4f199d4aea86a3099bd87faf76c3998c1a74bd372f58164617b734747ba78b0a"
+    },
+    "specsfy-04-validate": {
+      "source": "../../../../AppData/Local/Temp/specsfy-install-jbMCxJ/checkout/skills",
+      "sourceType": "local",
+      "computedHash": "406017c0f84cab529d768b08939ef6032a20b1ae282152524bf061e26b71895a"
+    },
+    "specsfy-05-tasks": {
+      "source": "../../../../AppData/Local/Temp/specsfy-install-jbMCxJ/checkout/skills",
+      "sourceType": "local",
+      "computedHash": "6e6036b4e427b7ca578f33bd333d1b30c5964d291c97fc09cfbbc59cbae6f3b6"
+    },
+    "specsfy-06-tdd-bdd": {
+      "source": "promovaweb/specsfy",
+      "sourceType": "github",
+      "skillPath": "skills/specsfy-06-tdd-bdd/SKILL.md",
+      "computedHash": "f4d2ef734cf95f9d7008a54c5d98fc00ac0e452b6b11d8b6d9b9da34f6e97106"
+    },
+    "specsfy-07-implement": {
+      "source": "../../../../AppData/Local/Temp/specsfy-install-jbMCxJ/checkout/skills",
+      "sourceType": "local",
+      "computedHash": "e578915d55dfdf3e969bfdcbc2e41262eb338605e4a3a82343c2e57532bf2c9a"
+    },
+    "specsfy-aux-database": {
+      "source": "../../../../AppData/Local/Temp/specsfy-install-jbMCxJ/checkout/skills",
+      "sourceType": "local",
+      "computedHash": "c2a8f4120af41426d4865f4b477677508917f26265f12cc239901d2985143f5c"
+    },
+    "specsfy-aux-rules": {
+      "source": "../../../../AppData/Local/Temp/specsfy-install-jbMCxJ/checkout/skills",
+      "sourceType": "local",
+      "computedHash": "b30f6091ccabe703a150b5a46c043797bf446866c612596254ac68565e60fee7"
+    },
+    "specsfy-aux-stack": {
+      "source": "../../../../AppData/Local/Temp/specsfy-install-jbMCxJ/checkout/skills",
+      "sourceType": "local",
+      "computedHash": "753c2a3c9e43f87b8b64fccf44958afa1efe3fa026aae8750aa2c019aefd1c8f"
+    },
+    "specsfy-data-discovery": {
+      "source": "promovaweb/specsfy",
+      "sourceType": "github",
+      "skillPath": "skills/specsfy-data-discovery/SKILL.md",
+      "computedHash": "c3c426a377df98f0378cc92aa4d7b0d9451f89f67784918596c048a5d8509ab4"
+    },
+    "specsfy-documentator": {
+      "source": "../../../../AppData/Local/Temp/specsfy-install-jbMCxJ/checkout/skills",
+      "sourceType": "local",
+      "computedHash": "e23eba60ff3527fd42823c7f647d6ebd4a8ba9601f0d228a9350c851c15e251b"
+    },
+    "specsfy-interviewer": {
+      "source": "promovaweb/specsfy",
+      "sourceType": "github",
+      "skillPath": "skills/specsfy-interviewer/SKILL.md",
+      "computedHash": "2c1cf41b32563ba6640b60244bed97487970cee1677393ab6a2c9384a1ae487c"
+    },
+    "specsfy-milestone-governor": {
+      "source": "promovaweb/specsfy",
+      "sourceType": "github",
+      "skillPath": "skills/specsfy-milestone-governor/SKILL.md",
+      "computedHash": "5cffd8ce8e8d510d80f8801a31bf32294b013190a1180592c4d30ece14306d04"
+    },
+    "specsfy-mvp-milestone-interviewer": {
+      "source": "promovaweb/specsfy",
+      "sourceType": "github",
+      "skillPath": "skills/specsfy-mvp-milestone-interviewer/SKILL.md",
+      "computedHash": "6394a190caa06de0256f5883f93bd70670879c217ba160d867754ced575100cf"
+    },
+    "specsfy-progress": {
+      "source": "../../../../AppData/Local/Temp/specsfy-install-jbMCxJ/checkout/skills",
+      "sourceType": "local",
+      "computedHash": "2bb41d3237eb6c896b0065d8f86c6d9c64f741e4e3836afe84a956fcf1de210d"
+    },
+    "specsfy-roadmap-milestone-interviewer": {
+      "source": "promovaweb/specsfy",
+      "sourceType": "github",
+      "skillPath": "skills/specsfy-roadmap-milestone-interviewer/SKILL.md",
+      "computedHash": "9ce7c06cec3e8a9a56d82616f5b7a519cfafea77fb658091e62dfc879856af1b"
+    },
+    "specsfy-setup": {
+      "source": "../../../../AppData/Local/Temp/specsfy-install-jbMCxJ/checkout/skills",
+      "sourceType": "local",
+      "computedHash": "6fce03797326230342500a673ee8b096a33c7e0160e65dfca14b23564024696d"
+    },
+    "specsfy-update-spec": {
+      "source": "../../../../AppData/Local/Temp/specsfy-install-jbMCxJ/checkout/skills",
+      "sourceType": "local",
+      "computedHash": "eae831177c2ef514ab978bb8dcbe2e03b28449273f2d27fbf480bb2bb129099b"
+    }
+  }
+}

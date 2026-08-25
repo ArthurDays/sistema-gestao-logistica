@@ -1,7 +1,7 @@
 # Como contribuir
 
-1. Leia `AGENTS.md` e `specs/001-gestao-logistica/`.
-2. Registre mudanças funcionais em `spec.md` e estruturais em `plan.md`.
+1. Leia `AGENTS.md`, a linha de base em `specs/completed/0001-gestao-logistica/spec.md` e a spec ativa aplicável.
+2. Registre mudanças funcionais e estruturais na `spec.md` integrada do Specsfy 2.0.
 3. Trabalhe em uma branch curta e mantenha commits focados.
 4. Inclua migration e teste ao alterar persistência ou regra de negócio.
 5. Atualize a documentação afetada.

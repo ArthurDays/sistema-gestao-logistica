@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "skills": {
+    "specsfy-setup": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:44:59.959Z",
+      "content_sha256": "435da35f6443d30d191508fd6f1160d28c0adb8645f78a3c2b1f4ee57adea71b"
+    },
+    "specsfy-aux-stack": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:45:00.599Z",
+      "content_sha256": "2e084c2f8d1ee0140876d8483894ff2348479205beb8eb969ce7d55f81dce4a1"
+    },
+    "specsfy-aux-rules": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:45:01.123Z",
+      "content_sha256": "dae518828a92a1c1494cad7a066cefdcf257605c87ba30c877734041d00bf661"
+    },
+    "specsfy-aux-database": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:45:01.307Z",
+      "content_sha256": "debe224bf83363833898263dbb7e930c608f2cbf061b1cb1423c8b22cdc9b836"
+    },
+    "specsfy-documentator": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:45:01.717Z",
+      "content_sha256": "34ad6819b2a68e1484e74f0308cc6528d372a031b257c38dedd419e15b03a360"
+    },
+    "specsfy-01-inbox": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:45:01.929Z",
+      "content_sha256": "adb758bf8ede083e186ad9131eec3fe77ee44429e0d946ac7b834183924e2f64"
+    },
+    "specsfy-02-backlog": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:45:02.892Z",
+      "content_sha256": "83db39b05be342b8dd342acbb726ded296361326c669a30e73ae370731482044"
+    },
+    "specsfy-03-specify": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:45:03.989Z",
+      "content_sha256": "d201f2072def03a6bdcc78c31efdc1d97b71eacc5c2b95def91f9638e73a0bdd"
+    },
+    "specsfy-04-validate": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:45:04.970Z",
+      "content_sha256": "6afb2af253b73989756550d5905118bfe5c08af9bd46e302599af0244f75ae2f"
+    },
+    "specsfy-05-tasks": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:45:05.314Z",
+      "content_sha256": "ab4706c4bc23916dee8e34ce354361ceb83cfe05b3dcf73e21ee07e5cafd9800"
+    },
+    "specsfy-06-tdd-bdd": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:45:05.698Z",
+      "content_sha256": "78ea543fc2c10bdaab595c6c3c4665505fede253c31053c5a0a3b05c66fef347"
+    },
+    "specsfy-07-implement": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:45:05.899Z",
+      "content_sha256": "941b3fd345d2e1a9c9cbac4348186b7065a80e388303a0ef0c3b94fd767fc3a6"
+    },
+    "specsfy-update-spec": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:45:06.100Z",
+      "content_sha256": "ede66ef4de46b345e1700dc8656c61746855312f2b22bd9c7032462c5fdeaad9"
+    },
+    "specsfy-progress": {
+      "source": "base",
+      "installed_at": "2026-08-24T15:45:06.233Z",
+      "content_sha256": "9afa2bdecdc4f145201f4ed68abb6d3250bc355e2909f13ab87e9e635e4d0e10"
+    }
+  },
+  "framework": {
+    "source": "base",
+    "spec_sha256": "69c4b7b8ee71844015ef2bedbbe585575197731acadfc127c906d3c197c9c884",
+    "template_sha256": "4d42a94fdc464ca9038d78d0ea85a0259673b80822151ea8672a82d7a77a2e17",
+    "templates_sha256": {
+      "Inbox.md": "6dabcd3a931275187d77af0ff53e08449e1fbf8dd32410eb4fc7f79ed52a7757",
+      "Backlog.md": "444bca33b2fc604ce46f01c223b9735019a203e7bac665a0029dabfb65c3a4b9",
+      "Spec.md": "4d42a94fdc464ca9038d78d0ea85a0259673b80822151ea8672a82d7a77a2e17",
+      "Tasks.md": "870d17e373e8b7481bc531ee342fce57b6d1971b2313e5ef245baeb8cda50c55",
+      "Project.md": "f8c44685086d42244566e958b446cb0fccdb339d1077a88fb1a8dc00dd668317",
+      "Stack.md": "fefb0e2ce4b13fec11e065c1e603face7a08f312131c461217b513bc0b82b09b",
+      "Rules.md": "c5564ba5084c9870d8c0bea803cdb700d684d2a62a25821171ddd386584bd57d",
+      "Database.md": "302f07299e98f32c82cf258376a6bd15b04c50ae2d36f360c1f20f839b3d855c"
+    },
+    "example_sha256": "af8deb04e39a7ebb5c83121a418733512225d742dc33809cca97854e5caec9d2",
+    "agents_sha256": "852c7e82a8d09de7132d3a33298f6d3a679ffe1d772a83e534e711855411175d",
+    "claude_sha256": "ddd02f4166dbe49fce5e0444bd0ab9fac8dabbf47fd9d38c1539a56efc8bec28"
+  }
+}
