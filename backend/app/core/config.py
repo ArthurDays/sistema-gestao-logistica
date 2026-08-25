@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     google_oauth_client_secret: str | None = None
     google_oauth_redirect_uri: str | None = None
     frontend_url: str = "http://localhost:3000"
+    log_level: str = "INFO"
+    sentry_dsn: str | None = None
+    sentry_environment: str = "production"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
