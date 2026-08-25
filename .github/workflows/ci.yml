@@ -24,10 +24,18 @@ jobs:
           python-version: "3.12"
           cache: pip
           cache-dependency-path: backend/requirements-dev.txt
-      - run: pip install -r requirements-dev.txt
-      - run: pytest
-      - run: ruff check app tests
-      - run: mypy app
+      - name: Install backend dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Validate managed hosting contract
+        run: >-
+          pwsh -File ../infra/hosting/validate-production-config.ps1
+          -Path ../infra/hosting/production.env.example
+      - name: Run backend and production contract tests
+        run: pytest
+      - name: Lint backend
+        run: ruff check app tests
+      - name: Type-check backend
+        run: mypy app
 
   frontend:
     runs-on: ubuntu-latest
@@ -41,5 +49,13 @@ jobs:
           node-version: "22"
           cache: npm
           cache-dependency-path: frontend/package-lock.json
-      - run: npm ci
-      - run: npm run build
+      - name: Install frontend dependencies
+        run: npm ci
+      - name: Lint frontend
+        run: npm run lint
+      - name: Type-check frontend
+        run: npm run test
+      - name: Build Netlify static export
+        run: npm run build
+        env:
+          NETLIFY_STATIC_EXPORT: "true"

@@ -67,6 +67,7 @@ services:
     command: ["python", "-m", "app.catalog_worker"]
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-logistica}:${POSTGRES_PASSWORD:-logistica}@postgres:5432/${POSTGRES_DB:-logistica}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY obrigatória}
       VEHICLE_CATALOG_CSV_URL: ${VEHICLE_CATALOG_CSV_URL:-https://docs.google.com/spreadsheets/d/1aLlhNvD3K0ztU9Rq-x7yKnLryoCGCF4lhxswHvsyG5I/export?format=csv&gid=1122938118}
       CATALOG_SYNC_INTERVAL_SECONDS: ${CATALOG_SYNC_INTERVAL_SECONDS:-3600}
     depends_on:
@@ -83,6 +84,7 @@ services:
     command: ["python", "-m", "app.outbox_worker"]
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-logistica}:${POSTGRES_PASSWORD:-logistica}@postgres:5432/${POSTGRES_DB:-logistica}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY obrigatória}
       N8N_WEBHOOK_URL: ${N8N_WEBHOOK_URL:-}
       N8N_WEBHOOK_SECRET: ${N8N_WEBHOOK_SECRET:-}
     depends_on:

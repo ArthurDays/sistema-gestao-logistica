@@ -5,6 +5,9 @@ const isNetlifyStaticExport =
 
 const nextConfig: NextConfig = {
   output: isNetlifyStaticExport ? "export" : "standalone",
+  images: {
+    unoptimized: isNetlifyStaticExport,
+  },
 };
 
 export default nextConfig;
