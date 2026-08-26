@@ -248,3 +248,12 @@ def test_frontend_does_not_consume_access_token_from_query_string() -> None:
 
     assert 'searchParams.get("access_token")' not in source
     assert 'searchParams.get("auth_code")' in source
+
+
+def test_frontend_auth_state_is_deterministic_during_hydration() -> None:
+    source = (
+        Path(__file__).parents[2] / "frontend" / "components" / "operations-dashboard.tsx"
+    ).read_text(encoding="utf-8")
+
+    assert "const [authenticated, setAuthenticated] = useState(false);" in source
+    assert "useState(() => typeof window" not in source

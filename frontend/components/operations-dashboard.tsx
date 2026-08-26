@@ -143,7 +143,7 @@ function KpiIcon({ kind }: { kind: "revenue" | "fuel" | "maintenance" | "profit"
 }
 
 export function OperationsDashboard({ view = "overview" }: { view?: DashboardView }) {
-  const [authenticated, setAuthenticated] = useState(() => typeof window !== "undefined" && Boolean(window.localStorage.getItem("access_token")));
+  const [authenticated, setAuthenticated] = useState(false);
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [alerts, setAlerts] = useState<MaintenanceAlert[]>([]);
   const [rules, setRules] = useState<MaintenanceRule[]>([]);
@@ -169,7 +169,13 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
   useEffect(() => {
     const url = new URL(window.location.href);
     const authCode = url.searchParams.get("auth_code");
-    if (!authCode) return;
+    if (!authCode) {
+      const restoreTimer = window.setTimeout(
+        () => setAuthenticated(Boolean(window.localStorage.getItem("access_token"))),
+        0,
+      );
+      return () => window.clearTimeout(restoreTimer);
+    }
     url.searchParams.delete("auth_code");
     window.history.replaceState({}, "", url.toString());
     void (async () => {
