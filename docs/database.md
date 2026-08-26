@@ -7,6 +7,7 @@
 | --- |
 | backend\.mypy_cache\3.12\pydantic\_migration.data.json |
 | backend\.mypy_cache\3.12\pydantic\_migration.meta.json |
+| backend\tests\test_auth_hardening_migration.py |
 | backend\tests\test_bi_migration.py |
 | Nenhuma estrutura confirmada além das fontes listadas. |
 
@@ -18,11 +19,19 @@ erDiagram
 
 ## Acesso somente leitura para BI
 
-A migration `backend/alembic/versions/20260821_0009_bi_views.py` publica duas projeções:
+A migration `backend/alembic/versions/20260821_0009_bi_views.py` publica
+`bi_vehicle_daily` e `bi_maintenance_alerts`. O papel `metabase_bi` recebe
+somente leitura nessas views e é reservado ao Metabase administrativo local.
+Ele não é uma fronteira de isolamento tenant-facing.
 
-| View | Finalidade | Fonte principal |
+## Estado de autenticação
+
+| Tabela | Conteúdo permitido | Retenção lógica |
 | --- | --- | --- |
-| `bi_vehicle_daily` | Operação diária, distância, receita, custos e lucro por veículo | `operational_records` e `vehicles` |
-| `bi_maintenance_alerts` | Alertas de manutenção com veículo, severidade, vencimento e resolução | `maintenance_alerts` e `vehicles` |
+| `oauth_exchange_codes` | hash, usuário, expiração e consumo | dois minutos; uso único |
+| `auth_login_throttles` | escopo, chave HMAC, contagem e bloqueio | janela/bloqueio de 15 minutos |
 
-O papel `metabase_bi` recebe `CONNECT`, `USAGE` no schema `public` e `SELECT` somente nessas views. Ele não recebe privilégios nas tabelas de domínio. O script `infra/postgres/init-bi.sh` cria ou atualiza os papéis de forma idempotente e usa parâmetros do `psql` para tratar identificadores e senhas sem interpolação SQL insegura.
+Nenhuma delas armazena código OAuth, e-mail ou IP em texto claro. O inventário
+completo de tabelas, campos, relações, constraints e retenção está em
+`.specsfy/DATABASE.md`. Estados expirados há mais de um dia são limpos
+oportunisticamente pelos fluxos de autenticação.

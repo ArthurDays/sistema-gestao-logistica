@@ -1,12 +1,47 @@
+# Segredos e configurações locais
 .env
+.env.*
+!.env.example
+!.env.*.example
+client_secret_*.json
+credentials*.json
+service-account*.json
+*.p12
+*.key
+
+# Python
 .venv/
+venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.coverage
+htmlcov/
+
+# Node.js e Next.js
 node_modules/
 .next/
+out/
 *.tsbuildinfo
+
+# Builds, cobertura e relatórios locais
 coverage/
 dist/
+build/
+*.log
+*.tmp
+
+# Bancos e arquivos temporários locais
+*.db
+*.sqlite
+*.sqlite3
+tmp/
+temp/
+
+# Sistema operacional e IDE
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/

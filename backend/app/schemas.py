@@ -32,6 +32,10 @@ class TokenRead(BaseModel):
     token_type: Literal["bearer"] = "bearer"
 
 
+class OAuthExchangeCreate(BaseModel):
+    code: str = Field(min_length=20, max_length=256)
+
+
 class OrganizationRegister(BaseModel):
     organization_name: str = Field(min_length=2, max_length=160)
     email: str = Field(min_length=5, max_length=320)

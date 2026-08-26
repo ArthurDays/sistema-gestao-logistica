@@ -6,3 +6,8 @@
 [build.environment]
   NETLIFY_STATIC_EXPORT = "true"
   NODE_VERSION = "22"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Referrer-Policy = "no-referrer"

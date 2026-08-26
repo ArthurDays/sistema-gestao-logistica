@@ -8,6 +8,7 @@
 | [api-and-integrations.md](api-and-integrations.md) | API, Google Sheets e n8n |
 | [docker-dev.md](docker-dev.md) | Ambiente local |
 | [agent-harness.md](agent-harness.md) | Spec Kit e gates de qualidade |
+| [repository-publication-checklist.md](repository-publication-checklist.md) | Arquivos publicáveis, exclusões, commit e deploy |
 
 A linha de base normativa está em [`specs/completed/0001-gestao-logistica/spec.md`](../specs/completed/0001-gestao-logistica/spec.md); mudanças futuras seguem a spec ativa aplicável.
 
@@ -15,7 +16,7 @@ A linha de base normativa está em [`specs/completed/0001-gestao-logistica/spec.
 ## Visão geral
 
 - Frameworks detectados: não identificados.
-- Arquivos de código: 139.
+- Arquivos de código: 10.
 - Arquivos de teste: 0.
 
 ## Roteiro

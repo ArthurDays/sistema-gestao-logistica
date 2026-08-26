@@ -47,6 +47,41 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
+class OAuthExchangeCode(Base):
+    """Código OAuth efêmero; somente o hash é persistido."""
+
+    __tablename__ = "oauth_exchange_codes"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    code_hash: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="RESTRICT"), index=True
+    )
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+    used_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class AuthLoginThrottle(Base):
+    """Contador persistente de falhas sem armazenar e-mail ou endereço de origem."""
+
+    __tablename__ = "auth_login_throttles"
+    __table_args__ = (
+        UniqueConstraint("scope", "key_hash", name="uq_auth_login_throttles_scope_key"),
+        Index("ix_auth_login_throttles_blocked_until", "blocked_until"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    scope: Mapped[str] = mapped_column(String(20))
+    key_hash: Mapped[str] = mapped_column(String(64))
+    attempt_count: Mapped[int] = mapped_column(Integer, default=0)
+    window_started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    blocked_until: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+
 class Vehicle(Base):
     __tablename__ = "vehicles"
     __table_args__ = (CheckConstraint("odometer_km >= 0", name="ck_vehicles_odometer_nonnegative"),)

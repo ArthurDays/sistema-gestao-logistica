@@ -1,17 +1,27 @@
+import hashlib
+import hmac
+import secrets
 import uuid
 from calendar import monthrange
-from datetime import date, timedelta
+from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
 from typing import Annotated
 
 import httpx
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
-from sqlalchemy import func, or_, select
+from sqlalchemy import delete, func, or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.auth import CurrentUser, authenticate, current_organization_id, get_current_user, require_roles
+from app.auth import (
+    AuthenticationThrottled,
+    CurrentUser,
+    authenticate_with_throttle,
+    current_organization_id,
+    get_current_user,
+    require_roles,
+)
 from app.catalog import sync_catalog
 from app.core.config import settings
 from app.core.security import create_access_token, create_oauth_state, hash_password, verify_oauth_state
@@ -24,6 +34,7 @@ from app.models import (
     MaintenanceAlert,
     MaintenanceExecution,
     MaintenanceRule,
+    OAuthExchangeCode,
     OperationalRecord,
     Organization,
     User,
@@ -45,6 +56,7 @@ from app.schemas import (
     MaintenanceRuleCreate,
     MaintenanceRuleRead,
     MonthlyDashboardRead,
+    OAuthExchangeCreate,
     OperationCreate,
     OperationRead,
     OrganizationRegister,
@@ -70,8 +82,16 @@ IdempotencyKey = Annotated[
 
 
 @auth_router.post("/token", response_model=TokenRead)
-def create_token(payload: TokenCreate, db: DbSession) -> TokenRead:
-    user = authenticate(payload.email, payload.password, db)
+def create_token(request: Request, payload: TokenCreate, db: DbSession) -> TokenRead:
+    source = request.client.host if request.client is not None else "unknown"
+    try:
+        user = authenticate_with_throttle(payload.email, payload.password, source, db)
+    except AuthenticationThrottled as error:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Muitas tentativas de autenticação. Tente novamente mais tarde.",
+            headers={"Retry-After": str(error.retry_after)},
+        ) from error
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciais inválidas")
     return TokenRead(access_token=create_access_token(str(user.id), str(user.organization_id), user.role))
@@ -86,19 +106,39 @@ def start_google_oauth() -> RedirectResponse:
     )
     if not all(oauth_settings):
         raise HTTPException(status_code=503, detail="Google OAuth não configurado")
+    state = create_oauth_state()
     params = {
         "client_id": settings.google_oauth_client_id,
         "redirect_uri": settings.google_oauth_redirect_uri,
         "response_type": "code",
         "scope": "openid email profile",
-        "state": create_oauth_state(),
+        "state": state,
         "prompt": "select_account",
     }
-    return RedirectResponse("https://accounts.google.com/o/oauth2/v2/auth?" + str(httpx.QueryParams(params)))
+    response = RedirectResponse(
+        "https://accounts.google.com/o/oauth2/v2/auth?" + str(httpx.QueryParams(params))
+    )
+    response.set_cookie(
+        "oauth_correlation",
+        state,
+        max_age=600,
+        httponly=True,
+        secure=settings.oauth_cookie_secure,
+        samesite="lax",
+        path="/api/v1/auth/google",
+    )
+    return response
 
 
 @auth_router.get("/google/callback")
-async def finish_google_oauth(code: str, state: str, db: DbSession) -> RedirectResponse:
+async def finish_google_oauth(
+    code: str,
+    state: str,
+    db: DbSession,
+    oauth_correlation: Annotated[str | None, Cookie()] = None,
+) -> RedirectResponse:
+    if oauth_correlation is None or not hmac.compare_digest(oauth_correlation, state):
+        raise HTTPException(status_code=401, detail="Estado OAuth inválido")
     verify_oauth_state(state)
     oauth_settings = (
         settings.google_oauth_client_id,
@@ -139,10 +179,57 @@ async def finish_google_oauth(code: str, state: str, db: DbSession) -> RedirectR
             detail="Conta Google não autorizada; crie sua organização primeiro",
         )
     user.google_subject = identity["sub"]
+    raw_exchange_code = secrets.token_urlsafe(32)
+    db.add(
+        OAuthExchangeCode(
+            code_hash=hashlib.sha256(raw_exchange_code.encode()).hexdigest(),
+            user_id=user.id,
+            expires_at=datetime.now(UTC) + timedelta(minutes=2),
+        )
+    )
     db.commit()
-    access_token = create_access_token(str(user.id), str(user.organization_id), user.role)
     frontend_url = settings.frontend_url.rstrip("/")
-    return RedirectResponse(f"{frontend_url}/?access_token={access_token}")
+    response = RedirectResponse(
+        f"{frontend_url}/?" + str(httpx.QueryParams({"auth_code": raw_exchange_code}))
+    )
+    response.delete_cookie(
+        "oauth_correlation",
+        path="/api/v1/auth/google",
+        secure=settings.oauth_cookie_secure,
+        httponly=True,
+        samesite="lax",
+    )
+    return response
+
+
+@auth_router.post("/exchange", response_model=TokenRead)
+def exchange_oauth_code(payload: OAuthExchangeCreate, db: DbSession) -> TokenRead:
+    now = datetime.now(UTC)
+    db.execute(
+        delete(OAuthExchangeCode)
+        .where(OAuthExchangeCode.expires_at < now - timedelta(days=1))
+        .execution_options(synchronize_session=False)
+    )
+    db.commit()
+    code_hash = hashlib.sha256(payload.code.encode()).hexdigest()
+    exchange_code = db.scalar(
+        select(OAuthExchangeCode)
+        .where(OAuthExchangeCode.code_hash == code_hash, OAuthExchangeCode.used_at.is_(None))
+        .with_for_update()
+    )
+    if exchange_code is None:
+        raise HTTPException(status_code=401, detail="Código de autenticação inválido ou expirado")
+    expires_at = exchange_code.expires_at
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=UTC)
+    if expires_at <= now:
+        raise HTTPException(status_code=401, detail="Código de autenticação inválido ou expirado")
+    user = db.get(User, exchange_code.user_id)
+    if user is None or not user.active:
+        raise HTTPException(status_code=401, detail="Código de autenticação inválido ou expirado")
+    exchange_code.used_at = now
+    db.commit()
+    return TokenRead(access_token=create_access_token(str(user.id), str(user.organization_id), user.role))
 
 
 @auth_router.post("/register", response_model=TokenRead, status_code=status.HTTP_201_CREATED)

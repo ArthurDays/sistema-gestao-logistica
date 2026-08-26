@@ -1,14 +1,40 @@
+# Metadados de desenvolvimento
 .git
 .agents
 .codex
+.idea
 spec-kit/.git
+
+# Dependências, caches e builds locais
 node_modules
 **/node_modules
 .next
 **/.next
+out
+**/out
+coverage
+**/coverage
 __pycache__
 **/__pycache__
+.pytest_cache
+**/.pytest_cache
+.mypy_cache
+**/.mypy_cache
+.ruff_cache
+**/.ruff_cache
 .venv
 **/.venv
 *.pyc
+*.log
+
+# Segredos e bancos locais
 .env
+**/.env
+.env.*
+**/.env.*
+client_secret_*.json
+credentials*.json
+service-account*.json
+*.db
+*.sqlite
+*.sqlite3

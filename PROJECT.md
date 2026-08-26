@@ -18,6 +18,7 @@ Entregar uma visão auditável da operação logística por organização, veíc
 ## Capacidades principais
 
 - Organizações e usuários isolados por tenant com autenticação JWT e OAuth Google configurável.
+- OAuth vinculado ao navegador e trocado por código opaco de uso único; login por senha limitado por identidade e origem.
 - Cadastro de veículos e catálogo técnico sincronizado em modo somente leitura com Google Sheets.
 - Fechamento operacional com validação de hodômetro e idempotência.
 - Receitas, despesas, rentabilidade e custo de manutenção por quilômetro usando precisão decimal.
@@ -30,4 +31,4 @@ O MVP não inclui roteirização, despacho, GPS em tempo real, emissão fiscal, 
 
 ## Contexto técnico
 
-O sistema usa Next.js/React no frontend, FastAPI/SQLAlchemy no backend, PostgreSQL como fonte de verdade e Docker Compose para execução. O frontend é exportado estaticamente no Netlify e o backend roda no Render; detalhes verificáveis ficam em `.specsfy/STACK.md`, `.specsfy/DATABASE.md` e `docs/`.
+O sistema usa Next.js/React no frontend, FastAPI/SQLAlchemy no backend, PostgreSQL como fonte de verdade e Docker Compose para execução local com banco e BI presos ao loopback. O frontend é exportado estaticamente no Netlify e o backend roda no Render; detalhes verificáveis ficam em `.specsfy/STACK.md`, `.specsfy/DATABASE.md` e `docs/`.

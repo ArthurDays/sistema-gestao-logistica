@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
 os.environ.setdefault("JWT_SECRET_KEY", "test-secret-key-that-is-long-enough-for-local-validation")
+os.environ.setdefault("DATABASE_URL", "sqlite+pysqlite:///:memory:")
 
 from app.core.security import hash_password
 from app.db import Base, get_db

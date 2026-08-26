@@ -70,7 +70,9 @@ docker-compose.yml ambiente completo
 .env.example       configuração local sem segredos
 ```
 
-Consulte o [índice da documentação](docs/README.md) e a [arquitetura detalhada](docs/architecture.md).
+Consulte o [índice da documentação](docs/README.md), a
+[arquitetura detalhada](docs/architecture.md) e o
+[checklist de publicação](docs/repository-publication-checklist.md).
 
 ## Executar localmente
 
@@ -126,8 +128,10 @@ lucro líquido real = receita bruta - combustível - manutenção apropriada
 - [Modelo de dados](docs/data-model.md)
 - [API e integrações](docs/api-and-integrations.md)
 - [Graph Engineering e agentes](docs/agent-harness.md)
+- [Checklist de publicação e deploy](docs/repository-publication-checklist.md)
 - [Como contribuir](CONTRIBUTING.md)
 - [Especificação integrada Specsfy 2.0](specs/completed/0001-gestao-logistica/spec.md)
+- [Operação e segurança para produção](specs/completed/0002-operacao-producao-gerenciada/spec.md)
 
 ### Painel Specsfy no VS Code
 
@@ -141,4 +145,8 @@ Para sair do painel, pressione `Ctrl+Q` ou `Ctrl+C` no terminal.
 
 ## Estado
 
-MVP em evolução. Autenticação, isolamento completo por organização, outbox/webhooks n8n, observabilidade e produção permanecem no roadmap.
+MVP implementado com autenticação multitenant, OAuth por código opaco de uso
+único, isolamento por organização, outbox/webhooks assinados, observabilidade,
+backup e contratos de produção. O estado normativo, as tarefas e os gates ficam
+no painel Specsfy; cada publicação ainda exige o checklist operacional e a
+validação dos ambientes externos.

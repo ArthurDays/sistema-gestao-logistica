@@ -38,13 +38,39 @@ cold start e repita o health check com um novo `X-Request-ID`.
    - `JWT_SECRET_KEY` com valor aleatório forte;
    - `CORS_ORIGINS` com a origem HTTPS exata do frontend;
    - `FRONTEND_URL`;
-   - `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` e
+   - `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET` e
      `GOOGLE_OAUTH_REDIRECT_URI`, quando OAuth estiver habilitado;
    - `SENTRY_DSN` e `SENTRY_ENVIRONMENT`, quando Sentry estiver habilitado.
 
 5. Não copie valores reais para `.env.example`, logs, issues, commits ou
    comandos compartilhados. O Sentry é opcional; sem DSN a API deve iniciar
    normalmente.
+
+O runtime executa o Uvicorn com `--no-proxy-headers`: o bucket de origem do
+login usa somente o peer de rede observado e não confia em cabeçalhos de origem encaminhados
+pelo chamador. Um bloqueio do peer compartilhado nunca impede uma credencial
+correta; o bloqueio por identidade continua sendo aplicado antes da autenticação.
+
+### Administração local de banco e BI
+
+O Compose é exclusivamente um ambiente de desenvolvimento e administração
+local. Antes de iniciá-lo, preencha `POSTGRES_PASSWORD`, `DOMAIN_APP_PASSWORD`,
+`METABASE_APP_PASSWORD` e `METABASE_BI_PASSWORD` no `.env` com valores gerados
+localmente; não há senha padrão. PostgreSQL e Metabase são publicados somente
+em `127.0.0.1`, portanto DBeaver e o navegador local continuam funcionando sem
+expor essas portas à rede.
+
+A senha bootstrap do PostgreSQL é usada apenas pelo provisionador idempotente.
+API, migrations e workers usam `DOMAIN_APP_USER`, papel separado sem
+superusuário, criação de banco/roles ou replicação. Em uma base local já
+existente, `database-init` também transfere a propriedade dos objetos do schema
+`public` para esse papel antes de liberar a API.
+
+O Metabase é uma ferramenta administrativa local e seu papel de leitura enxerga
+o conjunto operacional completo. Ele não pode ser oferecido como dashboard
+tenant-facing nem compartilhado com clientes. Uma interface BI tenant-facing
+exige outra especificação, credenciais próprias por organização e isolamento
+no banco (por exemplo, RLS), com testes de acesso cruzado antes da publicação.
 
 ## Gate antes de publicar
 

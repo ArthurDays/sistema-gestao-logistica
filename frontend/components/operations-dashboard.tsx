@@ -168,11 +168,24 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
 
   useEffect(() => {
     const url = new URL(window.location.href);
-    const token = url.searchParams.get("access_token");
-    if (!token) return;
-    window.localStorage.setItem("access_token", token);
-    url.searchParams.delete("access_token");
-    window.location.replace(url.toString());
+    const authCode = url.searchParams.get("auth_code");
+    if (!authCode) return;
+    url.searchParams.delete("auth_code");
+    window.history.replaceState({}, "", url.toString());
+    void (async () => {
+      const response = await fetch(`${API_URL}/api/v1/auth/exchange`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: authCode }),
+      });
+      if (!response.ok) {
+        setError("O acesso pelo Google expirou. Tente novamente.");
+        return;
+      }
+      const payload = (await response.json()) as { access_token: string };
+      window.localStorage.setItem("access_token", payload.access_token);
+      setAuthenticated(true);
+    })();
   }, []);
 
   const signOut = useCallback(() => {

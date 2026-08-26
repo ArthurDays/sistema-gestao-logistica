@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "Sistema de Logística API"
-    database_url: str = "postgresql+psycopg://logistica:logistica@postgres:5432/logistica"
+    database_url: str
     cors_origins: str = "http://localhost:3000"
     base_fuel_price_per_liter: Decimal = Decimal("6.00")
     vehicle_catalog_csv_url: str = (
@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     google_oauth_client_id: str | None = None
     google_oauth_client_secret: str | None = None
     google_oauth_redirect_uri: str | None = None
+    oauth_cookie_secure: bool = True
     frontend_url: str = "http://localhost:3000"
     log_level: str = "INFO"
     sentry_dsn: str | None = None
