@@ -9,6 +9,10 @@
 | backend\.mypy_cache\3.12\pydantic\_migration.meta.json |
 | backend\tests\test_auth_hardening_migration.py |
 | backend\tests\test_bi_migration.py |
+| backend\tests\test_password_reset_migration.py |
+| backend\tests\__pycache__\test_auth_hardening_migration.cpython-312-pytest-8.4.1.pyc |
+| backend\tests\__pycache__\test_bi_migration.cpython-312-pytest-8.4.1.pyc |
+| backend\tests\__pycache__\test_password_reset_migration.cpython-312-pytest-8.4.1.pyc |
 | Nenhuma estrutura confirmada além das fontes listadas. |
 
 ```mermaid

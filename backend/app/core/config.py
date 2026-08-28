@@ -27,6 +27,13 @@ class Settings(BaseSettings):
     google_oauth_redirect_uri: str | None = None
     oauth_cookie_secure: bool = True
     frontend_url: str = "http://localhost:3000"
+    smtp_host: str | None = None
+    smtp_port: int = 587
+    smtp_username: str | None = None
+    smtp_password: str | None = None
+    smtp_from_email: str | None = None
+    smtp_timeout_seconds: float = 1.5
+    smtp_starttls: bool = True
     log_level: str = "INFO"
     sentry_dsn: str | None = None
     sentry_environment: str = "production"

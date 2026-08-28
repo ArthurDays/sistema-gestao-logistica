@@ -60,6 +60,13 @@ services:
       BASE_FUEL_PRICE_PER_LITER: ${BASE_FUEL_PRICE_PER_LITER:-6.00}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY obrigatória}
       FRONTEND_URL: http://localhost:${FRONTEND_PORT:-3000}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM_EMAIL: ${SMTP_FROM_EMAIL:-}
+      SMTP_TIMEOUT_SECONDS: ${SMTP_TIMEOUT_SECONDS:-1.5}
+      SMTP_STARTTLS: ${SMTP_STARTTLS:-true}
       OAUTH_COOKIE_SECURE: "false"
       BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-}
       BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:-}
@@ -91,6 +98,8 @@ services:
     environment:
       DATABASE_URL: "sqlite+pysqlite:///:memory:"
       PYTHONPATH: /workspace/backend
+      RUFF_CACHE_DIR: /tmp/ruff-cache
+      MYPY_CACHE_DIR: /tmp/mypy-cache
 
   # Espelha a referência técnica externa sem alterar o estado dos veículos operacionais.
   catalog-sync:

@@ -19,6 +19,7 @@ Entregar uma visão auditável da operação logística por organização, veíc
 
 - Organizações e usuários isolados por tenant com autenticação JWT e OAuth Google configurável.
 - OAuth vinculado ao navegador e trocado por código opaco de uso único; login por senha limitado por identidade e origem.
+- Recuperação de senha por link HTTPS de uso único, com resposta pública neutra, expiração de 30 minutos e limite por identidade e origem.
 - Cadastro de veículos e catálogo técnico sincronizado em modo somente leitura com Google Sheets.
 - Fechamento operacional com validação de hodômetro e idempotência.
 - Receitas, despesas, rentabilidade e custo de manutenção por quilômetro usando precisão decimal.

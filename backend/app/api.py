@@ -41,6 +41,13 @@ from app.models import (
     Vehicle,
     VehicleCatalogSpec,
 )
+from app.password_reset import (
+    PasswordResetRejected,
+    SmtpConfig,
+    SmtpPasswordResetSender,
+    confirm_password_reset,
+    request_password_reset,
+)
 from app.schemas import (
     CatalogSyncRead,
     ExpenseCreate,
@@ -55,11 +62,14 @@ from app.schemas import (
     MaintenanceExecutionRead,
     MaintenanceRuleCreate,
     MaintenanceRuleRead,
+    MessageRead,
     MonthlyDashboardRead,
     OAuthExchangeCreate,
     OperationCreate,
     OperationRead,
     OrganizationRegister,
+    PasswordResetConfirm,
+    PasswordResetRequest,
     ProfitabilityRead,
     SessionRead,
     TokenCreate,
@@ -79,6 +89,29 @@ IdempotencyKey = Annotated[
     str,
     Header(min_length=8, max_length=120, alias="Idempotency-Key"),
 ]
+PASSWORD_RESET_NEUTRAL_MESSAGE = "Se a conta puder ser recuperada, enviaremos as instruções."
+PASSWORD_RESET_INVALID_MESSAGE = "Token inválido ou expirado"
+
+
+class _UnavailablePasswordResetSender:
+    def send(self, _recipient: str, _reset_url: str) -> None:
+        raise RuntimeError("Envio de recuperação indisponível")
+
+
+def _password_reset_sender() -> SmtpPasswordResetSender | _UnavailablePasswordResetSender:
+    if settings.smtp_host is None or settings.smtp_from_email is None:
+        return _UnavailablePasswordResetSender()
+    return SmtpPasswordResetSender(
+        SmtpConfig(
+            host=settings.smtp_host,
+            port=settings.smtp_port,
+            from_email=settings.smtp_from_email,
+            username=settings.smtp_username,
+            password=settings.smtp_password,
+            timeout_seconds=settings.smtp_timeout_seconds,
+            starttls=settings.smtp_starttls,
+        )
+    )
 
 
 @auth_router.post("/token", response_model=TokenRead)
@@ -95,6 +128,41 @@ def create_token(request: Request, payload: TokenCreate, db: DbSession) -> Token
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciais inválidas")
     return TokenRead(access_token=create_access_token(str(user.id), str(user.organization_id), user.role))
+
+
+@auth_router.post(
+    "/password-reset/request",
+    response_model=MessageRead,
+    status_code=status.HTTP_202_ACCEPTED,
+)
+def request_password_reset_route(
+    request: Request,
+    payload: PasswordResetRequest,
+    db: DbSession,
+) -> MessageRead:
+    origin = request.client.host if request.client is not None else "unknown"
+    request_password_reset(
+        payload.email,
+        origin,
+        settings.frontend_url.rstrip("/") + "/",
+        _password_reset_sender(),
+        db,
+    )
+    return MessageRead(message=PASSWORD_RESET_NEUTRAL_MESSAGE)
+
+
+@auth_router.post(
+    "/password-reset/confirm",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def confirm_password_reset_route(payload: PasswordResetConfirm, db: DbSession) -> None:
+    try:
+        confirm_password_reset(payload.token, payload.password, db)
+    except PasswordResetRejected as error:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=PASSWORD_RESET_INVALID_MESSAGE,
+        ) from error
 
 
 @auth_router.get("/google")

@@ -5,18 +5,18 @@
 
 | Gerenciador | Escopo | Pacote | Versão | Finalidade | Fonte |
 | --- | --- | --- | --- | --- | --- |
-| npm | produção | next | 16.3.1 | Finalidade não descrita nos metadados locais. |  |
-| npm | produção | react | 19.2.4 | Finalidade não descrita nos metadados locais. |  |
-| npm | produção | react-dom | 19.2.4 | Finalidade não descrita nos metadados locais. |  |
-| npm | desenvolvimento | @tailwindcss/postcss | ^4.3.3 | Finalidade não descrita nos metadados locais. |  |
-| npm | desenvolvimento | @types/node | 22.17.2 | Finalidade não descrita nos metadados locais. |  |
-| npm | desenvolvimento | @types/react | 19.2.2 | Finalidade não descrita nos metadados locais. |  |
-| npm | desenvolvimento | @types/react-dom | 19.2.2 | Finalidade não descrita nos metadados locais. |  |
-| npm | desenvolvimento | eslint | ^9.0.0 | Finalidade não descrita nos metadados locais. |  |
-| npm | desenvolvimento | eslint-config-next | 16.3.1 | Finalidade não descrita nos metadados locais. |  |
-| npm | desenvolvimento | postcss | ^8.5.26 | Finalidade não descrita nos metadados locais. |  |
-| npm | desenvolvimento | tailwindcss | ^4.3.3 | Finalidade não descrita nos metadados locais. |  |
-| npm | desenvolvimento | typescript | 5.9.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | produção | next | 16.3.1 | The React Framework | vercel/next.js |
+| npm | produção | react | 19.2.4 | React is a JavaScript library for building user interfaces. | https://github.com/facebook/react |
+| npm | produção | react-dom | 19.2.4 | React package for working with the DOM. | https://github.com/facebook/react |
+| npm | desenvolvimento | @tailwindcss/postcss | ^4.3.3 | PostCSS plugin for Tailwind CSS, a utility-first CSS framework for rapidly building custom user interfaces | https://github.com/tailwindlabs/tailwindcss |
+| npm | desenvolvimento | @types/node | 22.17.2 | TypeScript definitions for node | https://github.com/DefinitelyTyped/DefinitelyTyped |
+| npm | desenvolvimento | @types/react | 19.2.2 | TypeScript definitions for react | https://github.com/DefinitelyTyped/DefinitelyTyped |
+| npm | desenvolvimento | @types/react-dom | 19.2.2 | TypeScript definitions for react-dom | https://github.com/DefinitelyTyped/DefinitelyTyped |
+| npm | desenvolvimento | eslint | ^9.0.0 | An AST-based pattern checker for JavaScript. | eslint/eslint |
+| npm | desenvolvimento | eslint-config-next | 16.3.1 | ESLint configuration used by Next.js. | vercel/next.js |
+| npm | desenvolvimento | postcss | ^8.5.26 | Tool for transforming styles with JS plugins | postcss/postcss |
+| npm | desenvolvimento | tailwindcss | ^4.3.3 | A utility-first CSS framework for rapidly building custom user interfaces. | https://github.com/tailwindlabs/tailwindcss |
+| npm | desenvolvimento | typescript | 5.9.2 | TypeScript is a language for application scale JavaScript development | https://github.com/microsoft/TypeScript |
 | npm | transitiva | @alloc/quick-lru | 5.2.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @babel/code-frame | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @babel/compat-data | 7.29.7 | Finalidade não descrita nos metadados locais. |  |
@@ -123,14 +123,14 @@
 | npm | transitiva | tslib | 2.8.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @tailwindcss/oxide-win32-arm64-msvc | 4.3.3 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @tailwindcss/oxide-win32-x64-msvc | 4.3.3 | Finalidade não descrita nos metadados locais. |  |
-| npm | transitiva | @tailwindcss/postcss | 4.3.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @tailwindcss/postcss | 4.3.3 | PostCSS plugin for Tailwind CSS, a utility-first CSS framework for rapidly building custom user interfaces | https://github.com/tailwindlabs/tailwindcss |
 | npm | transitiva | @tybys/wasm-util | 0.10.3 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @types/estree | 1.0.9 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @types/json-schema | 7.0.15 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @types/json5 | 0.0.29 | Finalidade não descrita nos metadados locais. |  |
-| npm | transitiva | @types/node | 22.17.2 | Finalidade não descrita nos metadados locais. |  |
-| npm | transitiva | @types/react | 19.2.2 | Finalidade não descrita nos metadados locais. |  |
-| npm | transitiva | @types/react-dom | 19.2.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | @types/node | 22.17.2 | TypeScript definitions for node | https://github.com/DefinitelyTyped/DefinitelyTyped |
+| npm | transitiva | @types/react | 19.2.2 | TypeScript definitions for react | https://github.com/DefinitelyTyped/DefinitelyTyped |
+| npm | transitiva | @types/react-dom | 19.2.2 | TypeScript definitions for react-dom | https://github.com/DefinitelyTyped/DefinitelyTyped |
 | npm | transitiva | @typescript-eslint/eslint-plugin | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | ignore | 7.0.6 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | @typescript-eslint/parser | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
@@ -231,8 +231,8 @@
 | npm | transitiva | es-to-primitive | 1.3.4 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | escalade | 3.2.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | escape-string-regexp | 4.0.0 | Finalidade não descrita nos metadados locais. |  |
-| npm | transitiva | eslint | 9.39.5 | Finalidade não descrita nos metadados locais. |  |
-| npm | transitiva | eslint-config-next | 16.3.1 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | eslint | 9.39.5 | An AST-based pattern checker for JavaScript. | eslint/eslint |
+| npm | transitiva | eslint-config-next | 16.3.1 | ESLint configuration used by Next.js. | vercel/next.js |
 | npm | transitiva | globals | 16.4.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | eslint-import-resolver-node | 0.3.10 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | debug | 3.2.7 | Finalidade não descrita nos metadados locais. |  |
@@ -357,8 +357,8 @@
 | npm | transitiva | nanoid | 3.3.18 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | napi-postinstall | 0.3.4 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | natural-compare | 1.4.0 | Finalidade não descrita nos metadados locais. |  |
-| npm | transitiva | next | 16.3.1 | Finalidade não descrita nos metadados locais. |  |
-| npm | transitiva | postcss | 8.5.23 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | next | 16.3.1 | The React Framework | vercel/next.js |
+| npm | transitiva | postcss | 8.5.23 | Tool for transforming styles with JS plugins | postcss/postcss |
 | npm | transitiva | node-exports-info | 1.6.2 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | node-releases | 2.0.53 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | object-assign | 4.1.1 | Finalidade não descrita nos metadados locais. |  |
@@ -380,13 +380,13 @@
 | npm | transitiva | picocolors | 1.1.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | picomatch | 2.3.2 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | possible-typed-array-names | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
-| npm | transitiva | postcss | 8.5.26 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | postcss | 8.5.26 | Tool for transforming styles with JS plugins | postcss/postcss |
 | npm | transitiva | prelude-ls | 1.2.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | prop-types | 15.8.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | punycode | 2.3.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | queue-microtask | 1.2.3 | Finalidade não descrita nos metadados locais. |  |
-| npm | transitiva | react | 19.2.4 | Finalidade não descrita nos metadados locais. |  |
-| npm | transitiva | react-dom | 19.2.4 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | react | 19.2.4 | React is a JavaScript library for building user interfaces. | https://github.com/facebook/react |
+| npm | transitiva | react-dom | 19.2.4 | React package for working with the DOM. | https://github.com/facebook/react |
 | npm | transitiva | react-is | 16.13.1 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | reflect.getprototypeof | 1.0.10 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | regexp.prototype.flags | 1.5.4 | Finalidade não descrita nos metadados locais. |  |
@@ -424,7 +424,7 @@
 | npm | transitiva | styled-jsx | 5.1.6 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | supports-color | 7.2.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | supports-preserve-symlinks-flag | 1.0.0 | Finalidade não descrita nos metadados locais. |  |
-| npm | transitiva | tailwindcss | 4.3.3 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | tailwindcss | 4.3.3 | A utility-first CSS framework for rapidly building custom user interfaces. | https://github.com/tailwindlabs/tailwindcss |
 | npm | transitiva | tapable | 2.3.3 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | tinyglobby | 0.2.17 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | fdir | 6.5.0 | Finalidade não descrita nos metadados locais. |  |
@@ -438,7 +438,7 @@
 | npm | transitiva | typed-array-byte-length | 1.0.3 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | typed-array-byte-offset | 1.0.4 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | typed-array-length | 1.0.8 | Finalidade não descrita nos metadados locais. |  |
-| npm | transitiva | typescript | 5.9.2 | Finalidade não descrita nos metadados locais. |  |
+| npm | transitiva | typescript | 5.9.2 | TypeScript is a language for application scale JavaScript development | https://github.com/microsoft/TypeScript |
 | npm | transitiva | typescript-eslint | 8.67.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | unbox-primitive | 1.1.0 | Finalidade não descrita nos metadados locais. |  |
 | npm | transitiva | undici-types | 6.21.0 | Finalidade não descrita nos metadados locais. |  |

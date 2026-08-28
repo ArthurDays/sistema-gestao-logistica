@@ -671,21 +671,52 @@ export function OperationsDashboard({ view = "overview" }: { view?: DashboardVie
 
 function LoginForm({ onAuthenticated }: { onAuthenticated: () => void }) {
   const [error, setError] = useState<string | null>(null);
-  const [mode, setMode] = useState<"login" | "register">("login");
+  const [mode, setMode] = useState<"login" | "register" | "reset-request" | "reset-confirm">("login");
+  const [notice, setNotice] = useState<string | null>(null);
+  const [resetToken, setResetToken] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const token = url.searchParams.get("reset_token");
+    if (!token) return;
+    url.searchParams.delete("reset_token");
+    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+    const deferredState = window.setTimeout(() => {
+      setResetToken(token);
+      setMode("reset-confirm");
+    }, 0);
+    return () => window.clearTimeout(deferredState);
+  }, []);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
     setError(null);
+    setNotice(null);
     const form = new FormData(event.currentTarget);
     try {
-      const endpoint = mode === "register" ? "/api/v1/auth/register" : "/api/v1/auth/token";
+      if (mode === "reset-confirm" && form.get("password") !== form.get("password_confirmation")) {
+        setError("A confirmação da senha não confere.");
+        return;
+      }
+      const endpoint = mode === "register" ? "/api/v1/auth/register" : mode === "reset-request" ? "/api/v1/auth/password-reset/request" : mode === "reset-confirm" ? "/api/v1/auth/password-reset/confirm" : "/api/v1/auth/token";
       const payload = mode === "register"
         ? { organization_name: form.get("organization_name"), email: form.get("email"), password: form.get("password") }
-        : { email: form.get("email"), password: form.get("password") };
+        : mode === "reset-request" ? { email: form.get("email") }
+          : mode === "reset-confirm" ? { token: resetToken, password: form.get("password"), password_confirmation: form.get("password_confirmation") }
+            : { email: form.get("email"), password: form.get("password") };
       const response = await fetch(`${API_URL}${endpoint}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      const result = await response.json();
+      const result = response.status === 204 ? null : await response.json();
       if (!response.ok) { setError(typeof result.detail === "string" ? result.detail : "Confira os dados informados."); return; }
+      if (mode === "reset-request") {
+        setNotice(typeof result.message === "string" ? result.message : "Se a conta puder ser recuperada, enviaremos as instruções.");
+        return;
+      }
+      if (mode === "reset-confirm") {
+        setResetToken(null);
+        setMode("login");
+        setNotice("Senha redefinida. Entre com sua nova senha.");
+        return;
+      }
       window.localStorage.setItem("access_token", result.access_token);
       onAuthenticated();
     } catch {
@@ -727,16 +758,36 @@ function LoginForm({ onAuthenticated }: { onAuthenticated: () => void }) {
           <p className="mt-2 text-sm leading-relaxed text-blue-100/70">Gestão inteligente de rotas<br />e desempenho de veículos</p>
         </div>
         <form className="relative mx-auto w-full max-w-md space-y-5 rounded-[1.75rem] bg-white p-6 shadow-2xl shadow-black/20 ring-1 ring-white/10 sm:p-9" onSubmit={submit}>
-          <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">{mode === "register" ? "Comece agora" : "Bem-vindo"}</p><h2 className="mt-2 text-2xl font-bold text-slate-950 sm:text-3xl">{mode === "register" ? "Crie sua operação" : "Acesse sua operação"}</h2><p className="mt-2 text-sm text-slate-500">{mode === "register" ? "Você será o administrador da nova organização." : "Entre com o usuário da sua organização."}</p></div>
-          {mode === "register" && <FieldLabel label="Nome da empresa ou operação"><input autoComplete="organization" className={inputClass} maxLength={160} minLength={2} name="organization_name" placeholder="Transportadora Horizonte" required /></FieldLabel>}
-          <FieldLabel label="E-mail"><input autoComplete="email" className={inputClass} name="email" placeholder="voce@empresa.com" required type="email" /></FieldLabel>
-          <FieldLabel label="Senha"><input autoComplete={mode === "register" ? "new-password" : "current-password"} className={inputClass} minLength={mode === "register" ? 12 : 8} name="password" placeholder={mode === "register" ? "Mínimo de 12 caracteres" : "Sua senha"} required type="password" /></FieldLabel>
-          {mode === "register" && <label className="flex items-start gap-3 text-xs leading-relaxed text-slate-500"><input className="mt-0.5 h-4 w-4 rounded border-slate-300 accent-blue-600" required type="checkbox" /><span>Confirmo que posso criar esta organização e aceito os termos de uso da plataforma.</span></label>}
-          {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700" role="alert">{error}</p>}
-          <button className="min-h-12 w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-3 font-semibold text-white shadow-lg shadow-blue-700/20 transition hover:brightness-110 disabled:cursor-wait disabled:opacity-60" disabled={submitting} type="submit">{submitting ? "Processando..." : mode === "register" ? "Criar conta e entrar" : "Entrar"}</button>
-          <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest text-slate-300"><span className="h-px flex-1 bg-slate-200" />ou<span className="h-px flex-1 bg-slate-200" /></div>
-          <a className="block min-h-11 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-center text-sm font-semibold text-slate-700 transition hover:bg-slate-50" href={`${API_URL}/api/v1/auth/google`}><span className="mr-2 font-bold text-blue-500">G</span>Continuar com Google</a>
-          <button className="min-h-11 w-full text-center text-sm font-semibold text-blue-600 hover:text-blue-700" onClick={() => { setMode((current) => current === "login" ? "register" : "login"); setError(null); }} type="button">{mode === "register" ? "Já tenho uma conta" : "Não possui conta? Criar conta"}</button>
+          <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">{mode === "register" ? "Comece agora" : mode === "reset-request" || mode === "reset-confirm" ? "Recupere seu acesso" : "Bem-vindo"}</p><h2 className="mt-2 text-2xl font-bold text-slate-950 sm:text-3xl">{mode === "register" ? "Crie sua operação" : mode === "reset-request" ? "Esqueceu sua senha?" : mode === "reset-confirm" ? "Crie uma nova senha" : "Acesse sua operação"}</h2><p className="mt-2 text-sm text-slate-500">{mode === "register" ? "Você será o administrador da nova organização." : mode === "reset-request" ? "Informe seu e-mail para receber as instruções de recuperação." : mode === "reset-confirm" ? "Use pelo menos 12 caracteres e confirme a nova senha." : "Entre com o usuário da sua organização."}</p></div>
+          {mode === "reset-request" ? (
+            <>
+              <FieldLabel label="E-mail"><input autoComplete="email" autoFocus className={inputClass} name="email" placeholder="voce@empresa.com" required type="email" /></FieldLabel>
+              {notice && <p className="rounded-lg bg-emerald-50 p-3 text-sm text-emerald-700" role="status">{notice}</p>}
+              {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700" role="alert">{error}</p>}
+              <button className="min-h-12 w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-3 font-semibold text-white shadow-lg shadow-blue-700/20 transition hover:brightness-110 disabled:cursor-wait disabled:opacity-60" disabled={submitting} type="submit">{submitting ? "Enviando..." : "Enviar link"}</button>
+              <button className="min-h-11 w-full text-center text-sm font-semibold text-blue-600 hover:text-blue-700" onClick={() => { setMode("login"); setError(null); setNotice(null); }} type="button">← Voltar ao login</button>
+            </>
+          ) : mode === "reset-confirm" ? (
+            <>
+              <FieldLabel label="Nova senha"><input autoComplete="new-password" autoFocus className={inputClass} minLength={12} name="password" placeholder="Mínimo de 12 caracteres" required type="password" /></FieldLabel>
+              <FieldLabel label="Confirme a nova senha"><input autoComplete="new-password" className={inputClass} minLength={12} name="password_confirmation" placeholder="Repita a nova senha" required type="password" /></FieldLabel>
+              {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700" role="alert">{error}</p>}
+              <button className="min-h-12 w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-3 font-semibold text-white shadow-lg shadow-blue-700/20 transition hover:brightness-110 disabled:cursor-wait disabled:opacity-60" disabled={submitting || !resetToken} type="submit">{submitting ? "Redefinindo..." : "Redefinir senha"}</button>
+              <button className="min-h-11 w-full text-center text-sm font-semibold text-blue-600 hover:text-blue-700" onClick={() => { setResetToken(null); setMode("login"); setError(null); }} type="button">← Voltar ao login</button>
+            </>
+          ) : <>
+            {mode === "register" && <FieldLabel label="Nome da empresa ou operação"><input autoComplete="organization" className={inputClass} maxLength={160} minLength={2} name="organization_name" placeholder="Transportadora Horizonte" required /></FieldLabel>}
+            <FieldLabel label="E-mail"><input autoComplete="email" className={inputClass} name="email" placeholder="voce@empresa.com" required type="email" /></FieldLabel>
+            <FieldLabel label="Senha"><input autoComplete={mode === "register" ? "new-password" : "current-password"} className={inputClass} minLength={mode === "register" ? 12 : 8} name="password" placeholder={mode === "register" ? "Mínimo de 12 caracteres" : "Sua senha"} required type="password" /></FieldLabel>
+            {mode === "login" && <button className="-mt-2 block min-h-11 w-full text-right text-sm font-semibold text-blue-600 hover:text-blue-700" onClick={() => { setMode("reset-request"); setError(null); setNotice(null); }} type="button">Esqueci minha senha</button>}
+            {mode === "register" && <label className="flex items-start gap-3 text-xs leading-relaxed text-slate-500"><input className="mt-0.5 h-4 w-4 rounded border-slate-300 accent-blue-600" required type="checkbox" /><span>Confirmo que posso criar esta organização e aceito os termos de uso da plataforma.</span></label>}
+            {notice && <p className="rounded-lg bg-emerald-50 p-3 text-sm text-emerald-700" role="status">{notice}</p>}
+            {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700" role="alert">{error}</p>}
+            <button className="min-h-12 w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-3 font-semibold text-white shadow-lg shadow-blue-700/20 transition hover:brightness-110 disabled:cursor-wait disabled:opacity-60" disabled={submitting} type="submit">{submitting ? "Processando..." : mode === "register" ? "Criar conta e entrar" : "Entrar"}</button>
+            <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest text-slate-300"><span className="h-px flex-1 bg-slate-200" />ou<span className="h-px flex-1 bg-slate-200" /></div>
+            <a className="block min-h-11 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-center text-sm font-semibold text-slate-700 transition hover:bg-slate-50" href={`${API_URL}/api/v1/auth/google`}><span className="mr-2 font-bold text-blue-500">G</span>Continuar com Google</a>
+            <button className="min-h-11 w-full text-center text-sm font-semibold text-blue-600 hover:text-blue-700" onClick={() => { setMode((current) => current === "login" ? "register" : "login"); setError(null); setNotice(null); }} type="button">{mode === "register" ? "Já tenho uma conta" : "Não possui conta? Criar conta"}</button>
+          </>}
           <p className="text-center text-xs text-slate-400">Acesso protegido e isolado por organização</p>
         </form>
       </section>

@@ -38,6 +38,9 @@ cold start e repita o health check com um novo `X-Request-ID`.
    - `JWT_SECRET_KEY` com valor aleatório forte;
    - `CORS_ORIGINS` com a origem HTTPS exata do frontend;
    - `FRONTEND_URL`;
+   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`,
+     `SMTP_FROM_EMAIL`, `SMTP_TIMEOUT_SECONDS` e `SMTP_STARTTLS=true` para
+     recuperação de senha;
    - `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET` e
      `GOOGLE_OAUTH_REDIRECT_URI`, quando OAuth estiver habilitado;
    - `SENTRY_DSN` e `SENTRY_ENVIRONMENT`, quando Sentry estiver habilitado.
@@ -50,6 +53,35 @@ O runtime executa o Uvicorn com `--no-proxy-headers`: o bucket de origem do
 login usa somente o peer de rede observado e não confia em cabeçalhos de origem encaminhados
 pelo chamador. Um bloqueio do peer compartilhado nunca impede uma credencial
 correta; o bloqueio por identidade continua sendo aplicado antes da autenticação.
+
+### Recuperação de senha e SMTP
+
+Use um servidor SMTP com STARTTLS na porta indicada pelo provedor e um
+`SMTP_FROM_EMAIL` previamente autorizado. `SMTP_PASSWORD` é segredo e deve
+existir somente no painel protegido do Render ou no `.env` local ignorado pelo
+Git. `FRONTEND_URL` deve ser a origem HTTPS exata que receberá o parâmetro
+efêmero `reset_token`. O timeout padrão é 1,5 segundo para preservar a resposta
+rápida e neutra da API.
+
+No ambiente local, copie os nomes de `.env.example`, preencha credenciais de
+teste e execute `docker compose config` antes de iniciar os serviços. Confirme
+que a seção `api.environment` contém os sete nomes SMTP, sem imprimir os
+valores em logs ou anexá-los a evidências. Em produção, mantenha
+`SMTP_STARTTLS=true`; desativá-lo só é aceitável em um transporte local isolado
+que aplique TLS em outra camada documentada.
+
+Para o smoke test, use uma conta sintética autorizada, solicite a recuperação
+e confirme que chega exatamente um link HTTPS que permite uma única troca de
+senha. A API retorna 202 e a mesma mensagem quando a conta não existe, o limite
+foi atingido ou o transporte falhou. Se SMTP estiver ausente ou indisponível, o
+token eventualmente criado é invalidado e o log registra apenas uma falha
+sanitizada, sem e-mail, URL, token ou credencial.
+
+Troubleshooting: valide resolução do host, porta, STARTTLS, autenticação e
+autorização do remetente no painel do provedor. Depois, repita com conta
+sintética e correlacione somente por `request_id`. Não aumente o timeout para
+mascarar falhas e nunca copie a exceção completa para canais que possam expor
+configuração sensível.
 
 ### Administração local de banco e BI
 

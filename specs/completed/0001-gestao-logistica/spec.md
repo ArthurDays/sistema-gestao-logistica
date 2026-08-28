@@ -41,8 +41,8 @@ O LogiSync entrega uma plataforma web auditável para registrar a operação, ca
 
 #### Researchs executados
 
-- **R-001** [critical] A planilha Google autorizada é utilizável como fonte mestre somente leitura — Verdict: verified — Confidence: high — Evidence: histórico consolidado nesta especificação e testes do sincronizador — Budget: 1/1.
-- **R-002** [critical] PostgreSQL com views e papel de BI atende leitura isolada do Metabase — Verdict: verified — Confidence: high — Evidence: `backend/tests/test_bi_migration.py` e `infra/postgres/init-bi.sh` — Budget: 1/1.
+- **R-001** [critical] A planilha Google autorizada é utilizável como fonte mestre somente leitura — Verdict: verified — Confidence: high — Evidence: research/local-technical-evidence.md#google-sheets-read-only — Budget: 1/2.
+- **R-002** [critical] PostgreSQL com views e papel de BI atende leitura isolada do Metabase — Verdict: verified — Confidence: high — Evidence: research/local-technical-evidence.md#postgresql-bi-read-only — Budget: 1/2.
 
 #### Fontes e contexto consultados
 
@@ -56,7 +56,7 @@ O LogiSync entrega uma plataforma web auditável para registrar a operação, ca
 
 #### Artefatos de pesquisa armazenados
 
-- Nenhum artefato externo copiado; as conclusões normativas estão registradas neste `spec.md`.
+- `specs/completed/0001-gestao-logistica/research/local-technical-evidence.md` — índice das evidências executáveis locais; nenhuma fonte externa foi consultada.
 
 #### Dúvidas respondidas
 

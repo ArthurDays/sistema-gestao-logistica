@@ -3,7 +3,7 @@ from datetime import date, datetime
 from decimal import Decimal
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 VehicleCategory = Literal["motorcycle", "car", "truck", "bus", "bicycle", "other"]
 EnergyType = Literal["gasoline", "ethanol", "diesel", "cng", "electric", "hybrid", "human", "other"]
@@ -30,6 +30,35 @@ class TokenCreate(BaseModel):
 class TokenRead(BaseModel):
     access_token: str
     token_type: Literal["bearer"] = "bearer"
+
+
+class PasswordResetRequest(BaseModel):
+    email: str = Field(min_length=5, max_length=320)
+
+    @field_validator("email")
+    @classmethod
+    def validate_email(cls, value: str) -> str:
+        normalized = value.strip().casefold()
+        local, separator, domain = normalized.partition("@")
+        if not separator or not local or "." not in domain or domain.startswith(".") or domain.endswith("."):
+            raise ValueError("Informe um e-mail válido")
+        return normalized
+
+
+class PasswordResetConfirm(BaseModel):
+    token: str = Field(min_length=20, max_length=256)
+    password: str = Field(min_length=12, max_length=128)
+    password_confirmation: str = Field(min_length=12, max_length=128)
+
+    @model_validator(mode="after")
+    def validate_confirmation(self) -> "PasswordResetConfirm":
+        if self.password != self.password_confirmation:
+            raise ValueError("A confirmação da senha não confere")
+        return self
+
+
+class MessageRead(BaseModel):
+    message: str
 
 
 class OAuthExchangeCreate(BaseModel):

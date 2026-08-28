@@ -7,6 +7,7 @@
 | --- | --- | --- | --- |
 | 01 | 0001-gestao-logistica | Complete | — |
 | 02 | 0002-operacao-producao-gerenciada | Complete | — |
+| 03 | 0003-recuperacao-senha | Complete | — |
 
 ## Marcos
 

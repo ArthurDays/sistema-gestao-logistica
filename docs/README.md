@@ -16,7 +16,7 @@ A linha de base normativa está em [`specs/completed/0001-gestao-logistica/spec.
 ## Visão geral
 
 - Frameworks detectados: não identificados.
-- Arquivos de código: 10.
+- Arquivos de código: 139.
 - Arquivos de teste: 0.
 
 ## Roteiro

@@ -5,18 +5,18 @@
 
 | Categoria | Escopo | Pacote | Versão | Finalidade | Fonte | GitHub |
 | --- | --- | --- | --- | --- | --- | --- |
-| Terceiro | produção | next | 16.3.1 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | produção | react | 19.2.4 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | produção | react-dom | 19.2.4 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | desenvolvimento | @tailwindcss/postcss | ^4.3.3 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | desenvolvimento | @types/node | 22.17.2 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | desenvolvimento | @types/react | 19.2.2 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | desenvolvimento | @types/react-dom | 19.2.2 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | desenvolvimento | eslint | ^9.0.0 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | desenvolvimento | eslint-config-next | 16.3.1 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | desenvolvimento | postcss | ^8.5.26 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | desenvolvimento | tailwindcss | ^4.3.3 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | desenvolvimento | typescript | 5.9.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | produção | next | 16.3.1 | The React Framework | vercel/next.js | — |
+| Terceiro | produção | react | 19.2.4 | React is a JavaScript library for building user interfaces. | https://github.com/facebook/react | https://github.com/facebook/react |
+| Terceiro | produção | react-dom | 19.2.4 | React package for working with the DOM. | https://github.com/facebook/react | https://github.com/facebook/react |
+| Terceiro | desenvolvimento | @tailwindcss/postcss | ^4.3.3 | PostCSS plugin for Tailwind CSS, a utility-first CSS framework for rapidly building custom user interfaces | https://github.com/tailwindlabs/tailwindcss | https://github.com/tailwindlabs/tailwindcss |
+| Terceiro | desenvolvimento | @types/node | 22.17.2 | TypeScript definitions for node | https://github.com/DefinitelyTyped/DefinitelyTyped | https://github.com/DefinitelyTyped/DefinitelyTyped |
+| Terceiro | desenvolvimento | @types/react | 19.2.2 | TypeScript definitions for react | https://github.com/DefinitelyTyped/DefinitelyTyped | https://github.com/DefinitelyTyped/DefinitelyTyped |
+| Terceiro | desenvolvimento | @types/react-dom | 19.2.2 | TypeScript definitions for react-dom | https://github.com/DefinitelyTyped/DefinitelyTyped | https://github.com/DefinitelyTyped/DefinitelyTyped |
+| Terceiro | desenvolvimento | eslint | ^9.0.0 | An AST-based pattern checker for JavaScript. | eslint/eslint | — |
+| Terceiro | desenvolvimento | eslint-config-next | 16.3.1 | ESLint configuration used by Next.js. | vercel/next.js | — |
+| Terceiro | desenvolvimento | postcss | ^8.5.26 | Tool for transforming styles with JS plugins | postcss/postcss | — |
+| Terceiro | desenvolvimento | tailwindcss | ^4.3.3 | A utility-first CSS framework for rapidly building custom user interfaces. | https://github.com/tailwindlabs/tailwindcss | https://github.com/tailwindlabs/tailwindcss |
+| Terceiro | desenvolvimento | typescript | 5.9.2 | TypeScript is a language for application scale JavaScript development | https://github.com/microsoft/TypeScript | https://github.com/microsoft/TypeScript |
 | Terceiro | transitiva | @alloc/quick-lru | 5.2.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @babel/code-frame | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @babel/compat-data | 7.29.7 | Finalidade não descrita nos metadados locais. |  | — |
@@ -123,14 +123,14 @@
 | Terceiro | transitiva | tslib | 2.8.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @tailwindcss/oxide-win32-arm64-msvc | 4.3.3 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @tailwindcss/oxide-win32-x64-msvc | 4.3.3 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | transitiva | @tailwindcss/postcss | 4.3.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @tailwindcss/postcss | 4.3.3 | PostCSS plugin for Tailwind CSS, a utility-first CSS framework for rapidly building custom user interfaces | https://github.com/tailwindlabs/tailwindcss | https://github.com/tailwindlabs/tailwindcss |
 | Terceiro | transitiva | @tybys/wasm-util | 0.10.3 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @types/estree | 1.0.9 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @types/json-schema | 7.0.15 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @types/json5 | 0.0.29 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | transitiva | @types/node | 22.17.2 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | transitiva | @types/react | 19.2.2 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | transitiva | @types/react-dom | 19.2.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | @types/node | 22.17.2 | TypeScript definitions for node | https://github.com/DefinitelyTyped/DefinitelyTyped | https://github.com/DefinitelyTyped/DefinitelyTyped |
+| Terceiro | transitiva | @types/react | 19.2.2 | TypeScript definitions for react | https://github.com/DefinitelyTyped/DefinitelyTyped | https://github.com/DefinitelyTyped/DefinitelyTyped |
+| Terceiro | transitiva | @types/react-dom | 19.2.2 | TypeScript definitions for react-dom | https://github.com/DefinitelyTyped/DefinitelyTyped | https://github.com/DefinitelyTyped/DefinitelyTyped |
 | Terceiro | transitiva | @typescript-eslint/eslint-plugin | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | ignore | 7.0.6 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | @typescript-eslint/parser | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
@@ -231,8 +231,8 @@
 | Terceiro | transitiva | es-to-primitive | 1.3.4 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | escalade | 3.2.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | escape-string-regexp | 4.0.0 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | transitiva | eslint | 9.39.5 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | transitiva | eslint-config-next | 16.3.1 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | eslint | 9.39.5 | An AST-based pattern checker for JavaScript. | eslint/eslint | — |
+| Terceiro | transitiva | eslint-config-next | 16.3.1 | ESLint configuration used by Next.js. | vercel/next.js | — |
 | Terceiro | transitiva | globals | 16.4.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | eslint-import-resolver-node | 0.3.10 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | debug | 3.2.7 | Finalidade não descrita nos metadados locais. |  | — |
@@ -357,8 +357,8 @@
 | Terceiro | transitiva | nanoid | 3.3.18 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | napi-postinstall | 0.3.4 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | natural-compare | 1.4.0 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | transitiva | next | 16.3.1 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | transitiva | postcss | 8.5.23 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | next | 16.3.1 | The React Framework | vercel/next.js | — |
+| Terceiro | transitiva | postcss | 8.5.23 | Tool for transforming styles with JS plugins | postcss/postcss | — |
 | Terceiro | transitiva | node-exports-info | 1.6.2 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | node-releases | 2.0.53 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | object-assign | 4.1.1 | Finalidade não descrita nos metadados locais. |  | — |
@@ -380,13 +380,13 @@
 | Terceiro | transitiva | picocolors | 1.1.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | picomatch | 2.3.2 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | possible-typed-array-names | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | transitiva | postcss | 8.5.26 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | postcss | 8.5.26 | Tool for transforming styles with JS plugins | postcss/postcss | — |
 | Terceiro | transitiva | prelude-ls | 1.2.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | prop-types | 15.8.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | punycode | 2.3.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | queue-microtask | 1.2.3 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | transitiva | react | 19.2.4 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | transitiva | react-dom | 19.2.4 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | react | 19.2.4 | React is a JavaScript library for building user interfaces. | https://github.com/facebook/react | https://github.com/facebook/react |
+| Terceiro | transitiva | react-dom | 19.2.4 | React package for working with the DOM. | https://github.com/facebook/react | https://github.com/facebook/react |
 | Terceiro | transitiva | react-is | 16.13.1 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | reflect.getprototypeof | 1.0.10 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | regexp.prototype.flags | 1.5.4 | Finalidade não descrita nos metadados locais. |  | — |
@@ -424,7 +424,7 @@
 | Terceiro | transitiva | styled-jsx | 5.1.6 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | supports-color | 7.2.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | supports-preserve-symlinks-flag | 1.0.0 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | transitiva | tailwindcss | 4.3.3 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | tailwindcss | 4.3.3 | A utility-first CSS framework for rapidly building custom user interfaces. | https://github.com/tailwindlabs/tailwindcss | https://github.com/tailwindlabs/tailwindcss |
 | Terceiro | transitiva | tapable | 2.3.3 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | tinyglobby | 0.2.17 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | fdir | 6.5.0 | Finalidade não descrita nos metadados locais. |  | — |
@@ -438,7 +438,7 @@
 | Terceiro | transitiva | typed-array-byte-length | 1.0.3 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | typed-array-byte-offset | 1.0.4 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | typed-array-length | 1.0.8 | Finalidade não descrita nos metadados locais. |  | — |
-| Terceiro | transitiva | typescript | 5.9.2 | Finalidade não descrita nos metadados locais. |  | — |
+| Terceiro | transitiva | typescript | 5.9.2 | TypeScript is a language for application scale JavaScript development | https://github.com/microsoft/TypeScript | https://github.com/microsoft/TypeScript |
 | Terceiro | transitiva | typescript-eslint | 8.67.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | unbox-primitive | 1.1.0 | Finalidade não descrita nos metadados locais. |  | — |
 | Terceiro | transitiva | undici-types | 6.21.0 | Finalidade não descrita nos metadados locais. |  | — |
