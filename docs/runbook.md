@@ -1,14 +1,14 @@
 # Runbook de produção do LogiSync
 
-Este runbook cobre a operação do frontend no Netlify, da API no Render e do
-PostgreSQL gerenciado. Ele não contém credenciais. Valores sensíveis devem ser
+Este runbook cobre a operação do frontend no Netlify ou, como contingência,
+no GitHub Pages, da API no Render e do PostgreSQL gerenciado. Ele não contém credenciais. Valores sensíveis devem ser
 fornecidos somente por variáveis protegidas nos provedores ou na sessão local.
 
 ## Topologia e sinais de saúde
 
 | Componente | Contrato | Verificação |
 | --- | --- | --- |
-| Frontend | Netlify publica `frontend/out` por HTTPS | abrir a URL pública e uma rota interna |
+| Frontend | Netlify ou GitHub Pages publica `frontend/out` por HTTPS | abrir a URL pública e uma rota interna |
 | API | Render executa `backend/Dockerfile` | `GET <BACKEND_URL>/health` retorna `{"status":"ok"}` |
 | Banco | PostgreSQL é a fonte de verdade | migrations concluem antes do Uvicorn iniciar |
 | Observabilidade | logs JSON usam `request_id`; Sentry é opcional | correlacionar resposta e log por `X-Request-ID` |
@@ -30,13 +30,18 @@ cold start e repita o health check com um novo `X-Request-ID`.
 2. No Netlify, use o `netlify.toml` versionado e configure
    `NEXT_PUBLIC_API_URL` com a URL HTTPS da API. O build usa
    `NETLIFY_STATIC_EXPORT=true`, base `frontend` e publica `out`.
+   Enquanto os deploys Netlify estiverem pausados, o workflow
+   `.github/workflows/deploy-pages.yml` publica o mesmo diretório em
+   `https://arthurdays.github.io/sistema-gestao-logistica/`, usando
+   `GITHUB_PAGES=true` e `NEXT_PUBLIC_BASE_PATH=/sistema-gestao-logistica`.
 3. No Render, crie o serviço web a partir de `backend/Dockerfile`, exponha a
    porta `8000` e configure o health check em `/health`.
 4. Configure somente nos painéis protegidos:
 
    - `DATABASE_URL`;
    - `JWT_SECRET_KEY` com valor aleatório forte;
-   - `CORS_ORIGINS` com a origem HTTPS exata do frontend;
+   - `CORS_ORIGINS` com as origens HTTPS exatas dos frontends ativos, separadas
+     por vírgula e sem o subcaminho do GitHub Pages;
    - `FRONTEND_URL`;
    - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`,
      `SMTP_FROM_EMAIL`, `SMTP_TIMEOUT_SECONDS` e `SMTP_STARTTLS=true` para
@@ -107,8 +112,8 @@ no banco (por exemplo, RLS), com testes de acesso cruzado antes da publicação.
 ## Gate antes de publicar
 
 Uma versão só pode ser publicada quando o workflow `CI` estiver verde. O gate
-executa contratos de produção, pytest, Ruff, mypy, lint, TypeScript e o build
-estático do Netlify. Para reproduzir a parte declarativa localmente:
+executa contratos de produção, pytest, Ruff, mypy, lint, TypeScript e os builds
+estáticos do Netlify e do GitHub Pages. Para reproduzir a parte declarativa localmente:
 
 ```powershell
 pwsh -File infra/hosting/validate-production-config.ps1
@@ -118,6 +123,11 @@ npm ci
 npm run lint
 npm run test
 $env:NETLIFY_STATIC_EXPORT = 'true'
+npm run build
+Remove-Item Env:NETLIFY_STATIC_EXPORT
+$env:GITHUB_PAGES = 'true'
+$env:NEXT_PUBLIC_BASE_PATH = '/sistema-gestao-logistica'
+$env:NEXT_PUBLIC_API_URL = 'https://sistema-gestao-logistica.onrender.com'
 npm run build
 ```
 
@@ -163,8 +173,9 @@ script rejeita URLs idênticas.
 ## Deploy e verificação
 
 1. Confirme CI verde e backup restaurável quando aplicável.
-2. Publique o commit aprovado. Netlify deve gerar o export estático e o Render
-   deve construir a imagem do backend.
+2. Publique o commit aprovado. Netlify deve gerar o export estático quando os
+   créditos estiverem disponíveis; o workflow `Deploy frontend to GitHub Pages`
+   publica a contingência e o Render constrói a imagem do backend.
 3. No Render, acompanhe `alembic upgrade head`; o Uvicorn só inicia depois que
    a migration termina com sucesso.
 4. Verifique `GET <BACKEND_URL>/health` e anote o `X-Request-ID` da resposta.
@@ -179,7 +190,8 @@ script rejeita URLs idênticas.
 1. Suspenda novas publicações e registre o commit, horário, sintomas e
    `request_id` afetado.
 2. Se somente o frontend falhou, restaure no Netlify o deploy anterior aprovado
-   e repita a navegação e o health check da API.
+   ou execute novamente no GitHub Pages o artifact do commit anterior; depois,
+   repita a navegação e o health check da API.
 3. Se a API falhou sem mudança incompatível de schema, faça redeploy no Render
    do commit anterior aprovado e repita `/health` e o smoke test.
 4. Se houve migration incompatível, não execute downgrade ou restauração sobre

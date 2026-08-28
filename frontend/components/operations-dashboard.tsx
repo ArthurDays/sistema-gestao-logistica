@@ -105,6 +105,8 @@ type UserSession = {
 };
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+const PUBLIC_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const LOGO_URL = `${PUBLIC_BASE_PATH}/logisync-logo.png`;
 const money = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
 const number = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 });
 
@@ -737,7 +739,7 @@ function LoginForm({ onAuthenticated }: { onAuthenticated: () => void }) {
         <div className="absolute -bottom-28 left-10 h-96 w-96 rounded-full bg-blue-700/25 blur-3xl" />
         <div className="absolute left-1/2 top-1/2 h-[36rem] w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-blue-400/10" />
         <div className="relative flex items-center gap-4">
-          <Image alt="LogiSync" className="h-16 w-16 object-contain" height={64} priority src="/logisync-logo.png" width={64} />
+          <Image alt="LogiSync" className="h-16 w-16 object-contain" height={64} priority src={LOGO_URL} width={64} />
           <div><BrandName className="text-2xl" /><p className="text-xs uppercase tracking-[0.22em] text-blue-100/60">Gestão logística inteligente</p></div>
         </div>
         <div className="relative max-w-xl">
@@ -753,7 +755,7 @@ function LoginForm({ onAuthenticated }: { onAuthenticated: () => void }) {
       <section className="relative flex min-h-[100dvh] flex-col justify-center overflow-hidden bg-[#031329] px-5 py-8 sm:px-10 lg:grid lg:place-items-center lg:bg-[#f5f7fb]">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_50%_10%,rgba(23,107,255,0.28),transparent_65%)] lg:hidden" />
         <div className="relative mx-auto mb-8 text-center lg:hidden">
-          <Image alt="LogiSync" className="mx-auto h-24 w-24 object-contain" height={96} priority src="/logisync-logo.png" width={96} />
+          <Image alt="LogiSync" className="mx-auto h-24 w-24 object-contain" height={96} priority src={LOGO_URL} width={96} />
           <BrandName className="mt-3 text-4xl" />
           <p className="mt-2 text-sm leading-relaxed text-blue-100/70">Gestão inteligente de rotas<br />e desempenho de veículos</p>
         </div>
@@ -809,7 +811,7 @@ function DashboardSidebar({ activeSection, alerts, collapsed, mobileOpen, onClos
       {mobileOpen && <button aria-label="Fechar menu" className="fixed inset-0 z-40 bg-slate-950/50 backdrop-blur-sm lg:hidden" onClick={onClose} type="button" />}
       <aside className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-slate-950 text-white shadow-2xl transition-all duration-300 ${collapsed ? "w-20" : "w-64"} ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
         <div className={`flex h-20 items-center border-b border-white/10 ${collapsed ? "justify-center px-3" : "justify-between px-5"}`}>
-          <Link className="flex min-w-0 items-center gap-3" href="/" onClick={onClose} title="Ir para visão geral"><Image alt="LogiSync" className="h-11 w-11 shrink-0 object-contain" height={44} src="/logisync-logo.png" width={44} />{!collapsed && <span className="text-left"><BrandName className="text-sm" /><small className="text-xs text-slate-400">Gestão operacional</small></span>}</Link>
+          <Link className="flex min-w-0 items-center gap-3" href="/" onClick={onClose} title="Ir para visão geral"><Image alt="LogiSync" className="h-11 w-11 shrink-0 object-contain" height={44} src={LOGO_URL} width={44} />{!collapsed && <span className="text-left"><BrandName className="text-sm" /><small className="text-xs text-slate-400">Gestão operacional</small></span>}</Link>
           {!collapsed && <button aria-label="Fechar menu" className="grid h-9 w-9 place-items-center rounded-lg text-slate-400 hover:bg-white/10 hover:text-white lg:hidden" onClick={onClose} type="button">×</button>}
         </div>
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-6">

@@ -5,7 +5,7 @@
 | Formato | Specsfy/2.0 |
 | ID | SPEC-0002 |
 | Slug | 0002-operacao-producao-gerenciada |
-| Status | Complete |
+| Status | Implementing |
 | Effort | 8 |
 | Effort updated at | 2026-08-25 |
 | Effort rationale | A reabertura inclui correção de cinco achados de segurança em OAuth, sessão, proteção contra força bruta, exposição local do PostgreSQL e acesso administrativo ao BI, com migration e regressão completa. |
@@ -13,10 +13,10 @@
 | Milestones | Produção observável |
 | Definition Gate | Passed |
 | Plan Gate | Passed |
-| Delivery Gate | Passed |
+| Delivery Gate | In Progress |
 | Evidence Contract | 1 |
 | Interface para pessoas | Não — a fatia altera somente configuração operacional, automação e documentação. |
-| Atualizada em | 2026-08-26 |
+| Atualizada em | 2026-08-27 |
 
 ## Ato I — Definir
 
@@ -225,11 +225,12 @@ Feature: Fronteira administrativa local
 
 #### Contexto existente
 
-- Next.js estático no Netlify, FastAPI e PostgreSQL no Render e Compose local.
+- Next.js estático no Netlify, FastAPI e PostgreSQL no Render e Compose local. Em 2026-08-27, os deploys de produção do Netlify ficaram pausados por esgotamento dos créditos do ciclo.
 
 #### Arquitetura e módulos
 
 - `infra/hosting/` concentra exemplos e validação gerenciada; `backend/app/core/logging.py` concentra logging; `infra/postgres/` contém backup/restauração; CI reúne os gates.
+- GitHub Pages funciona como fallback reversível do frontend estático enquanto o Netlify estiver pausado. O workflow dedicado exporta `frontend/out` com `basePath` do repositório, publica somente após lint, tipagem e build e mantém a API no Render.
 
 #### Migrations
 
@@ -273,6 +274,7 @@ backend/alembic/versions/20260825_0011_auth_hardening.py
 frontend/components/operations-dashboard.tsx
 backend/tests/production/test_production_contracts.py
 .github/workflows/ci.yml
+.github/workflows/deploy-pages.yml
 docs/runbook.md
 ```
 
@@ -406,13 +408,13 @@ docs/runbook.md
 
 #### Gate do Ato II — Plano
 
-- **Resultado**: Passed em 2026-08-25 após validação das tarefas T009–T016 e observação RED reproduzível.
+- **Resultado**: Passed em 2026-08-27 após validação estrutural de T001–T017; T017 é operacional e preserva os seis predecessores TDD e os AC existentes.
 - **Comando**: `node .agents/skills/specsfy-05-tasks/scripts/validate_tasks.mjs specs/defined/0002-operacao-producao-gerenciada/spec.md --root . --allow-draft`.
-- **Achados**: 16 tarefas totais, 11 concluídas, 6 TDD, 15/15 IDs rastreáveis e dependências acíclicas; T009–T011 registram 12 falhas esperadas antes da implementação.
+- **Achados**: 17 tarefas totais, 16 concluídas, 6 TDD, 15/15 IDs rastreáveis e dependências acíclicas; o fallback não muda comportamento nem aceite e foi isolado como tarefa operacional T017.
 
 #### Gate do Ato III — Entrega
 
-- **Resultado**: Passed localmente em 2026-08-26 para AC-001–AC-006; publicação continua sendo uma ação externa separada.
+- **Resultado**: Pending em 2026-08-27 somente para a contingência GitHub Pages; a evidência local anterior de AC-001–AC-006 permanece registrada.
 - **Comandos**: `pytest -q`; Ruff; mypy; lint; TypeScript; build estático Netlify; `docker compose config --quiet`; builds das imagens; documentator/monitor; smoke PostgreSQL/API.
 - **Achados**: 64 testes backend passaram; Ruff e mypy passaram; lint, TypeScript e build estático com nove rotas passaram; migration `20260825_0011`, owner `logistica_app`, `/health`, proteção contra spoof e login legítimo foram provados em contêineres descartáveis.
 
@@ -555,10 +557,20 @@ docs/runbook.md
   - [x] **IMPROVE**: Orientação de proxy wildcard foi removida; serviços administrativos permanecem locais e a documentação proíbe BI tenant-facing sem nova spec.
   <!-- specsfy:evidence {"task":"T016","refs":["US-001","FR-001","FR-002","FR-003","FR-004","NFR-001","NFR-002","NFR-003","NFR-004","AC-004","AC-005","AC-006"],"files":[".specsfy/DATABASE.md","PROJECT.md","docs/application.md","docs/database.md","docs/flows.md","docs/runbook.md"],"commands":[{"run":"pytest -q","exit":0},{"run":"ruff check app tests","exit":0},{"run":"mypy app","exit":0},{"run":"npm run lint && npm run test","exit":0},{"run":"NETLIFY_STATIC_EXPORT=true npm run build","exit":0},{"run":"node .agents/skills/specsfy-documentator/scripts/build_documentation.mjs --project . --check","exit":0},{"run":"node .agents/skills/specsfy-setup/scripts/monitor_context.mjs --project . --paths <arquivos-alterados> --check","exit":0}]} -->
 
+#### Fase 5 — Contingência de publicação do frontend
+
+- [ ] T017 [OPS] [US-001] Publicar fallback estático no GitHub Pages por `.github/workflows/deploy-pages.yml` — Refs: US-001, FR-001, FR-003, NFR-001, NFR-002, AC-001, AC-002 — Depends: T016
+  - [ ] **PREP**: Confirmar pausa dos deploys Netlify, URL do repositório, origem CORS do GitHub Pages, API Render ativa e baseline limpo da branch `main`.
+  - [ ] **EXECUTE**: Configurar export estático com `basePath`, prefixar assets públicos, criar workflow de Pages com gates e documentar ativação, rollback e coexistência com Netlify.
+  - [ ] **VERIFY**: Aprovar lint, TypeScript, export Netlify, export GitHub Pages, contratos backend, workflow e navegação publicada sem caminhos quebrados.
+  - [ ] **EVIDENCE**: Registrar arquivos, comandos locais, run do GitHub Actions, URL pública e health check da API, sem expor segredos.
+  - [ ] **IMPROVE**: Manter o fallback reversível e isolado para que a retomada do Netlify não exija remoção emergencial nem divergência de código.
+
 ### 15. Ordem de execução
 
 - Caminho crítico histórico: T001/T002/T003 → T004/T005/T006 → T007 → T008.
 - Caminho crítico da reabertura: T009/T010 → T012 → T013/T014; T011 → T015; T013/T014/T015 → T016.
+- Caminho crítico da contingência: T016 → T017.
 - Tarefas paralelas: T001–T003; depois T004–T006 em fronteiras distintas.
 - Estratégia de MVP: T001–T004 provam hosting seguro; T005–T008 completam operação.
 
@@ -569,17 +581,21 @@ docs/runbook.md
 #### Dependências
 
 - Acesso existente a Netlify e Render para variáveis protegidas.
+- Permissão de GitHub Pages e GitHub Actions no repositório para publicar o fallback.
 - Docker e PostgreSQL locais para restauração isolada.
 
 #### Riscos
 
 - Plano gratuito hibernar ou expirar → documentar limites e migração.
+- Netlify permanecer pausado por créditos → GitHub Pages publica o mesmo frontend estático em subcaminho, com rollback pelo workflow.
+- Origem ou `basePath` divergentes quebrarem API/assets → validar CORS restrito, links, assets e export antes da publicação.
 - Painéis divergirem do repositório → validador e runbook são o contrato sem valores reais.
 - Backup não restaurar → impedir aceite sem restauração descartável.
 
 #### Suposições
 
 - URLs gerenciadas atuais permanecem válidas até domínio personalizado.
+- A URL de contingência será `https://arthurdays.github.io/sistema-gestao-logistica/` enquanto não houver domínio personalizado.
 - Segredos continuam sendo aplicados manualmente nos painéis quando necessário.
 
 ### 17. Decisões
@@ -591,15 +607,17 @@ docs/runbook.md
 - **DEC-005**: Entregar OAuth por código opaco de uso único armazenado como hash; JWT continua retornado no corpo JSON e nunca em URL.
 - **DEC-006**: Tratar Metabase como ferramenta administrativa local; dashboards tenant-facing futuros exigem nova spec e isolamento no banco.
 - **DEC-007**: Não confiar em cabeçalhos de proxy no runtime; o throttle usa o peer de rede e permite credencial correta quando apenas a origem compartilhada está bloqueada.
+- **DEC-008**: Usar GitHub Pages como fallback reversível do frontend enquanto os deploys Netlify estiverem pausados; Render continua como API e banco, e Netlify permanece apto a voltar como hospedagem principal.
 
 ### 18. Definition of Done
 
 - [x] `Definition Gate` está `Passed` para a versão reaberta.
-- [x] `Plan Gate` está `Passed` para T009–T016.
-- [x] `Delivery Gate` está `Passed` para AC-004–AC-006.
+- [x] `Plan Gate` está `Passed` para T009–T017.
+- [ ] `Delivery Gate` está `Passed` para AC-001–AC-006 e para a publicação de contingência.
 - [x] AC-001, AC-002 e AC-003 possuem evidência automatizada.
 - [x] Backup foi restaurado sem alterar a origem.
 - [x] Testes, lint, tipagem, build, migration e contratos passam após o hardening.
 - [x] `.specsfy/DATABASE.md` reflete `oauth_exchange_codes` e `auth_login_throttles` sem valores sensíveis.
 - [x] `docs/runbook.md` cobre configuração, deploy, rollback e recuperação.
 - [x] O painel Specsfy reflete tarefas e gates atuais.
+- [ ] O fallback GitHub Pages está publicado, acessível e apontando para a API Render com CORS restrito.
